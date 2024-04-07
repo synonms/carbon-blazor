@@ -1,0 +1,10 @@
+﻿<div id="@ComponentId-helper-text" class="cb-helper-text" dir="ltr">@Text</div>
+
+@code {
+    [Parameter]
+    [EditorRequired]
+    public string ComponentId { get; set; } = string.Empty;
+
+    [Parameter]
+    public string Text { get; set; } = string.Empty;
+}

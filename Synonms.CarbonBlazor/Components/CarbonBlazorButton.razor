@@ -1,0 +1,57 @@
+﻿@using Synonms.CarbonBlazor.Css
+@using Synonms.CarbonBlazor.Enumerations
+
+<button class="@GetClass()" type="@Type.ToString().ToLower()" onclick="@OnClick" disabled="@IsDisabled">
+    @if (Display is CarbonBlazorButtonDisplay.TextOnly or CarbonBlazorButtonDisplay.TextAndIcon)
+    {
+        <span>@Text</span>
+    }
+    @if (Display is not CarbonBlazorButtonDisplay.TextOnly)
+    {
+        @GetIcon()
+    }
+</button>
+
+@code {
+    [Parameter]
+    public CarbonBlazorIcon Icon { get; set; } = CarbonBlazorIcon.None;
+
+    [Parameter]
+    public CarbonBlazorIcon ToggledIcon { get; set; } = CarbonBlazorIcon.Cancel;
+
+    [Parameter]
+    public string Text { get; set; } = string.Empty;
+
+    [Parameter]
+    public CarbonBlazorButtonKind Kind { get; set; } = CarbonBlazorButtonKind.Primary;
+
+    [Parameter]
+    public CarbonBlazorButtonType Type { get; set; } = CarbonBlazorButtonType.Button;
+
+    [Parameter]
+    public CarbonBlazorButtonDisplay Display { get; set; } = CarbonBlazorButtonDisplay.TextOnly;
+
+    [Parameter]
+    public CarbonBlazorButtonSize Size { get; set; } = CarbonBlazorButtonSize.Medium;
+
+    [Parameter]
+    public EventCallback OnClick { get; set; } = EventCallback.Empty;
+
+    [Parameter]
+    public bool IsDisabled { get; set; } = false;
+
+    public bool IsToggled { get; set; } = false;
+    
+    private string GetClass()
+    {
+        const string baseClass = CssClasses.Prefix + "btn";
+        string kindClass = CarbonBlazorButtonKindMapper.ToClass(Kind);
+        string displayClass = CarbonBlazorButtonDisplayMapper.ToClass(Display);
+        string sizeClass = Kind == CarbonBlazorButtonKind.Header ? CssClasses.Prefix + "btn-l" : CarbonBlazorButtonSizeMapper.ToClass(Size);
+
+        return CssClasses.Concatenate(baseClass, kindClass, displayClass, sizeClass);
+    }
+
+    private MarkupString GetIcon() => 
+        (MarkupString)CarbonBlazorIconMapper.ToSvg(IsToggled ? ToggledIcon : Icon, Kind == CarbonBlazorButtonKind.Header ? 20 : 16);
+}

@@ -1,0 +1,13 @@
+﻿@using Synonms.CarbonBlazor.Enumerations
+<span class="@CarbonBlazorTextTypeMapper.ToClass(Type)">@ChildContent</span>
+
+@code {
+
+    [Parameter]
+    public CarbonBlazorTextType Type { get; set; } = CarbonBlazorTextType.Body01;
+    
+    [Parameter]
+    [EditorRequired]
+    public RenderFragment ChildContent { get; set; } = null!;
+
+}

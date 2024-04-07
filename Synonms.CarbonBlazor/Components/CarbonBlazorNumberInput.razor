@@ -1,0 +1,99 @@
+﻿@using System.Linq.Expressions
+@using Synonms.CarbonBlazor.Css
+@using Synonms.CarbonBlazor.Enumerations
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Web
+
+@inherits InputBase<int>
+
+<CarbonBlazorFieldSet IsDoubleColumn="@IsDoubleColumn" IsReadOnly="@IsReadOnly" IsDisabled="@IsDisabled">
+    @if (string.IsNullOrWhiteSpace(Legend) is false)
+    {
+        <legend>@Legend</legend>
+    }
+    @if (string.IsNullOrWhiteSpace(Label) is false)
+    {
+        <CarbonBlazorLabel For="@Id" Text="@Label"/>
+    }
+
+    <div class="cb-input-wrapper">
+        <input class="cb-input cb-number-input @CssClass" aria-invalid="false" id="@Id" min="@Min" max="@Max" pattern="[0-9]*" step="@Step" type="number" @bind="@CurrentValue">
+        <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Input" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.Subtract" OnClick="@Decrement"></CarbonBlazorButton>
+        <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Input" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.Add" OnClick="@Increment"></CarbonBlazorButton>
+    </div>
+
+    <ValidationMessage For="@ValidationFor"/>
+
+    @if (string.IsNullOrWhiteSpace(HelperText) is false)
+    {
+        <CarbonBlazorHelperText ComponentId="@Id" Text="@HelperText"/>
+    }
+</CarbonBlazorFieldSet>
+
+@code {
+    [Parameter]
+    [EditorRequired]
+    public Expression<Func<int>> ValidationFor { get; set; } = null!;
+
+    [Parameter]
+    public string? Id { get; set; }
+    
+    [Parameter]
+    public string? Legend { get; set; }
+
+    [Parameter]
+    public string? Label { get; set; }
+
+    [Parameter]
+    public string? HelperText { get; set; }
+    
+    [Parameter]
+    public int Min { get; set; } = 0;
+
+    [Parameter]
+    public int Max { get; set; } = int.MaxValue;
+
+    [Parameter]
+    public int Step { get; set; } = 1;
+
+    [Parameter]
+    public bool IsDisabled { get; set; } = false;
+
+    [Parameter]
+    public bool IsReadOnly { get; set; } = false;
+
+    [Parameter]
+    public bool IsDoubleColumn { get; set; } = false;
+
+    private void Decrement()
+    {
+        if ((CurrentValue - Step) >= Min)
+        {
+            CurrentValue -= Step;
+        }
+    }
+    
+    private void Increment()
+    {
+        if ((CurrentValue + Step) <= Max)
+        {
+            CurrentValue += Step;
+        }
+    }
+
+    protected override bool TryParseValueFromString(string? value, out int result, out string? validationErrorMessage)
+    {
+        bool isParsed = int.TryParse(value, out result);
+
+        if (isParsed)
+        {
+            validationErrorMessage = null;
+        }
+        else
+        {
+            validationErrorMessage = $"Unable to parse '{value ?? string.Empty}' as int.";
+        }
+
+        return isParsed;
+    }
+}

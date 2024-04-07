@@ -1,0 +1,44 @@
+﻿@using Synonms.CarbonBlazor.Enumerations
+<div class="cb-shell">
+    <CarbonBlazorHeader ProductName="@ProductName" ProductIconImagePath="@ProductIconImagePath" OnMenuClick="@(() => _sidebar.IsExpanded = !_sidebar.IsExpanded)">
+        <UserPanel>@UserPanel</UserPanel>
+        <SwitcherPanel>@SwitcherPanel</SwitcherPanel>
+    </CarbonBlazorHeader>
+    <div class="cb-content">
+        <CarbonBlazorSidePanel @ref="@_sidebar" SidePanelType="CarbonBlazorSidePanelType.Left">
+            @SideNav
+        </CarbonBlazorSidePanel>
+        <main class="cb-main">
+            @Body
+        </main>
+    </div>
+</div>
+
+@code {
+    private CarbonBlazorSidePanel _sidebar = null!;
+    
+    [Parameter]
+    [EditorRequired]
+    public string ProductName { get; set; } = string.Empty;
+    
+    [Parameter]
+    [EditorRequired]
+    public string ProductIconImagePath { get; set; } = string.Empty;
+
+    [Parameter]
+    [EditorRequired]
+    public RenderFragment SideNav { get; set; } = null!;
+
+    [Parameter]
+    [EditorRequired]
+    public RenderFragment UserPanel { get; set; } = null!;
+
+    [Parameter]
+    [EditorRequired]
+    public RenderFragment SwitcherPanel { get; set; } = null!;
+
+    [Parameter]
+    [EditorRequired]
+    public RenderFragment Body { get; set; } = null!;
+
+}

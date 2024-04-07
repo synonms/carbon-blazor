@@ -1,0 +1,30 @@
+﻿<div class="cb-pane">
+    @if (string.IsNullOrWhiteSpace(Title) is false || string.IsNullOrWhiteSpace(Info) is false)
+    {
+        <div class="cb-pane-title-wrapper">
+            @if (string.IsNullOrWhiteSpace(Title) is false)
+            {
+                <span class="cb-pane-title">@Title</span>
+            }
+
+            @if (string.IsNullOrWhiteSpace(Info) is false)
+            {
+                <p class="cb-pane-info">@Info</p>
+            }
+        </div>
+    }
+
+    @ChildContent
+</div>
+
+@code {
+    [Parameter]
+    [EditorRequired]
+    public RenderFragment ChildContent { get; set; } = null!;
+    
+    [Parameter]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter]
+    public string Info { get; set; } = string.Empty;
+}

@@ -1,0 +1,119 @@
+﻿@using Synonms.CarbonBlazor.Enumerations
+<header class="cb-header">
+    <CarbonBlazorStack FlexDirection="FlexDirection.Row" JustifyContent="JustifyContent.Start" AlignItems="AlignItems.Center" Gap="1rem">
+        <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Header" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.Menu" OnClick="@OnMenuClick"></CarbonBlazorButton>
+        <img class="cb-header-product-icon" alt="@ProductName Logo" src="@ProductIconImagePath" />
+        <span class="cb-header-product-name">@ProductName</span>
+    </CarbonBlazorStack>
+    
+    <CarbonBlazorStack FlexDirection="FlexDirection.Row" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center">
+        <CarbonBlazorButton @ref="@_searchButton" Kind="CarbonBlazorButtonKind.Header" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.Search" OnClick="@SearchClicked"></CarbonBlazorButton>
+        <CarbonBlazorButton @ref="@_userAvatarButton" Kind="CarbonBlazorButtonKind.Header" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.UserAvatar" OnClick="@UserAvatarClicked"></CarbonBlazorButton>
+        <CarbonBlazorButton @ref="@_switcherButton" Kind="CarbonBlazorButtonKind.Header" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.Switcher" OnClick="@SwitcherClicked"></CarbonBlazorButton>
+    </CarbonBlazorStack>
+</header>
+
+<CarbonBlazorSidePanel @ref="@_userPanel" SidePanelType="CarbonBlazorSidePanelType.Right">
+    @UserPanel
+</CarbonBlazorSidePanel>
+
+<CarbonBlazorSidePanel @ref="@_switcherPanel" SidePanelType="CarbonBlazorSidePanelType.Right">
+    @SwitcherPanel
+</CarbonBlazorSidePanel>
+
+@code {
+    private CarbonBlazorButton _switcherButton = null!;
+    private CarbonBlazorButton _searchButton = null!;
+    private CarbonBlazorButton _userAvatarButton = null!;
+    private CarbonBlazorSidePanel _switcherPanel = null!;
+    private CarbonBlazorSidePanel _userPanel = null!;
+    
+    [Parameter]
+    [EditorRequired]
+    public string ProductName { get; set; } = string.Empty;
+    
+    [Parameter]
+    [EditorRequired]
+    public string ProductIconImagePath { get; set; } = string.Empty;
+
+    [Parameter]
+    [EditorRequired]
+    public RenderFragment UserPanel { get; set; } = null!;
+
+    [Parameter]
+    [EditorRequired]
+    public RenderFragment SwitcherPanel { get; set; } = null!;
+
+    [Parameter]
+    public EventCallback OnMenuClick { get; set; } = EventCallback.Empty;
+
+    [Parameter]
+    public EventCallback<string> OnSearch { get; set; } = EventCallback<string>.Empty;
+
+    private void SearchClicked()
+    {
+        _searchButton.Icon = _searchButton.Icon == CarbonBlazorIcon.Switcher ? CarbonBlazorIcon.Cancel : CarbonBlazorIcon.Switcher;
+    }
+
+    private void UserAvatarClicked()
+    {
+        if (_userPanel.IsExpanded)
+        {
+            CloseUserPanel();
+        }
+        else
+        {
+            OpenUserPanel();
+        }
+        
+        StateHasChanged();
+    }
+
+    private void SwitcherClicked()
+    {
+        if (_switcherPanel.IsExpanded)
+        {
+            CloseSwitcherPanel();
+        }
+        else
+        {
+            OpenSwitcherPanel();
+        }
+        
+        StateHasChanged();
+    }
+
+    private void CloseAllPanels()
+    {
+        CloseSwitcherPanel();
+        CloseUserPanel();
+    }
+    
+    private void CloseSwitcherPanel()
+    {
+        _switcherPanel.IsExpanded = false;
+        _switcherButton.IsToggled = false;
+    }
+    
+    private void CloseUserPanel()
+    {
+        _userPanel.IsExpanded = false;
+        _userAvatarButton.IsToggled = false;
+    }
+
+    private void OpenSwitcherPanel()
+    {
+        CloseAllPanels();
+        
+        _switcherPanel.IsExpanded = true;
+        _switcherButton.IsToggled = true;
+    }
+
+    private void OpenUserPanel()
+    {
+        CloseAllPanels();
+        
+        _userPanel.IsExpanded = true;
+        _userAvatarButton.IsToggled = true;
+    }
+}

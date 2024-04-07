@@ -1,0 +1,10 @@
+﻿<td>
+    @ChildContent    
+</td>
+
+@code {
+
+    [Parameter]
+    [EditorRequired]
+    public RenderFragment ChildContent { get; set; } = null!;
+}

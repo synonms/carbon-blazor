@@ -1,0 +1,59 @@
+﻿@using Synonms.RestEasy.Core.Schema
+@typeparam TModel
+
+<CarbonBlazorPane Title="@Title" Info="@Info">
+    <div class="cb-datatable">
+        @if (ToolbarButtons is not null)
+        {
+            <CarbonBlazorButtonSet Class="cb-datatable-toolbar">
+                @ToolbarButtons
+            </CarbonBlazorButtonSet>
+        }
+        <table>
+            <thead>
+            <tr>
+                @HeaderRowTemplate
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (TModel model in Models)
+            {
+                <tr>
+                    @DataRowTemplate(model)
+                </tr>
+            }
+            </tbody>
+        </table>
+        @if (Pagination is not null)
+        {
+            <CarbonBlazorPagination Pagination="@Pagination"></CarbonBlazorPagination>
+        }
+    </div>
+</CarbonBlazorPane>
+
+@code {
+
+    [Parameter]
+    [EditorRequired]
+    public IEnumerable<TModel> Models { get; set; } = default!;
+
+    [Parameter]
+    [EditorRequired]
+    public RenderFragment HeaderRowTemplate { get; set; } = null!;
+
+    [Parameter]
+    [EditorRequired]
+    public RenderFragment<TModel> DataRowTemplate { get; set; } = null!;
+
+    [Parameter]
+    public RenderFragment? ToolbarButtons { get; set; }
+
+    [Parameter]
+    public Pagination? Pagination { get; set; }
+
+    [Parameter]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter]
+    public string Info { get; set; } = string.Empty;
+}

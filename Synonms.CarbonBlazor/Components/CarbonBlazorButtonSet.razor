@@ -1,0 +1,17 @@
+﻿<div class="cb-btn-set @Class" style="@Style">
+    @ChildContent
+</div>
+
+@code {
+
+    [Parameter]
+    [EditorRequired]
+    public RenderFragment ChildContent { get; set; } = null!;
+
+    [Parameter]
+    public string Class { get; set; } = string.Empty;
+
+    [Parameter]
+    public string Style { get; set; } = string.Empty;
+
+}

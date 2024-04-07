@@ -1,0 +1,41 @@
+﻿@using Synonms.CarbonBlazor.Css
+@using Synonms.CarbonBlazor.Enumerations
+
+<div class="@GetClass()" style="@FlexDirectionMapper.ToStyle(FlexDirection) @FlexWrapMapper.ToStyle(FlexWrap) @JustifyContentMapper.ToStyle(JustifyContent) @AlignItemsMapper.ToStyle(AlignItems) gap:@Gap; @Style">
+    @ChildContent
+</div>
+
+@code {
+
+    [Parameter]
+    [EditorRequired]
+    public RenderFragment ChildContent { get; set; } = null!;
+
+    [Parameter]
+    public FlexDirection FlexDirection { get; set; } = FlexDirection.Row;
+
+    [Parameter]
+    public FlexWrap FlexWrap { get; set; } = FlexWrap.NoWrap;
+
+    [Parameter]
+    public JustifyContent JustifyContent { get; set; } = JustifyContent.FlexStart;
+
+    [Parameter]
+    public AlignItems AlignItems { get; set; } = AlignItems.Stretch;
+
+    [Parameter]
+    public string Gap { get; set; } = "0";
+
+    [Parameter]
+    public string Class { get; set; } = string.Empty;
+
+    [Parameter]
+    public string Style { get; set; } = string.Empty;
+
+    private string GetClass()
+    {
+        const string baseClass = CssClasses.Prefix + "stack";
+
+        return CssClasses.Concatenate(baseClass) + " " + Class;
+    }
+}

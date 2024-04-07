@@ -1,0 +1,13 @@
+﻿<label for="@For" class="cb-label" dir="ltr" style="@Style">@Text</label>
+
+@code {
+    [Parameter]
+    [EditorRequired]
+    public string Text { get; set; } = string.Empty;
+    
+    [Parameter]
+    public string? For { get; set; }
+
+    [Parameter]
+    public string Style { get; set; } = string.Empty;
+}

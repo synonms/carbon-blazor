@@ -1,0 +1,127 @@
+﻿@using System.Linq.Expressions
+@using Synonms.CarbonBlazor.Enumerations
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Web
+
+@typeparam TValue
+
+@inherits InputBase<TValue>
+
+<CarbonBlazorFieldSet IsDoubleColumn="@IsDoubleColumn" IsReadOnly="@IsReadOnly" IsDisabled="@IsDisabled">
+    @if (string.IsNullOrWhiteSpace(Legend) is false)
+    {
+        <legend>@Legend</legend>
+    }
+    @if (string.IsNullOrWhiteSpace(Label) is false)
+    {
+        <CarbonBlazorLabel For="@Id" Text="@Label"/>
+    }
+
+    <div class="cb-input-wrapper">
+        <div class="cb-input" onclick="@(() => OnClicked())">@Value</div>
+        <CarbonBlazorButton @ref="@_dropDownButton" Kind="CarbonBlazorButtonKind.Input" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.ChevronDown" ToggledIcon="CarbonBlazorIcon.ChevronUp" OnClick="@OnClicked"></CarbonBlazorButton>
+        <div class="cb-dropdown-menu @(IsMenuOpen() ? "" : "collapsed")">
+            @foreach (TValue option in Options)
+            {
+                <div class="cb-dropdown-option" onclick="@(() => OptionClicked(option))">
+                    @{
+                        string label = OptionLabel.Invoke(option);
+                        <span>@label</span>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+
+    <ValidationMessage For="@ValidationFor"/>
+
+    @if (string.IsNullOrWhiteSpace(HelperText) is false)
+    {
+        <CarbonBlazorHelperText ComponentId="@Id" Text="@HelperText"/>
+    }
+</CarbonBlazorFieldSet>
+
+@code {
+    private CarbonBlazorButton _dropDownButton = null!;
+
+    [Parameter]
+    [EditorRequired]
+    public Expression<Func<TValue>> ValidationFor { get; set; } = null!;
+
+    [Parameter]
+    public string? Id { get; set; }
+
+    [Parameter]
+    public string? Legend { get; set; }
+
+    [Parameter]
+    public string? Label { get; set; }
+
+    [Parameter]
+    public string? HelperText { get; set; }
+
+    [Parameter]
+    public bool IsDisabled { get; set; } = false;
+
+    [Parameter]
+    public bool IsReadOnly { get; set; } = false;
+
+    [Parameter]
+    public bool IsDoubleColumn { get; set; } = false;
+
+    [Parameter]
+    [EditorRequired]
+    public IEnumerable<TValue> Options { get; set; } = Enumerable.Empty<TValue>();
+
+    [Parameter]
+    public Func<TValue, string> OptionLabel { get; set; } = 
+        option => option?.ToString() ?? string.Empty;
+
+    [Parameter]
+    [EditorRequired]
+    public Func<string, TValue?> FromString { get; set; } = null!;
+
+    private void OnClicked()
+    {
+        if (IsMenuOpen())
+        {
+            CloseMenu();
+        }
+        else
+        {
+            OpenMenu();
+        }
+    }
+
+    private bool IsMenuOpen() => _dropDownButton?.IsToggled ?? false;
+    
+    private void OpenMenu()
+    {
+        _dropDownButton.IsToggled = true;
+    }
+
+    private void CloseMenu()
+    {
+        _dropDownButton.IsToggled = false;
+    }
+
+    private void OptionClicked(TValue option)
+    {
+        Value = option;
+        
+        CloseMenu();
+        
+        StateHasChanged();
+    }
+
+    protected override bool TryParseValueFromString(string? value, out TValue result, out string? validationErrorMessage)
+    {
+        TValue? parsed = FromString.Invoke(value);
+
+        result = parsed is null ? default : parsed;
+        validationErrorMessage = parsed is null ? $"Unable to parse '{value ?? string.Empty}' as {typeof(TValue)}." : null;
+    
+        return parsed is not null;
+    }
+
+}

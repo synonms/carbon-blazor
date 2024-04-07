@@ -1,0 +1,68 @@
+﻿@using System.Linq.Expressions
+@using Synonms.CarbonBlazor.Enumerations
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Web
+
+@inherits InputBase<bool>
+
+<CarbonBlazorFieldSet IsDoubleColumn="@IsDoubleColumn" IsReadOnly="@IsReadOnly" IsDisabled="@IsDisabled">
+    @if (string.IsNullOrWhiteSpace(Legend) is false)
+    {
+        <legend>@Legend</legend>
+    }
+
+    <CarbonBlazorStack FlexDirection="FlexDirection.Row" AlignItems="AlignItems.Center" Gap="0.5rem">
+        <input type="checkbox" class="cb-input cb-checkbox" id="@Id" @bind="@CurrentValue">
+        <CarbonBlazorLabel For="@Id" Text="@Label" Style="padding-top: 0.5rem;"></CarbonBlazorLabel>
+    </CarbonBlazorStack>
+    
+    <ValidationMessage For="@ValidationFor"/>
+
+    @if (string.IsNullOrWhiteSpace(HelperText) is false)
+    {
+        <CarbonBlazorHelperText ComponentId="@Id" Text="@HelperText"/>
+    }
+</CarbonBlazorFieldSet>
+
+@code {
+    [Parameter]
+    [EditorRequired]
+    public Expression<Func<bool>> ValidationFor { get; set; } = null!;
+
+    [Parameter]
+    public string? Id { get; set; } = string.Empty;
+
+    [Parameter]
+    public string? Legend { get; set; }
+
+    [Parameter]
+    public string? Label { get; set; }
+
+    [Parameter]
+    public string? HelperText { get; set; }
+
+    [Parameter]
+    public bool IsDisabled { get; set; } = false;
+
+    [Parameter]
+    public bool IsReadOnly { get; set; } = false;
+
+    [Parameter]
+    public bool IsDoubleColumn { get; set; } = false;
+
+    protected override bool TryParseValueFromString(string? value, out bool result, out string? validationErrorMessage)
+    {
+        bool isParsed = bool.TryParse(value, out result);
+
+        if (isParsed)
+        {
+            validationErrorMessage = null;
+        }
+        else
+        {
+            validationErrorMessage = $"Unable to parse '{value ?? string.Empty}' as bool.";
+        }
+
+        return isParsed;
+    }
+}
