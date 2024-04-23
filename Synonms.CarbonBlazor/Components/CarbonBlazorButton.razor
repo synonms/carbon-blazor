@@ -1,7 +1,7 @@
 ﻿@using Synonms.CarbonBlazor.Css
 @using Synonms.CarbonBlazor.Enumerations
 
-<button class="@GetClass()" type="@Type.ToString().ToLower()" onclick="@OnClick" disabled="@IsDisabled">
+<button class="@GetClass()" style="@Style" type="@Type.ToString().ToLower()" onclick="@OnClick" disabled="@IsDisabled">
     @if (Display is CarbonBlazorButtonDisplay.TextOnly or CarbonBlazorButtonDisplay.TextAndIcon)
     {
         <span>@Text</span>
@@ -39,6 +39,9 @@
 
     [Parameter]
     public bool IsDisabled { get; set; } = false;
+
+    [Parameter]
+    public string Style { get; set; } = string.Empty;
 
     public bool IsToggled { get; set; } = false;
     

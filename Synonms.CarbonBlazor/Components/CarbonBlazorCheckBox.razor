@@ -54,14 +54,9 @@
     {
         bool isParsed = bool.TryParse(value, out result);
 
-        if (isParsed)
-        {
-            validationErrorMessage = null;
-        }
-        else
-        {
-            validationErrorMessage = $"Unable to parse '{value ?? string.Empty}' as bool.";
-        }
+        validationErrorMessage = isParsed 
+            ? null 
+            : $"Unable to parse '{value ?? string.Empty}' as bool.";
 
         return isParsed;
     }

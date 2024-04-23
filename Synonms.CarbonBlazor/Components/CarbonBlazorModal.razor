@@ -1,9 +1,10 @@
-﻿@using Synonms.CarbonBlazor.Enumerations
+﻿@using Synonms.CarbonBlazor.Css
+@using Synonms.CarbonBlazor.Enumerations
 
 @if (IsVisible)
 {
     <div class="cb-modal">
-        <div class="cb-modal-panel">
+        <div class="@GetClass()">
             <div class="cb-modal-header">
                 <div class="cb-modal-title-wrapper">
                     @if (string.IsNullOrWhiteSpace(Label) is false)
@@ -29,6 +30,9 @@
     public RenderFragment ChildContent { get; set; } = null!;
 
     [Parameter]
+    public CarbonBlazorModalSize Size { get; set; } = CarbonBlazorModalSize.Medium;
+
+    [Parameter]
     public string Label { get; set; } = string.Empty;
 
     [Parameter]
@@ -36,5 +40,25 @@
 
     [Parameter]
     public bool IsVisible { get; set; } = false;
+    
+    [Parameter]
+    public EventCallback<bool> IsVisibleChanged { get; set; }
 
+    public void Show()
+    {
+        IsVisible = true;
+    }
+
+    public void Hide()
+    {
+        IsVisible = false;
+    }
+
+    private string GetClass()
+    {
+        const string baseClass = CssClasses.Prefix + "modal-panel";
+        string sizeClass = CarbonBlazorModalSizeMapper.ToClass(Size);
+
+        return CssClasses.Concatenate(baseClass, sizeClass);
+    }
 }

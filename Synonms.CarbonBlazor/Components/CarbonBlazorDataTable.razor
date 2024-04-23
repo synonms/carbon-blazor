@@ -1,4 +1,4 @@
-﻿@using Synonms.RestEasy.Core.Schema
+﻿@using Synonms.CarbonBlazor.Enumerations
 @typeparam TModel
 
 <CarbonBlazorPane Title="@Title" Info="@Info">
@@ -6,6 +6,10 @@
         @if (ToolbarButtons is not null)
         {
             <CarbonBlazorButtonSet Class="cb-datatable-toolbar">
+                @if (IsFilterEnabled)
+                {
+                    <CarbonBlazorSearch SearchTextChangedCallback="@OnSearchTextChanged"></CarbonBlazorSearch>
+                }
                 @ToolbarButtons
             </CarbonBlazorButtonSet>
         }
@@ -16,7 +20,7 @@
             </tr>
             </thead>
             <tbody>
-            @foreach (TModel model in Models)
+            @foreach (TModel model in _filteredAndPagedModels)
             {
                 <tr>
                     @DataRowTemplate(model)
@@ -24,15 +28,45 @@
             }
             </tbody>
         </table>
-        @if (Pagination is not null)
-        {
-            <CarbonBlazorPagination Pagination="@Pagination"></CarbonBlazorPagination>
-        }
+        <div class="cb-pagination">
+            <div class="cb-pagination-items">
+        <span>
+            @(_filteredModels.Any() is false ? "No items" : string.Format(ItemsTemplate, FirstItem, LastItem, _filteredModels.Count()) + (IsFiltered ? string.Format(FilteredItemsTemplate, TotalSize) : string.Empty))
+        </span>
+            </div>
+            <div class="cb-pagination-nav">
+                <CarbonBlazorButtonSet>
+                    <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.IconOnly" Kind="CarbonBlazorButtonKind.Input" Icon="CarbonBlazorIcon.PageFirst" OnClick="@FirstCallback"></CarbonBlazorButton>
+                    <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.IconOnly" Kind="CarbonBlazorButtonKind.Input" Icon="CarbonBlazorIcon.ChevronLeft" OnClick="@PreviousCallback" IsDisabled="@IsPreviousDisabled"></CarbonBlazorButton>
+                    <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.IconOnly" Kind="CarbonBlazorButtonKind.Input" Icon="CarbonBlazorIcon.ChevronRight" OnClick="@NextCallback" IsDisabled="@IsNextDisabled"></CarbonBlazorButton>
+                    <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.IconOnly" Kind="CarbonBlazorButtonKind.Input" Icon="CarbonBlazorIcon.PageLast" OnClick="@LastCallback"></CarbonBlazorButton>
+                </CarbonBlazorButtonSet>
+            </div>
+        </div>
     </div>
 </CarbonBlazorPane>
 
 @code {
+    private const string ItemsTemplate = "{0}-{1} of {2} items";
+    private const string FilteredItemsTemplate = " (filtered - {0} total)";
 
+    private IEnumerable<TModel> _filteredModels = Enumerable.Empty<TModel>();
+    private IEnumerable<TModel> _filteredAndPagedModels = Enumerable.Empty<TModel>();
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        _filteredModels = Models;
+        PageModels();
+    }
+    
+    [Parameter]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter]
+    public string Info { get; set; } = string.Empty;
+    
     [Parameter]
     [EditorRequired]
     public IEnumerable<TModel> Models { get; set; } = default!;
@@ -49,11 +83,125 @@
     public RenderFragment? ToolbarButtons { get; set; }
 
     [Parameter]
-    public Pagination? Pagination { get; set; }
+    public CarbonBlazorPaginationMode PaginationMode { get; set; } = CarbonBlazorPaginationMode.Client;
 
     [Parameter]
-    public string Title { get; set; } = string.Empty;
+    public Func<int, Task<IEnumerable<TModel>>> RefreshModelsFunc { get; set; } = _ => Task.FromResult(Enumerable.Empty<TModel>());
 
     [Parameter]
-    public string Info { get; set; } = string.Empty;
+    public bool IsFilterEnabled { get; set; } = true;
+    
+    [Parameter]
+    public Func<IEnumerable<TModel>, string, IEnumerable<TModel>> FilterModelsFunc { get; set; } = (models, _) => models;
+
+    [Parameter]
+    public int TotalSize { get; set; }
+
+    [Parameter]
+    public int Offset { get; set; }
+    
+    [Parameter]
+    public int PageLimit { get; set; } = 20;
+
+    private bool IsPreviousDisabled => Offset == 0;
+    private bool IsNextDisabled => _filteredModels.Count() <= (Offset + PageLimit);
+    private bool IsFiltered => _filteredModels.Count() < TotalSize;
+    private int FirstItem => Offset + 1; 
+    private int LastItem => Math.Clamp(Offset + PageLimit, 0, _filteredModels.Count());
+
+    public void RefreshData(IEnumerable<TModel> models, int size, int offset, int pageLimit)
+    {
+        Models = models;
+        TotalSize = size;
+        Offset = offset;
+        PageLimit = pageLimit;
+        
+        _filteredModels = Models;
+
+        PageModels();
+    }
+
+    private void OnSearchTextChanged(string searchText)
+    {
+        FilterModels(searchText);
+        
+        PageModels();
+    }
+    
+    public async Task FirstCallback()
+    {
+        Offset = 0;
+        
+        if (PaginationMode == CarbonBlazorPaginationMode.Server)
+        {
+            Models = await RefreshModelsFunc.Invoke(Offset);
+            _filteredModels = Models;
+        }
+        
+        PageModels();
+    }
+
+    public async Task PreviousCallback()
+    {
+        int filteredSize = _filteredModels.Count();
+
+        Offset = Math.Clamp(Offset - PageLimit, 0, filteredSize);
+        
+        if (PaginationMode == CarbonBlazorPaginationMode.Server)
+        {
+            Models = await RefreshModelsFunc.Invoke(Offset);
+            _filteredModels = Models;
+        }
+        
+        PageModels();
+    }
+
+    public async Task NextCallback()
+    {
+        int filteredSize = _filteredModels.Count();
+
+        Offset = Math.Clamp(Offset + PageLimit, 0, filteredSize);
+        
+        if (PaginationMode == CarbonBlazorPaginationMode.Server)
+        {
+            Models = await RefreshModelsFunc.Invoke(Offset);
+            _filteredModels = Models;
+        }
+        
+        PageModels();
+    }
+
+    public async Task LastCallback()
+    {
+        int filteredSize = _filteredModels.Count();
+
+        int finalPageSize = filteredSize % PageLimit;
+
+        if (finalPageSize == 0)
+        {
+            finalPageSize = PageLimit;
+        }
+        
+        Offset = Math.Clamp(filteredSize - finalPageSize, 0, filteredSize);
+        
+        if (PaginationMode == CarbonBlazorPaginationMode.Server)
+        {
+            Models = await RefreshModelsFunc.Invoke(Offset);
+            _filteredModels = Models;
+        }
+        
+        PageModels();
+    }
+
+    private void FilterModels(string searchText)
+    {
+        _filteredModels = string.IsNullOrWhiteSpace(searchText) ? Models : FilterModelsFunc.Invoke(Models, searchText);
+    }
+
+    private void PageModels()
+    {
+        _filteredAndPagedModels = PaginationMode == CarbonBlazorPaginationMode.Server
+            ? _filteredModels
+            : _filteredModels.Skip(Offset).Take(PageLimit);
+    }
 }

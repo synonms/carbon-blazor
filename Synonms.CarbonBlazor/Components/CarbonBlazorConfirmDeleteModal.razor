@@ -1,0 +1,43 @@
+﻿@using Synonms.CarbonBlazor.Enumerations
+@typeparam TResource where TResource: Synonms.RestEasy.Core.Schema.Resources.Resource
+
+<CarbonBlazorModal Label="@Label" Title="@Title" Size="CarbonBlazorModalSize.Small" @bind-IsVisible="@IsVisible">
+    <CarbonBlazorText Type="CarbonBlazorTextType.Body01">You are about to delete resource Id @(Resource.Id) - are you sure you want to continue?</CarbonBlazorText>
+    <CarbonBlazorButtonSet>
+        <CarbonBlazorButton Type="CarbonBlazorButtonType.Button" Kind="CarbonBlazorButtonKind.Secondary" Display="CarbonBlazorButtonDisplay.TextOnly" Text="Cancel" Size="CarbonBlazorButtonSize.ExtraLarge" Style="width:50%;" OnClick="@CancelDeleteCallback"></CarbonBlazorButton>
+        <CarbonBlazorButton Type="CarbonBlazorButtonType.Button" Kind="CarbonBlazorButtonKind.Danger" Display="CarbonBlazorButtonDisplay.TextOnly" Text="Delete" Size="CarbonBlazorButtonSize.ExtraLarge" Style="width:50%;" OnClick="@ConfirmDeleteCallback"></CarbonBlazorButton>
+    </CarbonBlazorButtonSet>
+</CarbonBlazorModal>
+
+@code {
+    [Parameter] 
+    [EditorRequired] 
+    public TResource Resource { get; set; } = null!;
+    
+    [Parameter]
+    public string Label { get; set; } = string.Empty;
+
+    [Parameter]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter]
+    [EditorRequired]
+    public EventCallback CancelDeleteCallback { get; set; }
+    
+    [Parameter]
+    [EditorRequired]
+    public EventCallback ConfirmDeleteCallback { get; set; }
+    
+    [Parameter]
+    public bool IsVisible { get; set; } = false;
+    
+    public void Show()
+    {
+        IsVisible = true;
+    }
+
+    public void Hide()
+    {
+        IsVisible = false;
+    }
+}

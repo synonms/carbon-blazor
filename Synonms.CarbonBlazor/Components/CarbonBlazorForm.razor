@@ -1,9 +1,22 @@
 ﻿@using Microsoft.AspNetCore.Components.Forms
+@using Synonms.CarbonBlazor.Enumerations
 
 @typeparam TModel
 
 <EditForm class="cb-form" EditContext="@_editContext" OnValidSubmit="@OnValidSubmit" FormName="@FormName">
     @ChildContent
+
+    <CarbonBlazorButtonSet>
+        <CarbonBlazorButton Type="CarbonBlazorButtonType.Button" Kind="CarbonBlazorButtonKind.Secondary" Display="CarbonBlazorButtonDisplay.TextOnly" Text="Cancel" Size="CarbonBlazorButtonSize.ExtraLarge" Style="width:50%;" OnClick="@(() => CancelCallback.InvokeAsync(Model))"></CarbonBlazorButton>
+        @if (IsReadOnly)
+        {
+            <CarbonBlazorButton Type="CarbonBlazorButtonType.Button" Kind="CarbonBlazorButtonKind.Primary" Display="CarbonBlazorButtonDisplay.TextOnly" Text="Edit" Size="CarbonBlazorButtonSize.ExtraLarge" Style="width:50%;" OnClick="@(() => EditCallback.InvokeAsync(Model))"></CarbonBlazorButton>
+        }
+        else
+        {
+            <CarbonBlazorButton Type="CarbonBlazorButtonType.Submit" Kind="CarbonBlazorButtonKind.Primary" Display="CarbonBlazorButtonDisplay.TextOnly" Text="Save" Size="CarbonBlazorButtonSize.ExtraLarge" Style="width:50%;"></CarbonBlazorButton>
+        }
+    </CarbonBlazorButtonSet>
 </EditForm>
 
 @code {
@@ -22,7 +35,16 @@
     public Action<ValidationMessageStore, TModel>? ValidateAction { get; set; }
 
     [Parameter]
+    public EventCallback<TModel> CancelCallback { get; set; } = EventCallback<TModel>.Empty;
+
+    [Parameter]
+    public EventCallback<TModel> EditCallback { get; set; } = EventCallback<TModel>.Empty;
+
+    [Parameter]
     public EventCallback<TModel> ValidSubmitCallback { get; set; } = EventCallback<TModel>.Empty;
+
+    [Parameter]
+    public bool IsReadOnly { get; set; } = false;
 
     private EditContext _editContext = null!;
     private ValidationMessageStore _validationMessageStore = null!;
