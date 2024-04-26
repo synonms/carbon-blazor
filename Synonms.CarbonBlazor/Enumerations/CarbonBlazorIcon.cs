@@ -9,6 +9,7 @@ public enum CarbonBlazorIcon
     Apps,
     Building,
     Cancel,
+    CheckmarkFilled,
     ChevronDown,
     ChevronLeft,
     ChevronRight,
@@ -17,8 +18,10 @@ public enum CarbonBlazorIcon
     Database,
     Edit,
     Enterprise,
+    ErrorFilled,
     Group,
     Gui,
+    InformationFilled,
     Login,
     Menu,
     Password,
@@ -36,7 +39,8 @@ public enum CarbonBlazorIcon
     UserMultiple,
     UserProfile,
     UserRole,
-    View
+    View,
+    WarningFilled
 }
 
 public static class CarbonBlazorIconMapper
@@ -49,6 +53,7 @@ public static class CarbonBlazorIconMapper
             CarbonBlazorIcon.Apps => IconSvgTags.Apps,
             CarbonBlazorIcon.Building => IconSvgTags.Building,
             CarbonBlazorIcon.Cancel => IconSvgTags.Cancel,
+            CarbonBlazorIcon.CheckmarkFilled => IconSvgTags.CheckmarkFilled,
             CarbonBlazorIcon.ChevronDown => IconSvgTags.ChevronDown,
             CarbonBlazorIcon.ChevronLeft => IconSvgTags.ChevronLeft,
             CarbonBlazorIcon.ChevronRight => IconSvgTags.ChevronRight,
@@ -57,8 +62,10 @@ public static class CarbonBlazorIconMapper
             CarbonBlazorIcon.Database => IconSvgTags.Database,
             CarbonBlazorIcon.Edit => IconSvgTags.Edit,
             CarbonBlazorIcon.Enterprise => IconSvgTags.Enterprise,
+            CarbonBlazorIcon.ErrorFilled => IconSvgTags.ErrorFilled,
             CarbonBlazorIcon.Group => IconSvgTags.Group,
             CarbonBlazorIcon.Gui => IconSvgTags.Gui,
+            CarbonBlazorIcon.InformationFilled => IconSvgTags.InformationFilled,
             CarbonBlazorIcon.Login => IconSvgTags.Login,
             CarbonBlazorIcon.Menu => IconSvgTags.Menu,
             CarbonBlazorIcon.Password => IconSvgTags.Password,
@@ -77,6 +84,7 @@ public static class CarbonBlazorIconMapper
             CarbonBlazorIcon.UserProfile => IconSvgTags.UserProfile,
             CarbonBlazorIcon.UserRole => IconSvgTags.UserRole,
             CarbonBlazorIcon.View => IconSvgTags.View,
+            CarbonBlazorIcon.WarningFilled => IconSvgTags.WarningFilled,
             _ => string.Empty
         }
         + IconSvgTags.ClosingTag;

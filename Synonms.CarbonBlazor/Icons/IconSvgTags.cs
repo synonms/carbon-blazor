@@ -3,7 +3,7 @@
 public static class IconSvgTags
 {
     public static string OpeningTag(int sizeInPixels) =>
-        "<svg focusable=\"false\" preserveAspectRatio=\"xMidYMid meet\" fill=\"currentColor\" aria-label=\"Icon\" aria-hidden=\"true\" viewBox=\"0 0 32 32\" width=\"" + sizeInPixels + "px\" height=\"" + sizeInPixels + "px\" role=\"img\" class=\"cb-btn-icon\" xmlns=\"http://www.w3.org/2000/svg\">";
+        "<svg focusable=\"false\" preserveAspectRatio=\"xMidYMid meet\" aria-label=\"Icon\" aria-hidden=\"true\" viewBox=\"0 0 32 32\" width=\"" + sizeInPixels + "px\" height=\"" + sizeInPixels + "px\" role=\"img\" xmlns=\"http://www.w3.org/2000/svg\">";
 
     public const string ClosingTag =
         "</svg>";
@@ -19,6 +19,9 @@ public static class IconSvgTags
     
     public const string Cancel =
         "<title>cancel</title><path d=\"M17.4141 16L24 9.4141 22.5859 8 16 14.5859 9.4143 8 8 9.4141 14.5859 16 8 22.5859 9.4143 24 16 17.4141 22.5859 24 24 22.5859 17.4141 16z\"></path>";
+
+    public const string CheckmarkFilled =
+        "<title>checkmark--filled</title><path d=\"M16,2A14,14,0,1,0,30,16,14,14,0,0,0,16,2ZM14,21.5908l-5-5L10.5906,15,14,18.4092,21.41,11l1.5957,1.5859Z\"/>";
 
     public const string ChevronDown =
         "<title>chevron--down</title><polygon points=\"16,22 6,12 7.4,10.6 16,19.2 24.6,10.6 26,12 \"/>";
@@ -44,12 +47,18 @@ public static class IconSvgTags
     public const string Enterprise =
         "<title>enterprise</title><rect x=\"8\" y=\"8\" width=\"2\" height=\"4\"/><rect x=\"8\" y=\"14\" width=\"2\" height=\"4\"/><rect x=\"14\" y=\"8\" width=\"2\" height=\"4\"/><rect x=\"14\" y=\"14\" width=\"2\" height=\"4\"/><rect x=\"8\" y=\"20\" width=\"2\" height=\"4\"/><rect x=\"14\" y=\"20\" width=\"2\" height=\"4\"/><path d=\"M30,14a2,2,0,0,0-2-2H22V4a2,2,0,0,0-2-2H4A2,2,0,0,0,2,4V30H30ZM4,4H20V28H4ZM22,28V14h6V28Z\"/>";
     
+    public const string ErrorFilled =
+        "<title>error--filled</title><rect id=\"inner-path\" class=\"cls-1\" x=\"14.9004\" y=\"7.2004\" width=\"2.1996\" height=\"17.5994\" transform=\"translate(-6.6275 16.0001) rotate(-45)\"/><path d=\"M16,2A13.914,13.914,0,0,0,2,16,13.914,13.914,0,0,0,16,30,13.914,13.914,0,0,0,30,16,13.914,13.914,0,0,0,16,2Zm5.4449,21L9,10.5557,10.5557,9,23,21.4448Z\"/>";
+
     public const string Group =
         "<title>group</title><path d=\"M31,30H29V27a3,3,0,0,0-3-3H22a3,3,0,0,0-3,3v3H17V27a5,5,0,0,1,5-5h4a5,5,0,0,1,5,5Z\" transform=\"translate(0)\"/><path d=\"M24,12a3,3,0,1,1-3,3,3,3,0,0,1,3-3m0-2a5,5,0,1,0,5,5A5,5,0,0,0,24,10Z\" transform=\"translate(0)\"/><path d=\"M15,22H13V19a3,3,0,0,0-3-3H6a3,3,0,0,0-3,3v3H1V19a5,5,0,0,1,5-5h4a5,5,0,0,1,5,5Z\" transform=\"translate(0)\"/><path d=\"M8,4A3,3,0,1,1,5,7,3,3,0,0,1,8,4M8,2a5,5,0,1,0,5,5A5,5,0,0,0,8,2Z\" transform=\"translate(0)\"/>";
 
     public const string Gui =
-        "<circle cx=\"20\" cy=\"8\" r=\"1\"/><circle cx=\"23\" cy=\"8\" r=\"1\"/><circle cx=\"26\" cy=\"8\" r=\"1\"/><path d=\"M28,4H4A2.0023,2.0023,0,0,0,2,6V26a2.0023,2.0023,0,0,0,2,2H28a2.0023,2.0023,0,0,0,2-2V6A2.0023,2.0023,0,0,0,28,4Zm0,2v4H4V6ZM4,12h6V26H4Zm8,14V12H28V26Z\" transform=\"translate(0 0)\"/>";
+        "<title>gui</title><circle cx=\"20\" cy=\"8\" r=\"1\"/><circle cx=\"23\" cy=\"8\" r=\"1\"/><circle cx=\"26\" cy=\"8\" r=\"1\"/><path d=\"M28,4H4A2.0023,2.0023,0,0,0,2,6V26a2.0023,2.0023,0,0,0,2,2H28a2.0023,2.0023,0,0,0,2-2V6A2.0023,2.0023,0,0,0,28,4Zm0,2v4H4V6ZM4,12h6V26H4Zm8,14V12H28V26Z\" transform=\"translate(0 0)\"/>";
     
+    public const string InformationFilled =
+        "<title>information--filled</title><path id=\"inner-path\" class=\"cls-1\" d=\"M16,8a1.5,1.5,0,1,1-1.5,1.5A1.5,1.5,0,0,1,16,8Zm4,13.875H17.125v-8H13v2.25h1.875v5.75H12v2.25h8Z\" transform=\"translate(0 0)\"/><path d=\"M16,2A14,14,0,1,0,30,16,14,14,0,0,0,16,2Zm0,6a1.5,1.5,0,1,1-1.5,1.5A1.5,1.5,0,0,1,16,8Zm4,16.125H12v-2.25h2.875v-5.75H13v-2.25h4.125v8H20Z\" transform=\"translate(0 0)\"/>";
+
     public const string Login =
         "<title>login</title><path d=\"M26,30H14a2,2,0,0,1-2-2V25h2v3H26V4H14V7H12V4a2,2,0,0,1,2-2H26a2,2,0,0,1,2,2V28A2,2,0,0,1,26,30Z\"/><polygon points=\"14.59 20.59 18.17 17 4 17 4 15 18.17 15 14.59 11.41 16 10 22 16 16 22 14.59 20.59\"/>";
     
@@ -103,4 +112,7 @@ public static class IconSvgTags
 
     public const string View =
         "<title>view</title><path d=\"M30.94,15.66A16.69,16.69,0,0,0,16,5,16.69,16.69,0,0,0,1.06,15.66a1,1,0,0,0,0,.68A16.69,16.69,0,0,0,16,27,16.69,16.69,0,0,0,30.94,16.34,1,1,0,0,0,30.94,15.66ZM16,25c-5.3,0-10.9-3.93-12.93-9C5.1,10.93,10.7,7,16,7s10.9,3.93,12.93,9C26.9,21.07,21.3,25,16,25Z\" transform=\"translate(0 0)\"/><path d=\"M16,10a6,6,0,1,0,6,6A6,6,0,0,0,16,10Zm0,10a4,4,0,1,1,4-4A4,4,0,0,1,16,20Z\" transform=\"translate(0 0)\"/>";
+    
+    public const string WarningFilled =
+        "<path id=\"Compound_Path\" d=\"M16,2C8.3,2,2,8.3,2,16s6.3,14,14,14s14-6.3,14-14C30,8.3,23.7,2,16,2z M14.9,8h2.2v11h-2.2V8z M16,25 c-0.8,0-1.5-0.7-1.5-1.5S15.2,22,16,22c0.8,0,1.5,0.7,1.5,1.5S16.8,25,16,25z\"/><path id=\"inner-path\" class=\"st1\" d=\"M17.5,23.5c0,0.8-0.7,1.5-1.5,1.5c-0.8,0-1.5-0.7-1.5-1.5S15.2,22,16,22 C16.8,22,17.5,22.7,17.5,23.5z M17.1,8h-2.2v11h2.2V8z\"/>";
 }

@@ -1,0 +1,98 @@
+﻿.cb-toast {
+    width: 18rem;
+    height: min-content;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: flex-start;
+    justify-content: stretch;
+}
+.cb-toast.collapsed {
+    max-height: 0;
+    overflow: hidden;
+}
+.cb-toast.low-contrast {
+    color: var(--cb-text-primary);
+}
+.cb-toast.high-contrast {
+    color: var(--cb-text-inverse);
+    background-color: var(--cb-background-inverse);
+}
+.cb-toast.information {
+    border-left: 3px solid var(--cb-support-info-inverse)
+}
+.cb-toast.information.low-contrast {
+    background-color: var(--cb-notification-background-info);
+}
+.cb-toast.success {
+    border-left: 3px solid var(--cb-support-success-inverse)
+}
+.cb-toast.success.low-contrast {
+    background-color: var(--cb-notification-background-success);
+}
+.cb-toast.warning {
+    border-left: 3px solid var(--cb-support-warning-inverse)
+}
+.cb-toast.warning.low-contrast {
+    background-color: var(--cb-notification-background-warning);
+}
+.cb-toast.error {
+    border-left: 3px solid var(--cb-support-error-inverse)
+}
+.cb-toast.error.low-contrast {
+    background-color: var(--cb-notification-background-error);
+}
+
+
+.cb-toast-icon {
+    width: 3rem;
+    height: 3rem;
+    align-content: center;
+    background-color: transparent;
+    display: inline-block;
+    text-align: center;
+}
+.cb-toast.information .cb-toast-icon {
+    fill: var(--cb-support-info-inverse);
+}
+.cb-toast.success .cb-toast-icon {
+    fill: var(--cb-support-success-inverse)
+}
+.cb-toast.warning .cb-toast-icon {
+    fill: var(--cb-support-warning-inverse)
+}
+.cb-toast.error .cb-toast-icon {
+    fill: var(--cb-support-error-inverse)
+}
+
+
+.cb-toast-content-wrapper {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding-top: 1rem;
+    padding-bottom: 1.5rem;
+}
+
+
+.cb-toast-close-button {
+    width: 3rem;
+    height: 3rem;
+    align-content: center;
+    background-color: transparent;
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+    border: 0;
+}
+.cb-toast.low-contrast .cb-toast-close-button {
+    fill: var(--cb-text-primary);
+}
+.cb-toast.high-contrast .cb-toast-close-button {
+    fill: var(--cb-text-inverse);
+}
+
+
+

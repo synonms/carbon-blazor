@@ -1,0 +1,27 @@
+﻿@using Synonms.CarbonBlazor.Infrastructure
+@using Synonms.CarbonBlazor.Models
+
+<div class="cb-toast-queue">
+    @foreach (Notification notification in NotificationBroker.Notifications)
+    {
+        <CarbonBlazorToast Notification="@notification"></CarbonBlazorToast>
+    }
+</div>
+
+@code {
+
+    [Inject]
+    public INotificationBroker NotificationBroker { get; set; } = null!;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        NotificationBroker.NotificationsUpdated += NotificationsUpdated;
+    }
+
+    private void NotificationsUpdated(object? sender, EventArgs args)
+    {
+        StateHasChanged();
+    }
+}
