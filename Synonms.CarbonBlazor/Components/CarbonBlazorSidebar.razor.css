@@ -1,0 +1,23 @@
+﻿.cb-sidebar {
+    align-items: flex-start;
+    background-color: var(--cb-background);
+    color: var(--cb-color-text-secondary,#525252);
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    grid-area: sidebar;
+    height: 100%;
+    justify-content: flex-start;
+    padding: 1rem 0;
+    transition: all .1s;
+    width: 16rem;
+    z-index: 2;
+}
+.cb-sidebar.collapsed {
+    max-width: 0;
+    overflow: hidden;
+}
+
+.cb-sidebar ul {
+width: 100%;
+}

@@ -1,0 +1,8 @@
+﻿.cb-header-action-panel-divider {
+    border-bottom: 1px solid var(--cb-border-subtle);
+    height: 1px;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.25rem;
+}

@@ -1,0 +1,82 @@
+﻿ul.cb-sidebar-submenu {
+    
+}
+
+li.cb-sidebar-submenu {
+    align-items: center;
+    border: 1px solid transparent;
+    background-color: transparent;
+    color: var(--cb-text-secondary);
+    cursor: pointer;
+    display: flex;
+    gap: 1.5rem;
+    height: 2rem;
+    fill: var(--cb-icon-secondary);
+    font-size: var(--cb-heading-compact-01-font-size);
+    font-weight: var(--cb-heading-compact-01-font-weight);
+    justify-content: stretch;
+    letter-spacing: var(--cb-heading-compact-01-letter-spacing);
+    line-height: var(--cb-heading-compact-01-line-height);
+    overflow: hidden;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+li.cb-sidebar-submenu:hover {
+    background-color: var(--cb-background-hover);
+    color: var(--cb-text-primary);
+    fill: var(--cb-icon-primary);
+}
+li.cb-sidebar-submenu:focus {
+    border-color: var(--cb-focus);
+}
+li.cb-sidebar-submenu:active {
+    background-color: var(--cb-background-active);
+    color: var(--cb-text-primary);
+    fill: var(--cb-icon-primary);
+}
+
+.cb-sidebar-submenu-item {
+    border: 0;
+    background-color: transparent;
+    color: var(--cb-text-secondary);
+    fill: var(--cb-icon-secondary);
+    font-size: var(--cb-body-compact-01-font-size);
+    font-weight: var(--cb-body-compact-01-font-weight);
+    height: 2rem;
+    letter-spacing: var(--cb-body-compact-01-letter-spacing);
+    line-height: var(--cb-body-compact-01-line-height);
+    overflow: hidden;
+    padding-left: 1rem;
+}
+ul.cb-sidebar-submenu.collapsed .cb-sidebar-submenu-item {
+    height: 0;
+}
+
+.cb-sidebar-submenu-item a {
+    align-items: center;
+    color: inherit;
+    display: flex;
+    gap: 1rem;
+    min-block-size: 2rem;
+    outline: 2px solid transparent;
+    outline-offset: -2px;
+    position: relative;
+    padding-left: 1rem;
+    padding-right: 4rem;
+    text-decoration: none;
+    transition: color 110ms, background-color 110ms, outline 110ms;
+}
+
+.cb-sidebar-submenu-item:hover {
+    background-color: var(--cb-background-hover);
+    color: var(--cb-text-primary);
+    fill: var(--cb-icon-primary);
+}
+.cb-sidebar-submenu-item:focus {
+    border: 1px solid var(--cb-focus);
+}
+.cb-sidebar-submenu-item:active {
+    background-color: var(--cb-background-active);
+    color: var(--cb-text-primary);
+    fill: var(--cb-icon-primary);
+}

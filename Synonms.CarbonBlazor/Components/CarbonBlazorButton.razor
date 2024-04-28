@@ -47,14 +47,14 @@
     
     private string GetClass()
     {
-        const string baseClass = CssClasses.Prefix + "btn";
+        const string baseClass = CssClasses.Prefix + "button";
         string kindClass = CarbonBlazorButtonKindMapper.ToClass(Kind);
         string displayClass = CarbonBlazorButtonDisplayMapper.ToClass(Display);
-        string sizeClass = Kind == CarbonBlazorButtonKind.Header ? CssClasses.Prefix + "btn-l" : CarbonBlazorButtonSizeMapper.ToClass(Size);
+        string sizeClass = CarbonBlazorButtonSizeMapper.ToClass(Size);
 
         return CssClasses.Concatenate(baseClass, kindClass, displayClass, sizeClass);
     }
 
     private MarkupString GetIcon() => 
-        (MarkupString)CarbonBlazorIconMapper.ToSvg(IsToggled ? ToggledIcon : Icon, Kind == CarbonBlazorButtonKind.Header ? 20 : 16);
+        (MarkupString)CarbonBlazorIconMapper.ToSvg(IsToggled ? ToggledIcon : Icon, Size == CarbonBlazorButtonSize.LargeExpressive ? 20 : 16);
 }

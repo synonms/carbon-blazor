@@ -11,10 +11,11 @@ public class NotificationBroker : INotificationBroker
 
     public IEnumerable<Notification> Notifications => _notifications;
 
-    public void Send(string title, string message, CarbonBlazorNotificationLevel level = CarbonBlazorNotificationLevel.Information, int lifetimeInMs = 5000)
+    public void Send(string title, string message, CarbonBlazorNotificationStyle style = CarbonBlazorNotificationStyle.HighContrast, CarbonBlazorNotificationLevel level = CarbonBlazorNotificationLevel.Information, int lifetimeInMs = 5000)
     {
         Notification notification = new(title, message, lifetimeInMs)
         {
+            Style = style,
             Level = level
         };
 
@@ -33,6 +34,8 @@ public class NotificationBroker : INotificationBroker
     private void Remove(Notification notification)
     {
         _notifications.Remove(notification);
+        
+        notification.Dispose();
         
         NotificationsUpdated?.Invoke(this, EventArgs.Empty);
     }

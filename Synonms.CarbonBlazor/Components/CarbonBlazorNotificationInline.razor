@@ -1,0 +1,69 @@
+﻿@using Synonms.CarbonBlazor.Css
+@using Synonms.CarbonBlazor.Enumerations
+@using Synonms.CarbonBlazor.Models
+
+@if (_notification is not null)
+{
+    <div class="@GetClass()">
+        <div class="cb-notification-inline-icon">
+            @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorNotificationLevelMapper.ToIcon(_notification.Level), 20))
+        </div>
+        <div class="cb-notification-inline-content-wrapper">
+            <CarbonBlazorText Type="CarbonBlazorTextType.HeadingCompact01">@_notification.Title</CarbonBlazorText>
+            <CarbonBlazorText Type="CarbonBlazorTextType.BodyCompact01">@_notification.Message</CarbonBlazorText>
+        </div>
+        <button class="cb-notification-inline-close-button" type="button" onclick="@(() => Hide())">
+            @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.Cancel, 20))
+        </button>
+    </div>
+}
+
+@code {
+    private Notification? _notification;
+
+    public void Notify(string title, string message, CarbonBlazorNotificationStyle style = CarbonBlazorNotificationStyle.LowContrast, CarbonBlazorNotificationLevel level = CarbonBlazorNotificationLevel.Information, int lifetimeInMs = 5000)
+    {
+        Notification notification = new(title, message, lifetimeInMs)
+        {
+            Style = style,
+            Level = level
+        };
+
+        Notify(notification);
+    }
+
+    public void Notify(Notification notification)
+    {
+        notification.OnExpired = Clear;
+        
+        _notification = notification;
+        
+        StateHasChanged();
+    }
+
+    private void Clear(Notification notification)
+    {
+        _notification = null;
+        
+        notification.Dispose();
+        
+        StateHasChanged();
+    }
+    
+    private void Hide()
+    {
+        if (_notification is not null)
+        {
+            Clear(_notification);
+        }
+    }
+
+    private string GetClass()
+    {
+        const string baseClass = CssClasses.Prefix + "notification-inline";
+        string levelClass = _notification is not null ? CarbonBlazorNotificationLevelMapper.ToClass(_notification.Level) : string.Empty;
+        string styleClass = _notification is not null ? CarbonBlazorNotificationStyleMapper.ToClass(_notification.Style) : string.Empty;
+
+        return CssClasses.Concatenate(baseClass, levelClass, styleClass);
+    }
+}

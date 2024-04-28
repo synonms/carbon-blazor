@@ -1,6 +1,4 @@
-﻿using Synonms.CarbonBlazor.Css;
-
-namespace Synonms.CarbonBlazor.Enumerations;
+﻿namespace Synonms.CarbonBlazor.Enumerations;
 
 public enum CarbonBlazorButtonKind
 {
@@ -11,25 +9,19 @@ public enum CarbonBlazorButtonKind
     DangerTertiary,
     DangerGhost,
     Ghost,
-    Header,
-    Input,
-    Body
 }
 
 public static class CarbonBlazorButtonKindMapper
 {
     public static string ToClass(CarbonBlazorButtonKind buttonKind) => buttonKind switch
     {
-        CarbonBlazorButtonKind.Primary => CssClasses.Prefix + "btn-primary",
-        CarbonBlazorButtonKind.Secondary => CssClasses.Prefix + "btn-secondary",
-        CarbonBlazorButtonKind.Tertiary => CssClasses.Prefix + "btn-tertiary",
-        CarbonBlazorButtonKind.Danger => CssClasses.Prefix + "btn-danger",
-        CarbonBlazorButtonKind.DangerTertiary => CssClasses.Prefix + "btn-danger-tertiary",
-        CarbonBlazorButtonKind.DangerGhost => CssClasses.Prefix + "btn-danger-ghost",
-        CarbonBlazorButtonKind.Ghost => CssClasses.Prefix + "btn-ghost",
-        CarbonBlazorButtonKind.Header => CssClasses.Prefix + "btn-header",
-        CarbonBlazorButtonKind.Input => CssClasses.Prefix + "btn-input",
-        CarbonBlazorButtonKind.Body => CssClasses.Prefix + "btn-body",
+        CarbonBlazorButtonKind.Primary => "primary",
+        CarbonBlazorButtonKind.Secondary => "secondary",
+        CarbonBlazorButtonKind.Tertiary => "tertiary",
+        CarbonBlazorButtonKind.Danger => "danger",
+        CarbonBlazorButtonKind.Ghost => "ghost",
+        CarbonBlazorButtonKind.DangerTertiary => "danger-tertiary",
+        CarbonBlazorButtonKind.DangerGhost => "danger-ghost",
         _ => string.Empty
     };
 }

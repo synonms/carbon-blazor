@@ -1,0 +1,21 @@
+﻿@using Synonms.CarbonBlazor.Enumerations
+@using Synonms.CarbonBlazor.Models
+
+<li class="cb-sidebar-link">
+    <a href="@NavigationItem.Href" onclick="@OnClick">
+        @if (NavigationItem.Icon is not null)
+        {
+            @((MarkupString)CarbonBlazorIconMapper.ToSvg(NavigationItem.Icon.Value))
+        }
+        @NavigationItem.Text
+    </a>
+</li>
+
+@code {
+    [Parameter]
+    [EditorRequired]
+    public NavigationItem NavigationItem { get; set; } = null!;
+    
+    [Parameter]
+    public EventCallback OnClick { get; set; } = EventCallback.Empty;
+}

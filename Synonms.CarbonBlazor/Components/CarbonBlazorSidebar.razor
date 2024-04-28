@@ -1,0 +1,12 @@
+﻿<nav class="cb-sidebar @(IsExpanded ? "" : "collapsed")">
+    <ul>
+        @ChildContent
+    </ul>
+</nav>
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = null!;
+
+    public bool IsExpanded { get; set; } = true;
+}

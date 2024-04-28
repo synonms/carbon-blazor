@@ -1,6 +1,4 @@
-﻿using Synonms.CarbonBlazor.Css;
-
-namespace Synonms.CarbonBlazor.Enumerations;
+﻿namespace Synonms.CarbonBlazor.Enumerations;
 
 public enum CarbonBlazorButtonDisplay
 {
@@ -13,9 +11,9 @@ public static class CarbonBlazorButtonDisplayMapper
 {
     public static string ToClass(CarbonBlazorButtonDisplay display) => display switch
     {
-        CarbonBlazorButtonDisplay.TextAndIcon => CssClasses.Prefix + "btn-text-and-icon",
-        CarbonBlazorButtonDisplay.IconOnly => CssClasses.Prefix + "btn-icon-only",
-        CarbonBlazorButtonDisplay.TextOnly => CssClasses.Prefix + "btn-text-only",
+        CarbonBlazorButtonDisplay.TextOnly => "text",
+        CarbonBlazorButtonDisplay.TextAndIcon => "text-icon",
+        CarbonBlazorButtonDisplay.IconOnly => "icon",
         _ => string.Empty
     };
 }

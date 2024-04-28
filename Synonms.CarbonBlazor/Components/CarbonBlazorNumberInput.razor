@@ -18,8 +18,8 @@
 
     <div class="cb-input-wrapper">
         <input class="cb-input cb-number-input @CssClass" aria-invalid="false" id="@Id" min="@Min" max="@Max" pattern="[0-9]*" step="@Step" type="number" @bind="@CurrentValue">
-        <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Input" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.Subtract" OnClick="@Decrement"></CarbonBlazorButton>
-        <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Input" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.Add" OnClick="@Increment"></CarbonBlazorButton>
+        <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.IconOnly" Size="CarbonBlazorButtonSize.LargeProductive" Icon="CarbonBlazorIcon.Subtract" OnClick="@Decrement"></CarbonBlazorButton>
+        <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.IconOnly" Size="CarbonBlazorButtonSize.LargeProductive" Icon="CarbonBlazorIcon.Add" OnClick="@Increment"></CarbonBlazorButton>
     </div>
 
     <ValidationMessage For="@ValidationFor"/>

@@ -9,7 +9,7 @@ public interface INotificationBroker
         
     IEnumerable<Notification> Notifications { get; }
 
-    void Send(string title, string message, CarbonBlazorNotificationLevel level = CarbonBlazorNotificationLevel.Information, int lifetimeInMs = 5000);
+    void Send(string title, string message, CarbonBlazorNotificationStyle style = CarbonBlazorNotificationStyle.LowContrast, CarbonBlazorNotificationLevel level = CarbonBlazorNotificationLevel.Information, int lifetimeInMs = 5000);
 
     void Send(Notification notification);
 }

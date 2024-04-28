@@ -1,32 +1,33 @@
 ﻿@using Synonms.CarbonBlazor.Enumerations
+
 <header class="cb-header">
     <CarbonBlazorStack FlexDirection="FlexDirection.Row" JustifyContent="JustifyContent.Start" AlignItems="AlignItems.Center" Gap="1rem">
-        <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Header" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.Menu" OnClick="@OnMenuClick"></CarbonBlazorButton>
+        <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.IconOnly" Size="CarbonBlazorButtonSize.LargeExpressive" Icon="CarbonBlazorIcon.Menu" OnClick="@OnMenuClick"></CarbonBlazorButton>
         <img class="cb-header-product-icon" alt="@ProductName Logo" src="@ProductIconImagePath" />
         <span class="cb-header-product-name">@ProductName</span>
     </CarbonBlazorStack>
     
     <CarbonBlazorStack FlexDirection="FlexDirection.Row" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center">
-        <CarbonBlazorButton @ref="@_searchButton" Kind="CarbonBlazorButtonKind.Header" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.Search" OnClick="@SearchClicked"></CarbonBlazorButton>
-        <CarbonBlazorButton @ref="@_userAvatarButton" Kind="CarbonBlazorButtonKind.Header" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.UserAvatar" OnClick="@UserAvatarClicked"></CarbonBlazorButton>
-        <CarbonBlazorButton @ref="@_switcherButton" Kind="CarbonBlazorButtonKind.Header" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.Switcher" OnClick="@SwitcherClicked"></CarbonBlazorButton>
+        <CarbonBlazorButton @ref="@_searchButton" Kind="CarbonBlazorButtonKind.Ghost" Size="CarbonBlazorButtonSize.LargeExpressive" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.Search" OnClick="@SearchClicked"></CarbonBlazorButton>
+        <CarbonBlazorButton @ref="@_userAvatarButton" Kind="CarbonBlazorButtonKind.Ghost" Size="CarbonBlazorButtonSize.LargeExpressive" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.UserAvatar" OnClick="@UserAvatarClicked"></CarbonBlazorButton>
+        <CarbonBlazorButton @ref="@_switcherButton" Kind="CarbonBlazorButtonKind.Ghost" Size="CarbonBlazorButtonSize.LargeExpressive" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.Switcher" OnClick="@SwitcherClicked"></CarbonBlazorButton>
     </CarbonBlazorStack>
 </header>
 
-<CarbonBlazorSidePanel @ref="@_userPanel" SidePanelType="CarbonBlazorSidePanelType.Right">
+<CarbonBlazorHeaderActionPanel @ref="@_userPanel">
     @UserPanel
-</CarbonBlazorSidePanel>
+</CarbonBlazorHeaderActionPanel>
 
-<CarbonBlazorSidePanel @ref="@_switcherPanel" SidePanelType="CarbonBlazorSidePanelType.Right">
+<CarbonBlazorHeaderActionPanel @ref="@_switcherPanel">
     @SwitcherPanel
-</CarbonBlazorSidePanel>
+</CarbonBlazorHeaderActionPanel>
 
 @code {
     private CarbonBlazorButton _switcherButton = null!;
     private CarbonBlazorButton _searchButton = null!;
     private CarbonBlazorButton _userAvatarButton = null!;
-    private CarbonBlazorSidePanel _switcherPanel = null!;
-    private CarbonBlazorSidePanel _userPanel = null!;
+    private CarbonBlazorHeaderActionPanel _switcherPanel = null!;
+    private CarbonBlazorHeaderActionPanel _userPanel = null!;
     
     [Parameter]
     [EditorRequired]

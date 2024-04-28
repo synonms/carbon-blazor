@@ -5,14 +5,14 @@
 @if (_isVisible)
 {
     <div class="@GetClass() @(_isVisible ? string.Empty : "collapsed")">
-        <div class="cb-toast-icon">
+        <div class="cb-notification-toast-icon">
             @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorNotificationLevelMapper.ToIcon(Notification.Level), 20))
         </div>
-        <div class="cb-toast-content-wrapper">
+        <div class="cb-notification-toast-content-wrapper">
             <CarbonBlazorText Type="CarbonBlazorTextType.HeadingCompact01">@Notification.Title</CarbonBlazorText>
             <CarbonBlazorText Type="CarbonBlazorTextType.BodyCompact01">@Notification.Message</CarbonBlazorText>
         </div>
-        <button class="cb-toast-close-button" type="button" onclick="@(() => Hide())">
+        <button class="cb-notification-toast-close-button" type="button" onclick="@(() => Hide())">
             @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.Cancel, 20))
         </button>
     </div>
@@ -32,7 +32,7 @@
 
     private string GetClass()
     {
-        const string baseClass = CssClasses.Prefix + "toast";
+        const string baseClass = CssClasses.Prefix + "notification-toast";
         string levelClass = CarbonBlazorNotificationLevelMapper.ToClass(Notification.Level);
         string styleClass = CarbonBlazorNotificationStyleMapper.ToClass(Notification.Style);
 

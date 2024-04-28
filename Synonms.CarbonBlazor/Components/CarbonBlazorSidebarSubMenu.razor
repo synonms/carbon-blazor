@@ -1,0 +1,47 @@
+﻿@using Synonms.CarbonBlazor.Enumerations
+@using Synonms.CarbonBlazor.Models
+
+<ul class="cb-sidebar-submenu @(_isExpanded ? string.Empty : "collapsed")">
+    <li class="cb-sidebar-submenu" onclick="@(() => Toggle())">
+        @if (Icon is not null)
+        {
+            @((MarkupString)CarbonBlazorIconMapper.ToSvg(Icon.Value))
+        }
+        <span style="flex: 1">@Text</span>
+        @if (_isExpanded)
+        {
+            @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.ChevronUp, 16))
+        }
+        else
+        {
+            @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.ChevronDown, 16))
+        }
+    </li>
+    
+    @foreach (NavigationItem item in SubMenuItems)
+    {
+        <li class="cb-sidebar-submenu-item">
+            <a href="@item.Href">@item.Text</a>
+        </li>
+    }
+</ul>
+
+@code {
+    private bool _isExpanded = false;
+    
+    [Parameter]
+    public CarbonBlazorIcon? Icon { get; set; }
+    
+    [Parameter]
+    [EditorRequired]
+    public string Text { get; set; } = string.Empty;
+
+    [Parameter]
+    [EditorRequired]
+    public IEnumerable<NavigationItem> SubMenuItems { get; set; } = Enumerable.Empty<NavigationItem>();
+
+    private void Toggle()
+    {
+        _isExpanded = !_isExpanded;
+    }
+}

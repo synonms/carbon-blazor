@@ -1,0 +1,14 @@
+﻿@using Synonms.CarbonBlazor.Models
+
+<li class="cb-header-action-link">
+    <a href="@NavigationItem.Href" onclick="@OnClick">@NavigationItem.Text</a>
+</li>
+
+@code {
+    [Parameter]
+    [EditorRequired]
+    public NavigationItem NavigationItem { get; set; } = null!;
+    
+    [Parameter]
+    public EventCallback OnClick { get; set; } = EventCallback.Empty;
+}

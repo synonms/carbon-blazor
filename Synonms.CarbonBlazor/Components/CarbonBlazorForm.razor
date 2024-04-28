@@ -52,8 +52,6 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-
-        Console.WriteLine("CarbonBlazorForm - Creating edit context");
         
         _editContext = new EditContext(Model!);
         _validationMessageStore = new ValidationMessageStore(_editContext);
@@ -62,8 +60,6 @@
 
     private void OnValidationRequested(object? o, ValidationRequestedEventArgs? args)
     {
-        Console.WriteLine("CarbonBlazorForm - OnValidationRequested");
-        
         _validationMessageStore.Clear();
         
         ValidateAction?.Invoke(_validationMessageStore, Model);
@@ -73,8 +69,6 @@
     
     private async Task OnValidSubmit()
     {
-        Console.WriteLine("CarbonBlazorForm - OnValidSubmit");
-
         if (ValidSubmitCallback.HasDelegate)
         {
             await ValidSubmitCallback.InvokeAsync(Model);

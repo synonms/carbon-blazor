@@ -1,4 +1,4 @@
-﻿.cb-toast-queue {
+﻿.cb-notification-toast-queue {
     display: flex;
     flex-direction: column;
     gap: var(--cb-spacing-03);

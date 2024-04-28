@@ -1,0 +1,14 @@
+﻿<nav class="cb-header-action-panel @(IsExpanded ? "" : "collapsed")">
+    <ul>
+        @ChildContent
+    </ul>
+</nav>
+
+@code {
+
+    [Parameter]
+    [EditorRequired]
+    public RenderFragment ChildContent { get; set; } = null!;
+
+    public bool IsExpanded { get; set; } = false;
+}

@@ -1,4 +1,4 @@
-﻿.cb-toast {
+﻿.cb-notification-toast {
     width: 18rem;
     height: min-content;
     padding: 0;
@@ -8,44 +8,44 @@
     align-items: flex-start;
     justify-content: stretch;
 }
-.cb-toast.collapsed {
+.cb-notification-toast.collapsed {
     max-height: 0;
     overflow: hidden;
 }
-.cb-toast.low-contrast {
+.cb-notification-toast.low-contrast {
     color: var(--cb-text-primary);
 }
-.cb-toast.high-contrast {
+.cb-notification-toast.high-contrast {
     color: var(--cb-text-inverse);
     background-color: var(--cb-background-inverse);
 }
-.cb-toast.information {
+.cb-notification-toast.information {
     border-left: 3px solid var(--cb-support-info-inverse)
 }
-.cb-toast.information.low-contrast {
+.cb-notification-toast.information.low-contrast {
     background-color: var(--cb-notification-background-info);
 }
-.cb-toast.success {
+.cb-notification-toast.success {
     border-left: 3px solid var(--cb-support-success-inverse)
 }
-.cb-toast.success.low-contrast {
+.cb-notification-toast.success.low-contrast {
     background-color: var(--cb-notification-background-success);
 }
-.cb-toast.warning {
+.cb-notification-toast.warning {
     border-left: 3px solid var(--cb-support-warning-inverse)
 }
-.cb-toast.warning.low-contrast {
+.cb-notification-toast.warning.low-contrast {
     background-color: var(--cb-notification-background-warning);
 }
-.cb-toast.error {
+.cb-notification-toast.error {
     border-left: 3px solid var(--cb-support-error-inverse)
 }
-.cb-toast.error.low-contrast {
+.cb-notification-toast.error.low-contrast {
     background-color: var(--cb-notification-background-error);
 }
 
 
-.cb-toast-icon {
+.cb-notification-toast-icon {
     width: 3rem;
     height: 3rem;
     align-content: center;
@@ -53,21 +53,21 @@
     display: inline-block;
     text-align: center;
 }
-.cb-toast.information .cb-toast-icon {
+.cb-notification-toast.information .cb-notification-toast-icon {
     fill: var(--cb-support-info-inverse);
 }
-.cb-toast.success .cb-toast-icon {
+.cb-notification-toast.success .cb-notification-toast-icon {
     fill: var(--cb-support-success-inverse)
 }
-.cb-toast.warning .cb-toast-icon {
+.cb-notification-toast.warning .cb-notification-toast-icon {
     fill: var(--cb-support-warning-inverse)
 }
-.cb-toast.error .cb-toast-icon {
+.cb-notification-toast.error .cb-notification-toast-icon {
     fill: var(--cb-support-error-inverse)
 }
 
 
-.cb-toast-content-wrapper {
+.cb-notification-toast-content-wrapper {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
@@ -77,7 +77,7 @@
 }
 
 
-.cb-toast-close-button {
+.cb-notification-toast-close-button {
     width: 3rem;
     height: 3rem;
     align-content: center;
@@ -87,10 +87,10 @@
     cursor: pointer;
     border: 0;
 }
-.cb-toast.low-contrast .cb-toast-close-button {
+.cb-notification-toast.low-contrast .cb-notification-toast-close-button {
     fill: var(--cb-text-primary);
 }
-.cb-toast.high-contrast .cb-toast-close-button {
+.cb-notification-toast.high-contrast .cb-notification-toast-close-button {
     fill: var(--cb-text-inverse);
 }
 

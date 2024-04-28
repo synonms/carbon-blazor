@@ -1,11 +1,11 @@
-﻿@using Microsoft.AspNetCore.Components.Web
+﻿@using Microsoft.AspNetCore.Components.Web <!-- Required for @onchange attribute -->
 @using Synonms.CarbonBlazor.Enumerations
 
 <div class="cb-input-wrapper cb-search-wrapper @(IsExpanded ? "" : "collapsed")">
-    <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Input" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.Search" OnClick="@OnSearchClicked"></CarbonBlazorButton>
+    <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.IconOnly" Size="CarbonBlazorButtonSize.LargeExpressive" Icon="CarbonBlazorIcon.Search" OnClick="@OnSearchClicked"></CarbonBlazorButton>
     <div class="cb-search-content-wrapper @(IsExpanded ? "" : "collapsed")">
         <input class="cb-input cb-text-input" type="text" value="@SearchText" @onchange="@((ChangeEventArgs args) => OnSearchTextChanged(args.Value?.ToString() ?? string.Empty))" placeholder="Search" disabled="@IsDisabled"/>
-        <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Input" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.Cancel" OnClick="@OnClearClicked"></CarbonBlazorButton>
+        <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.IconOnly" Size="CarbonBlazorButtonSize.LargeExpressive" Icon="CarbonBlazorIcon.Cancel" OnClick="@OnClearClicked"></CarbonBlazorButton>
     </div>
 </div>
 

@@ -1,22 +1,19 @@
-﻿@using Synonms.CarbonBlazor.Enumerations
-<div class="cb-shell">
+﻿<div class="cb-shell">
     <CarbonBlazorHeader ProductName="@ProductName" ProductIconImagePath="@ProductIconImagePath" OnMenuClick="@(() => _sidebar.IsExpanded = !_sidebar.IsExpanded)">
         <UserPanel>@UserPanel</UserPanel>
         <SwitcherPanel>@SwitcherPanel</SwitcherPanel>
     </CarbonBlazorHeader>
-    <div class="cb-content">
-        <CarbonBlazorSidePanel @ref="@_sidebar" SidePanelType="CarbonBlazorSidePanelType.Left">
-            @SideNav
-        </CarbonBlazorSidePanel>
-        <main class="cb-main">
-            @Body
-        </main>
-    </div>
-    <CarbonBlazorToastQueue></CarbonBlazorToastQueue>
+    <CarbonBlazorSidebar @ref="@_sidebar">
+        @SideNav
+    </CarbonBlazorSidebar>
+    <main class="cb-main">
+        @Body
+    </main>
+    <CarbonBlazorNotificationToastQueue></CarbonBlazorNotificationToastQueue>
 </div>
 
 @code {
-    private CarbonBlazorSidePanel _sidebar = null!;
+    private CarbonBlazorSidebar _sidebar = null!;
     
     [Parameter]
     [EditorRequired]

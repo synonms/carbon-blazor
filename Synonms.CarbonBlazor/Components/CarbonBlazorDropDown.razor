@@ -19,7 +19,7 @@
 
     <div class="cb-input-wrapper">
         <div class="cb-input" onclick="@(() => OnClicked())">@Value</div>
-        <CarbonBlazorButton @ref="@_dropDownButton" Kind="CarbonBlazorButtonKind.Input" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.ChevronDown" ToggledIcon="CarbonBlazorIcon.ChevronUp" OnClick="@OnClicked"></CarbonBlazorButton>
+        <CarbonBlazorButton @ref="@_dropDownButton" Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.IconOnly" Size="CarbonBlazorButtonSize.LargeProductive" Icon="CarbonBlazorIcon.ChevronDown" ToggledIcon="CarbonBlazorIcon.ChevronUp" OnClick="@OnClicked"></CarbonBlazorButton>
         <div class="cb-dropdown-menu @(IsMenuOpen() ? "" : "collapsed")">
             @foreach (TValue option in Options)
             {
