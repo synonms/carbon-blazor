@@ -1,7 +1,7 @@
 ﻿@using Synonms.CarbonBlazor.Enumerations
 @typeparam TResource where TResource: Synonms.RestEasy.Core.Schema.Resources.Resource
 
-<CarbonBlazorModal Label="@Label" Title="@Title" Size="CarbonBlazorModalSize.Small" @bind-IsVisible="@IsVisible">
+<CarbonBlazorModal @ref="@_modal" Label="@Label" Title="@Title" Size="CarbonBlazorModalSize.Small">
     <CarbonBlazorText Type="CarbonBlazorTextType.Body01">You are about to delete resource Id @(Resource.Id) - are you sure you want to continue?</CarbonBlazorText>
     <CarbonBlazorButtonSet>
         <CarbonBlazorButton Type="CarbonBlazorButtonType.Button" Kind="CarbonBlazorButtonKind.Secondary" Display="CarbonBlazorButtonDisplay.TextOnly" Text="Cancel" Size="CarbonBlazorButtonSize.ExtraLarge" Style="width:50%;" OnClick="@CancelDeleteCallback"></CarbonBlazorButton>
@@ -10,6 +10,8 @@
 </CarbonBlazorModal>
 
 @code {
+    private CarbonBlazorModal _modal;
+    
     [Parameter] 
     [EditorRequired] 
     public TResource Resource { get; set; } = null!;
@@ -28,16 +30,13 @@
     [EditorRequired]
     public EventCallback ConfirmDeleteCallback { get; set; }
     
-    [Parameter]
-    public bool IsVisible { get; set; } = false;
-    
     public void Show()
     {
-        IsVisible = true;
+        _modal.Show();
     }
 
     public void Hide()
     {
-        IsVisible = false;
+        _modal.Hide();
     }
 }

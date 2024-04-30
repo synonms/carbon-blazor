@@ -1,46 +1,65 @@
-﻿@using System.Linq.Expressions
-@using Microsoft.AspNetCore.Components.Forms
-@using Microsoft.AspNetCore.Components.Web
-
-@inherits InputBase<string>
+﻿@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Web <!-- Required for @bind attribute --> 
+@using Synonms.CarbonBlazor.Css
+@using Synonms.CarbonBlazor.Enumerations
+@using Synonms.CarbonBlazor.Validation
 
 <CarbonBlazorFieldSet IsDoubleColumn="@IsDoubleColumn" IsReadOnly="@IsReadOnly" IsDisabled="@IsDisabled">
-    @if (string.IsNullOrWhiteSpace(Legend) is false)
-    {
-        <legend>@Legend</legend>
-    }
     @if (string.IsNullOrWhiteSpace(Label) is false)
     {
-        <CarbonBlazorLabel For="@Id" Text="@Label"/>
+        <label for="@Id" class="cb-text-input-label" dir="ltr">@Label</label>
     }
 
-    <div class="cb-input-wrapper">
-        <input class="cb-input cb-text-input @CssClass" id="@Id" name="@Id" type="text" @bind="@CurrentValue" placeholder="@Placeholder" readonly="@IsReadOnly" disabled="@IsDisabled"/>
-        <svg focusable="false" preserveAspectRatio="xMidYMid meet" class="cb-input-error-icon" fill="#da1e28" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <div class="cb-text-input-wrapper @CarbonBlazorTextInputSizeMapper.ToClass(Size)" disabled="@IsDisabled" readonly="@IsReadOnly">
+        <input class="@GetClass()" id="@Id" name="@Id" type="text" value="@Value" @oninput="@OnValueChanged" placeholder="@Placeholder" readonly="@IsReadOnly" disabled="@IsDisabled"/>
+        <svg focusable="false" preserveAspectRatio="xMidYMid meet" class="cb-text-input-icon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+        @if (_validationMessage?.ValidationState == ValidationOutcome.ValidationState.Error)
+        {
             <path d="M8,1C4.2,1,1,4.2,1,8s3.2,7,7,7s7-3.1,7-7S11.9,1,8,1z M7.5,4h1v5h-1C7.5,9,7.5,4,7.5,4z M8,12.2 c-0.4,0-0.8-0.4-0.8-0.8s0.3-0.8,0.8-0.8c0.4,0,0.8,0.4,0.8,0.8S8.4,12.2,8,12.2z"></path>
             <path d="M7.5,4h1v5h-1C7.5,9,7.5,4,7.5,4z M8,12.2c-0.4,0-0.8-0.4-0.8-0.8s0.3-0.8,0.8-0.8 c0.4,0,0.8,0.4,0.8,0.8S8.4,12.2,8,12.2z" data-icon-path="inner-path" opacity="0"></path>
+        }
+        else
+        {
+            <path id="inner-path" fill="none" d="M16,26a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,16,26Zm-1.125-5h2.25V12h-2.25Z"/>
+            <path d="M16.002,6.1714h-.004L4.6487,27.9966,4.6506,28H27.3494l.0019-.0034ZM14.875,12h2.25v9h-2.25ZM16,26a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,16,26Z"/>
+            <path d="M29,30H3a1,1,0,0,1-.8872-1.4614l13-25a1,1,0,0,1,1.7744,0l13,25A1,1,0,0,1,29,30ZM4.6507,28H27.3493l.002-.0033L16.002,6.1714h-.004L4.6487,27.9967Z"/>
+        }
         </svg>
     </div>
     
-    <ValidationMessage For="@ValidationFor"/>
-
+    <CarbonBlazorValidationMessage @ref="@_validationMessage" FieldIdentifier="@FieldIdentifier"></CarbonBlazorValidationMessage>
+    
     @if (string.IsNullOrWhiteSpace(HelperText) is false)
     {
-        <CarbonBlazorHelperText ComponentId="@Id" Text="@HelperText"/>
+        <div id="@Id-helper-text" class="cb-text-input-helper">@HelperText</div>
     }
 </CarbonBlazorFieldSet>
 
 @code {
+    private CarbonBlazorValidationMessage? _validationMessage;
+
+    [CascadingParameter]
+    public EditContext EditContext { get; set; } = null!;
+    
+    [CascadingParameter]
+    public IEnumerable<ValidationOutcome> ValidationOutcomes { get; set; } = [];
 
     [Parameter]
     [EditorRequired]
-    public Expression<Func<string>> ValidationFor { get; set; } = null!;
+    public FieldIdentifier FieldIdentifier { get; set; } = default!;
+    
+    [Parameter]
+    [EditorRequired]
+    public string Value { get; set; } = null!;
+    
+    [Parameter]
+    public EventCallback<string> ValueChanged { get; set; }
 
     [Parameter]
     public string? Id { get; set; }
-    
+
     [Parameter]
-    public string? Legend { get; set; }
+    public CarbonBlazorTextInputSize Size { get; set; } = CarbonBlazorTextInputSize.Medium;
 
     [Parameter]
     public string? Label { get; set; }
@@ -60,10 +79,29 @@
     [Parameter]
     public bool IsDoubleColumn { get; set; } = false;
 
-    protected override bool TryParseValueFromString(string? value, out string result, out string validationErrorMessage)
+    private async Task OnValueChanged(ChangeEventArgs e)
     {
-        result = value ?? string.Empty;
-        validationErrorMessage = string.Empty;
-        return true;
+        Value = e.Value?.ToString() ?? string.Empty;
+
+        await ValueChanged.InvokeAsync(Value);
+        
+        EditContext.NotifyFieldChanged(FieldIdentifier);
+        EditContext.Validate();
+    }
+
+    private string GetClass()
+    {
+        const string baseClass = CssClasses.Prefix + "text-input";
+        string validationClass = _validationMessage is null 
+            ? string.Empty 
+            : _validationMessage.ValidationState switch
+            {
+                ValidationOutcome.ValidationState.Valid => "valid",
+                ValidationOutcome.ValidationState.Warning => "warning",
+                ValidationOutcome.ValidationState.Error => "error",
+                _ => string.Empty
+            };
+
+        return CssClasses.Concatenate(baseClass, validationClass);
     }
 }

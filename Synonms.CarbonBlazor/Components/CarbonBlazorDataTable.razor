@@ -1,7 +1,9 @@
 ﻿@using Synonms.CarbonBlazor.Enumerations
+@using Synonms.CarbonBlazor.Models
 @typeparam TModel
 
 <CarbonBlazorPane Title="@Title" Info="@Info">
+    <CarbonBlazorNotificationInline @ref="@_notification"></CarbonBlazorNotificationInline>
     <div class="cb-datatable">
         @if (ToolbarButtons is not null)
         {
@@ -30,9 +32,9 @@
         </table>
         <div class="cb-pagination">
             <div class="cb-pagination-items">
-        <span>
-            @(_filteredModels.Any() is false ? "No items" : string.Format(ItemsTemplate, FirstItem, LastItem, _filteredModels.Count()) + (IsFiltered ? string.Format(FilteredItemsTemplate, TotalSize) : string.Empty))
-        </span>
+                <span>
+                    @(_filteredModels.Any() is false ? "No items" : string.Format(ItemsTemplate, FirstItem, LastItem, _filteredModels.Count()) + (IsFiltered ? string.Format(FilteredItemsTemplate, TotalSize) : string.Empty))
+                </span>
             </div>
             <div class="cb-pagination-nav">
                 <CarbonBlazorButtonSet>
@@ -47,6 +49,7 @@
 </CarbonBlazorPane>
 
 @code {
+    private CarbonBlazorNotificationInline _notification;
     private const string ItemsTemplate = "{0}-{1} of {2} items";
     private const string FilteredItemsTemplate = " (filtered - {0} total)";
 
@@ -109,6 +112,12 @@
     private int FirstItem => Offset + 1; 
     private int LastItem => Math.Clamp(Offset + PageLimit, 0, _filteredModels.Count());
 
+    public void Notify(string title, string message, CarbonBlazorNotificationStyle style = CarbonBlazorNotificationStyle.LowContrast, CarbonBlazorNotificationLevel level = CarbonBlazorNotificationLevel.Information, int lifetimeInMs = 5000) =>
+        _notification.Notify(title, message, style, level, lifetimeInMs);
+
+    public void Notify(Notification notification) =>
+        _notification.Notify(notification);
+    
     public void RefreshData(IEnumerable<TModel> models, int size, int offset, int pageLimit)
     {
         Models = models;

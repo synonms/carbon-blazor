@@ -40,6 +40,7 @@ public enum CarbonBlazorIcon
     UserProfile,
     UserRole,
     View,
+    WarningAltFilled,
     WarningFilled
 }
 
@@ -84,6 +85,7 @@ public static class CarbonBlazorIconMapper
             CarbonBlazorIcon.UserProfile => IconSvgTags.UserProfile,
             CarbonBlazorIcon.UserRole => IconSvgTags.UserRole,
             CarbonBlazorIcon.View => IconSvgTags.View,
+            CarbonBlazorIcon.WarningAltFilled => IconSvgTags.WarningAltFilled,
             CarbonBlazorIcon.WarningFilled => IconSvgTags.WarningFilled,
             _ => string.Empty
         }

@@ -3005,8 +3005,9 @@ article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section {
 }
 
 body {
-    background-color: var(--cb-background,#ffffff);
-    color: var(--cb-text-primary,#161616);
+    background-color: var(--cb-background);
+    color: var(--cb-text-primary);
+    font-family: ibm plex sans, system-ui, -apple-system, BlinkMacSystemFont, '.sfnstext-regular', sans-serif;
 }
 
 ol,ul {
@@ -3788,5 +3789,19 @@ input[type=number] {
     letter-spacing: var(--cb-error-02-letter-spacing);
 }
 
+/* ValidationMessage */
 
+.cb-validation-message {
+    font-size: var(--cb-label-01-font-size);
+    font-weight: var(--cb-label-01-font-weight);
+    line-height: var(--cb-label-01-line-height);
+    letter-spacing: var(--cb-label-01-letter-spacing);
+    margin-top: 0.25rem;
+}
+.cb-validation-message.warning {
+    color: var(--cb-text-primary);
+}
+.cb-validation-message.error {
+    color: var(--cb-support-error);
+}
 

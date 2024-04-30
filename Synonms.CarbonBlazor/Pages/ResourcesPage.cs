@@ -20,11 +20,18 @@ public abstract class ResourcesPage<TResource> : ComponentBase
         Update,
         Delete
     }
-    
-    protected readonly string CollectionPath;
+
     protected List<TResource>? Resources;
     protected Pagination? Pagination;
     protected readonly List<BreadcrumbItem> Breadcrumbs;
+    private readonly string CollectionPath;
+    protected const string CreateSuccessMessageTemplate = "{0} Id '{1}' was created successfully.";
+    protected const string UpdateSuccessMessageTemplate = "{0} Id '{1}' was updated successfully.";
+    protected const string DeleteSuccessMessageTemplate = "{0} Id '{1}' was deleted successfully.";
+    protected const string CreateFaultMessageTemplate = "Fault occurred while creating {0} Id '{1}' : {2}";
+    protected const string UpdateFaultMessageTemplate = "Fault occurred while updating {0} Id '{1}' : {2}";
+    protected const string DeleteFaultMessageTemplate = "Fault occurred while deleting {0} Id '{1}' : {2}";
+    
     private Mode _mode = Mode.None;
     private string _activeResourceJson = string.Empty;
     

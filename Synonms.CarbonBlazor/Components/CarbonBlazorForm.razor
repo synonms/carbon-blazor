@@ -1,10 +1,13 @@
 ﻿@using Microsoft.AspNetCore.Components.Forms
 @using Synonms.CarbonBlazor.Enumerations
+@using Synonms.CarbonBlazor.Validation
 
 @typeparam TModel
 
 <EditForm class="cb-form" EditContext="@_editContext" OnValidSubmit="@OnValidSubmit" FormName="@FormName">
-    @ChildContent
+    <CascadingValue Value="@ValidationOutcomes">
+        @ChildContent
+    </CascadingValue>
 
     <CarbonBlazorButtonSet>
         <CarbonBlazorButton Type="CarbonBlazorButtonType.Button" Kind="CarbonBlazorButtonKind.Secondary" Display="CarbonBlazorButtonDisplay.TextOnly" Text="Cancel" Size="CarbonBlazorButtonSize.ExtraLarge" Style="width:50%;" OnClick="@(() => CancelCallback.InvokeAsync(Model))"></CarbonBlazorButton>
@@ -32,7 +35,7 @@
     public RenderFragment ChildContent { get; set; } = null!;
 
     [Parameter]
-    public Action<ValidationMessageStore, TModel>? ValidateAction { get; set; }
+    public Func<TModel, IEnumerable<ValidationOutcome>>? ValidationFunc { get; set; }
 
     [Parameter]
     public EventCallback<TModel> CancelCallback { get; set; } = EventCallback<TModel>.Empty;
@@ -44,10 +47,17 @@
     public EventCallback<TModel> ValidSubmitCallback { get; set; } = EventCallback<TModel>.Empty;
 
     [Parameter]
-    public bool IsReadOnly { get; set; } = false;
+    public bool IsReadOnly { get; set; }
+    
+    [Parameter]
+    public IEnumerable<ValidationOutcome> ValidationOutcomes { get; set; } = [];
+
+    [Parameter]
+    public EventCallback<IEnumerable<ValidationOutcome>> ValidationOutcomesChanged { get; set; }
 
     private EditContext _editContext = null!;
     private ValidationMessageStore _validationMessageStore = null!;
+    private List<ValidationOutcome> _validationOutcomes = [];
 
     protected override void OnInitialized()
     {
@@ -60,10 +70,20 @@
 
     private void OnValidationRequested(object? o, ValidationRequestedEventArgs? args)
     {
+        Console.WriteLine("Form: OnValidationRequested");
+        
         _validationMessageStore.Clear();
         
-        ValidateAction?.Invoke(_validationMessageStore, Model);
-        
+        ValidationOutcomes = ValidationFunc?.Invoke(Model).ToList() ?? [];
+
+        Console.WriteLine(ValidationOutcomes.Count() + " outcomes");
+
+        foreach (ValidationOutcome validationOutcome in ValidationOutcomes.Where(x => x.State is ValidationOutcome.ValidationState.Error))
+        {
+            _validationMessageStore.Add(validationOutcome.FieldIdentifier, validationOutcome.Message);
+            Console.WriteLine(validationOutcome.FieldIdentifier.FieldName + ": " + validationOutcome.Message);
+        }
+
         _editContext.NotifyValidationStateChanged();
     }
     
