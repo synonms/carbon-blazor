@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
 
-namespace Synonms.CarbonBlazor.Validation;
+namespace Synonms.CarbonBlazor.Models;
 
 public class ValidationOutcome
 {

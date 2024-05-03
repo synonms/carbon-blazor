@@ -1,0 +1,27 @@
+﻿.cb-check-box-label {
+    color: var(--cb-text-secondary);
+    font-size: var(--cb-label-01-font-size);
+    font-weight: var(--cb-label-01-font-weight);
+    letter-spacing: var(--cb-label-01-letter-spacing);
+    line-height: var(--cb-label-01-line-height);
+    margin-bottom: 0.5rem;
+    vertical-align: baseline;
+}
+
+.cb-check-box {
+    overflow: hidden;
+    padding: 0;
+    border: 0;
+    inline-size: 1rem;
+    white-space: nowrap;
+}
+
+.cb-check-box-helper {
+    color: var(--cb-text-helper);
+    display: block;
+    font-size: var(--cb-helper-text-01-font-size);
+    font-weight: var(--cb-helper-text-01-font-weight);
+    line-height: var(--cb-helper-text-01-line-height);
+    letter-spacing: var(--cb-helper-text-01-letter-spacing);
+    margin-top: 0.25rem;
+}

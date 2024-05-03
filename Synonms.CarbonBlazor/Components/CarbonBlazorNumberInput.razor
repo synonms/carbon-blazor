@@ -1,45 +1,75 @@
-﻿@using System.Linq.Expressions
+﻿@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Web <!-- Required for dynamic attributes with 'at' prefix -->
 @using Synonms.CarbonBlazor.Css
 @using Synonms.CarbonBlazor.Enumerations
-@using Microsoft.AspNetCore.Components.Forms
-@using Microsoft.AspNetCore.Components.Web
-
-@inherits InputBase<int>
+@using Synonms.CarbonBlazor.Models
 
 <CarbonBlazorFieldSet IsDoubleColumn="@IsDoubleColumn" IsReadOnly="@IsReadOnly" IsDisabled="@IsDisabled">
-    @if (string.IsNullOrWhiteSpace(Legend) is false)
-    {
-        <legend>@Legend</legend>
-    }
     @if (string.IsNullOrWhiteSpace(Label) is false)
     {
-        <CarbonBlazorLabel For="@Id" Text="@Label"/>
+        <label for="@Id" class="cb-number-input-label">@Label</label>
     }
 
-    <div class="cb-input-wrapper">
-        <input class="cb-input cb-number-input @CssClass" aria-invalid="false" id="@Id" min="@Min" max="@Max" pattern="[0-9]*" step="@Step" type="number" @bind="@CurrentValue">
-        <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.IconOnly" Size="CarbonBlazorButtonSize.LargeProductive" Icon="CarbonBlazorIcon.Subtract" OnClick="@Decrement"></CarbonBlazorButton>
-        <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.IconOnly" Size="CarbonBlazorButtonSize.LargeProductive" Icon="CarbonBlazorIcon.Add" OnClick="@Increment"></CarbonBlazorButton>
+    <div class="cb-number-input-wrapper @CarbonBlazorInputSizeMapper.ToClass(Size)">
+        <input class="@GetClass()" id="@Id" name="@Id" type="number" value="@_valueAsString" @oninput="@OnValueChanged" min="@Min" max="@Max" pattern="[0-9]*" step="@Step" readonly="@IsReadOnly" disabled="@IsDisabled">
+        <svg focusable="false" preserveAspectRatio="xMidYMid meet" class="cb-number-input-icon" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+            @if (_validationMessage?.ValidationState == ValidationOutcome.ValidationState.Error)
+            {
+                <path d="M8,1C4.2,1,1,4.2,1,8s3.2,7,7,7s7-3.1,7-7S11.9,1,8,1z M7.5,4h1v5h-1C7.5,9,7.5,4,7.5,4z M8,12.2 c-0.4,0-0.8-0.4-0.8-0.8s0.3-0.8,0.8-0.8c0.4,0,0.8,0.4,0.8,0.8S8.4,12.2,8,12.2z"></path>
+                <path d="M7.5,4h1v5h-1C7.5,9,7.5,4,7.5,4z M8,12.2c-0.4,0-0.8-0.4-0.8-0.8s0.3-0.8,0.8-0.8 c0.4,0,0.8,0.4,0.8,0.8S8.4,12.2,8,12.2z" data-icon-path="inner-path" opacity="0"></path>
+            }
+            else
+            {
+                <path id="inner-path" fill="none" d="M16,26a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,16,26Zm-1.125-5h2.25V12h-2.25Z"/>
+                <path d="M16.002,6.1714h-.004L4.6487,27.9966,4.6506,28H27.3494l.0019-.0034ZM14.875,12h2.25v9h-2.25ZM16,26a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,16,26Z"/>
+                <path d="M29,30H3a1,1,0,0,1-.8872-1.4614l13-25a1,1,0,0,1,1.7744,0l13,25A1,1,0,0,1,29,30ZM4.6507,28H27.3493l.002-.0033L16.002,6.1714h-.004L4.6487,27.9967Z"/>
+            }
+        </svg>
+        <button class="cb-number-input-button decrement" type="button" onclick="@(() => Decrement())" disabled="@IsDisabled">
+            @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.Subtract, 16))
+        </button>
+        <button class="cb-number-input-button increment" type="button" onclick="@(() => Increment())" disabled="@IsDisabled">
+            @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.Add, 16))
+        </button>
     </div>
 
-    <ValidationMessage For="@ValidationFor"/>
+    <CarbonBlazorValidationMessage @ref="@_validationMessage" FieldIdentifier="@FieldIdentifier"></CarbonBlazorValidationMessage>
 
     @if (string.IsNullOrWhiteSpace(HelperText) is false)
     {
-        <CarbonBlazorHelperText ComponentId="@Id" Text="@HelperText"/>
+        <div id="@Id-helper-text" class="cb-number-input-helper">@HelperText</div>
     }
 </CarbonBlazorFieldSet>
 
 @code {
+    private CarbonBlazorValidationMessage? _validationMessage;
+    private string _valueAsString = "0";
+
+    [CascadingParameter]
+    public EditContext EditContext { get; set; } = null!;
+    
+    [CascadingParameter]
+    public IEnumerable<ValidationOutcome> ValidationOutcomes { get; set; } = [];
+
     [Parameter]
     [EditorRequired]
-    public Expression<Func<int>> ValidationFor { get; set; } = null!;
+    public FieldIdentifier FieldIdentifier { get; set; } = default!;
+    
+    [Parameter]
+    [EditorRequired]
+    public int Value { get; set; }
+    
+    [Parameter]
+    public EventCallback<int> ValueChanged { get; set; }
 
     [Parameter]
     public string? Id { get; set; }
     
     [Parameter]
-    public string? Legend { get; set; }
+    public CarbonBlazorInputSize Size { get; set; } = CarbonBlazorInputSize.Medium;
+
+    [Parameter]
+    public CarbonBlazorLayer Layer { get; set; } = CarbonBlazorLayer.Two;
 
     [Parameter]
     public string? Label { get; set; }
@@ -65,35 +95,67 @@
     [Parameter]
     public bool IsDoubleColumn { get; set; } = false;
 
-    private void Decrement()
+    private CarbonBlazorButtonSize GetButtonSize() => Size switch
     {
-        if ((CurrentValue - Step) >= Min)
+        CarbonBlazorInputSize.Small => CarbonBlazorButtonSize.Small,
+        CarbonBlazorInputSize.Medium => CarbonBlazorButtonSize.Medium,
+        CarbonBlazorInputSize.Large => CarbonBlazorButtonSize.LargeProductive,
+        _ => CarbonBlazorButtonSize.Medium
+    };
+    
+    private async Task OnValueChanged(ChangeEventArgs e)
+    {
+        string newValueAsString = e.Value?.ToString() ?? string.Empty;
+
+        if (int.TryParse(newValueAsString, out int newValueAsInt))
         {
-            CurrentValue -= Step;
+            Value = newValueAsInt;
+
+            await ValueUpdated();
+        }
+    }
+
+    private async Task ValueUpdated()
+    {
+        _valueAsString = Value.ToString();
+        
+        await ValueChanged.InvokeAsync(Value);
+            
+        EditContext.NotifyFieldChanged(FieldIdentifier);
+    }
+
+    private async Task Decrement()
+    {
+        if ((Value - Step) >= Min)
+        {
+            Value -= Step;
+            await ValueUpdated();
         }
     }
     
-    private void Increment()
+    private async Task Increment()
     {
-        if ((CurrentValue + Step) <= Max)
+        if ((Value + Step) <= Max)
         {
-            CurrentValue += Step;
+            Value += Step;
+            await ValueUpdated();
         }
     }
 
-    protected override bool TryParseValueFromString(string? value, out int result, out string? validationErrorMessage)
+    private string GetClass()
     {
-        bool isParsed = int.TryParse(value, out result);
+        const string baseClass = CssClasses.Prefix + "number-input";
+        string layerClass = CarbonBlazorLayerMapper.ToClass(Layer);
+        string validationClass = _validationMessage is null 
+            ? string.Empty 
+            : _validationMessage.ValidationState switch
+            {
+                ValidationOutcome.ValidationState.Valid => "valid",
+                ValidationOutcome.ValidationState.Warning => "warning",
+                ValidationOutcome.ValidationState.Error => "error",
+                _ => string.Empty
+            };
 
-        if (isParsed)
-        {
-            validationErrorMessage = null;
-        }
-        else
-        {
-            validationErrorMessage = $"Unable to parse '{value ?? string.Empty}' as int.";
-        }
-
-        return isParsed;
+        return CssClasses.Concatenate(baseClass, layerClass, validationClass);
     }
 }

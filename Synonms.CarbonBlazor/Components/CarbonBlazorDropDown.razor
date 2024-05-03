@@ -14,13 +14,13 @@
     }
     @if (string.IsNullOrWhiteSpace(Label) is false)
     {
-        <CarbonBlazorLabel For="@Id" Text="@Label"/>
+        <label for="@Id" class="cb-drop-down-label">@Label</label>
     }
 
-    <div class="cb-input-wrapper">
-        <div class="cb-input" onclick="@(() => OnClicked())">@Value</div>
+    <div class="cb-drop-down-wrapper">
+        <div class="cb-drop-down-value" onclick="@(() => OnClicked())">@Value</div>
         <CarbonBlazorButton @ref="@_dropDownButton" Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.IconOnly" Size="CarbonBlazorButtonSize.LargeProductive" Icon="CarbonBlazorIcon.ChevronDown" ToggledIcon="CarbonBlazorIcon.ChevronUp" OnClick="@OnClicked"></CarbonBlazorButton>
-        <div class="cb-dropdown-menu @(IsMenuOpen() ? "" : "collapsed")">
+        <div class="cb-drop-down-menu @(IsMenuOpen() ? "" : "collapsed")">
             @foreach (TValue option in Options)
             {
                 <div class="cb-dropdown-option" onclick="@(() => OptionClicked(option))">
@@ -37,7 +37,7 @@
 
     @if (string.IsNullOrWhiteSpace(HelperText) is false)
     {
-        <CarbonBlazorHelperText ComponentId="@Id" Text="@HelperText"/>
+        <div id="@Id-helper-text" class="cb-drop-down-helper">@HelperText</div>
     }
 </CarbonBlazorFieldSet>
 

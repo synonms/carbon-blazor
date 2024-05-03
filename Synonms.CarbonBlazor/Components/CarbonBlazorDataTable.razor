@@ -4,16 +4,21 @@
 
 <CarbonBlazorPane Title="@Title" Info="@Info">
     <CarbonBlazorNotificationInline @ref="@_notification"></CarbonBlazorNotificationInline>
-    <div class="cb-datatable">
-        @if (ToolbarButtons is not null)
+    <div class="cb-data-table @CarbonBlazorDataTableRowSizeMapper.ToClass(RowSize)">
+        @if (IsFilterEnabled || ToolbarButtons is not null)
         {
-            <CarbonBlazorButtonSet Class="cb-datatable-toolbar">
-                @if (IsFilterEnabled)
-                {
-                    <CarbonBlazorSearch SearchTextChangedCallback="@OnSearchTextChanged"></CarbonBlazorSearch>
-                }
-                @ToolbarButtons
-            </CarbonBlazorButtonSet>
+            <div class="cb-data-table-toolbar-wrapper">
+                <CarbonBlazorButtonSet Style="width: 100%; justify-content: end;">
+                    @if (IsFilterEnabled)
+                    {
+                        <CarbonBlazorSearch SearchTextChangedCallback="@OnSearchTextChanged" Size="@GetSearchSize()"></CarbonBlazorSearch>
+                    }
+                    @if (ToolbarButtons is not null)
+                    {
+                        @ToolbarButtons
+                    }
+                </CarbonBlazorButtonSet>
+            </div>
         }
         <table>
             <thead>
@@ -25,18 +30,20 @@
             @foreach (TModel model in _filteredAndPagedModels)
             {
                 <tr>
-                    @DataRowTemplate(model)
+                    <CascadingValue Value="@Layer">
+                        @DataRowTemplate(model)
+                    </CascadingValue>
                 </tr>
             }
             </tbody>
         </table>
-        <div class="cb-pagination">
-            <div class="cb-pagination-items">
+        <div class="cb-data-table-pagination">
+            <div class="cb-data-table-pagination-items">
                 <span>
                     @(_filteredModels.Any() is false ? "No items" : string.Format(ItemsTemplate, FirstItem, LastItem, _filteredModels.Count()) + (IsFiltered ? string.Format(FilteredItemsTemplate, TotalSize) : string.Empty))
                 </span>
             </div>
-            <div class="cb-pagination-nav">
+            <div class="cb-data-table-pagination-nav">
                 <CarbonBlazorButtonSet>
                     <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.IconOnly" Kind="CarbonBlazorButtonKind.Ghost" Size="CarbonBlazorButtonSize.LargeExpressive" Icon="CarbonBlazorIcon.PageFirst" OnClick="@FirstCallback"></CarbonBlazorButton>
                     <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.IconOnly" Kind="CarbonBlazorButtonKind.Ghost" Size="CarbonBlazorButtonSize.LargeExpressive" Icon="CarbonBlazorIcon.ChevronLeft" OnClick="@PreviousCallback" IsDisabled="@IsPreviousDisabled"></CarbonBlazorButton>
@@ -83,6 +90,9 @@
     public RenderFragment<TModel> DataRowTemplate { get; set; } = null!;
 
     [Parameter]
+    public CarbonBlazorDataTableRowSize RowSize { get; set; } = CarbonBlazorDataTableRowSize.Medium;
+    
+    [Parameter]
     public RenderFragment? ToolbarButtons { get; set; }
 
     [Parameter]
@@ -96,6 +106,9 @@
     
     [Parameter]
     public Func<IEnumerable<TModel>, string, IEnumerable<TModel>> FilterModelsFunc { get; set; } = (models, _) => models;
+
+    [Parameter]
+    public CarbonBlazorLayer Layer { get; set; } = CarbonBlazorLayer.Two;
 
     [Parameter]
     public int TotalSize { get; set; }
@@ -213,4 +226,15 @@
             ? _filteredModels
             : _filteredModels.Skip(Offset).Take(PageLimit);
     }
+
+    private CarbonBlazorInputSize GetSearchSize() => RowSize switch
+    {
+        CarbonBlazorDataTableRowSize.ExtraSmall => CarbonBlazorInputSize.Small,
+        CarbonBlazorDataTableRowSize.Small => CarbonBlazorInputSize.Small,
+        CarbonBlazorDataTableRowSize.Medium => CarbonBlazorInputSize.Large,
+        CarbonBlazorDataTableRowSize.Large => CarbonBlazorInputSize.Large,
+        CarbonBlazorDataTableRowSize.ExtraLarge => CarbonBlazorInputSize.Large,
+        _ => CarbonBlazorInputSize.Large
+    };
+
 }

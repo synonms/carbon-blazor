@@ -1,0 +1,14 @@
+﻿.cb-validation-message {
+    font-size: var(--cb-label-01-font-size);
+    font-weight: var(--cb-label-01-font-weight);
+    line-height: var(--cb-label-01-line-height);
+    letter-spacing: var(--cb-label-01-letter-spacing);
+    margin-top: 0.25rem;
+}
+.cb-validation-message.warning {
+    color: var(--cb-text-primary);
+}
+.cb-validation-message.error {
+    color: var(--cb-support-error);
+}
+

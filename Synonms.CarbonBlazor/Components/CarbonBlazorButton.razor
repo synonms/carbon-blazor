@@ -4,7 +4,7 @@
 <button class="@GetClass()" style="@Style" type="@Type.ToString().ToLower()" onclick="@OnClick" disabled="@IsDisabled">
     @if (Display is CarbonBlazorButtonDisplay.TextOnly or CarbonBlazorButtonDisplay.TextAndIcon)
     {
-        <span>@Text</span>
+        @Text
     }
     @if (Display is not CarbonBlazorButtonDisplay.TextOnly)
     {
@@ -41,6 +41,9 @@
     public bool IsDisabled { get; set; } = false;
 
     [Parameter]
+    public string Class { get; set; } = string.Empty;
+
+    [Parameter]
     public string Style { get; set; } = string.Empty;
 
     public bool IsToggled { get; set; } = false;
@@ -52,7 +55,7 @@
         string displayClass = CarbonBlazorButtonDisplayMapper.ToClass(Display);
         string sizeClass = CarbonBlazorButtonSizeMapper.ToClass(Size);
 
-        return CssClasses.Concatenate(baseClass, kindClass, displayClass, sizeClass);
+        return CssClasses.Concatenate(baseClass, kindClass, displayClass, sizeClass, Class);
     }
 
     private MarkupString GetIcon() => 

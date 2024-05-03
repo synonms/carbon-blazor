@@ -1,0 +1,123 @@
+﻿.cb-search-wrapper {
+    align-items: center;
+    background-color: transparent;
+    display: flex;
+    fill: var(--cb-icon-secondary);
+    position: relative;
+    width: auto;
+}
+.cb-search-wrapper.small {
+    height: 2rem;
+}
+.cb-search-wrapper.medium {
+    height: 2.5rem;
+}
+.cb-search-wrapper.large {
+    height: 3rem;
+}
+
+.cb-search-wrapper.collapsed {
+    border: 0
+}
+
+.cb-search-input {
+    background-color: var(--cb-field);
+    border: 0;
+    border-bottom: 1px solid var(--cb-border-strong);
+    color: var(--cb-text-primary);
+    font-size: var(--cb-body-compact-01-font-size);
+    font-weight: var(--cb-body-compact-01-font-weight);
+    height: 100%;
+    letter-spacing: var(--cb-body-compact-01-letter-spacing);
+    line-height: var(--cb-body-compact-01-line-height);
+    padding-left: 1rem;
+    padding-right: 1rem;
+    vertical-align: baseline;
+    width: 100%;
+}
+.cb-search-input.layer-00 {
+    background-color: var(--cb-field);
+    border-bottom: 1px solid var(--cb-border-strong);
+}
+.cb-search-input.layer-01 {
+    background-color: var(--cb-field-01);
+    border-bottom: 1px solid var(--cb-border-strong-01);
+}
+.cb-search-input.layer-02 {
+    background-color: var(--cb-field-02);
+    border-bottom: 1px solid var(--cb-border-strong-02);
+}
+.cb-search-input.layer-03 {
+    background-color: var(--cb-field-03);
+    border-bottom: 1px solid var(--cb-border-strong-03);
+}
+.cb-search-input::placeholder {
+    color: var(--cb-text-placeholder);
+}
+.cb-search-input:focus {
+    outline: 2px solid var(--cb-focus);
+    outline-offset: -2px
+}
+.cb-search-input:disabled {
+    color: var(--cb-text-disabled);
+}
+.cb-search-wrapper.collapsed .cb-search-input {
+    display: none;
+}
+
+.cb-search-button {
+    background-color: transparent;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 1px;
+    cursor: pointer;
+    fill: var(--cb-icon-primary);
+    height: 100%;
+    position: absolute;
+    top: 0;
+}
+.cb-search-button:hover {
+    background-color: var(--cb-background-hover);
+}
+.cb-search-button:active {
+    background-color: var(--cb-background-active);
+}
+.cb-search-button:focus {
+    border-color: var(--cb-focus);
+}
+.cb-search-button:disabled {
+    fill: var(--cb-icon-disabled);
+}
+
+.cb-search-wrapper.small .cb-search-button {
+    height: 2rem;
+    width: 2rem;
+}
+.cb-search-wrapper.medium .cb-search-button {
+    height: 2.5rem;
+    width: 2.5rem;
+}
+.cb-search-wrapper.large .cb-search-button {
+    height: 3rem;
+    width: 3rem;
+}
+
+.cb-search-wrapper.small .cb-search-input {
+    padding-left: 2rem;
+}
+.cb-search-wrapper.medium .cb-search-input {
+    padding-left: 2.5rem;
+}
+.cb-search-wrapper.large .cb-search-input {
+    padding-left: 3rem;
+}
+
+.cb-search-button.cancel {
+    right: 0;
+}
+.cb-search-wrapper.expanded .cb-search-button.search {
+    left: 0;
+}
+.cb-search-wrapper.collapsed .cb-search-button.search {
+    right: 0;
+}

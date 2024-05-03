@@ -1,9 +1,13 @@
-﻿<td>
+﻿@using Synonms.CarbonBlazor.Enumerations
+<td class="cb-data-table-data-cell @CarbonBlazorLayerMapper.ToClass(Layer)">
     @ChildContent    
 </td>
 
 @code {
 
+    [CascadingParameter]
+    public CarbonBlazorLayer Layer { get; set; } = CarbonBlazorLayer.Two;
+    
     [Parameter]
     [EditorRequired]
     public RenderFragment ChildContent { get; set; } = null!;

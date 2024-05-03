@@ -1,15 +1,15 @@
 ﻿@using Microsoft.AspNetCore.Components.Forms
 @using Synonms.CarbonBlazor.Enumerations
-@using Synonms.CarbonBlazor.Validation
+@using Synonms.CarbonBlazor.Models
 
 @typeparam TModel
 
-<EditForm class="cb-form" EditContext="@_editContext" OnValidSubmit="@OnValidSubmit" FormName="@FormName">
+<EditForm class="cb-form" style="width: 100%;display: grid;grid-auto-flow: row;row-gap: 2rem;" EditContext="@_editContext" OnValidSubmit="@OnValidSubmit" FormName="@FormName">
     <CascadingValue Value="@ValidationOutcomes">
         @ChildContent
     </CascadingValue>
 
-    <CarbonBlazorButtonSet>
+    <CarbonBlazorButtonSet Style="margin-top: 3rem;">
         <CarbonBlazorButton Type="CarbonBlazorButtonType.Button" Kind="CarbonBlazorButtonKind.Secondary" Display="CarbonBlazorButtonDisplay.TextOnly" Text="Cancel" Size="CarbonBlazorButtonSize.ExtraLarge" Style="width:50%;" OnClick="@(() => CancelCallback.InvokeAsync(Model))"></CarbonBlazorButton>
         @if (IsReadOnly)
         {

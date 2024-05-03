@@ -1,0 +1,29 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+@using Synonms.CarbonBlazor.Models
+
+@foreach (ValidationOutcome validationOutcome in _filteredValidationOutcomes)
+{
+    <div class="cb-validation-message @validationOutcome.ToCssClass()">@validationOutcome.Message</div>
+}
+
+@code {
+    private List<ValidationOutcome> _filteredValidationOutcomes = [];
+
+    [CascadingParameter]
+    public IEnumerable<ValidationOutcome> ValidationOutcomes { get; set; } = [];
+
+    [Parameter]
+    [EditorRequired]
+    public FieldIdentifier FieldIdentifier { get; set; } = default!;
+
+    public ValidationOutcome.ValidationState ValidationState => _filteredValidationOutcomes.Any(x => x.State == ValidationOutcome.ValidationState.Error)
+        ? ValidationOutcome.ValidationState.Error
+        : _filteredValidationOutcomes.Any(x => x.State == ValidationOutcome.ValidationState.Warning)
+            ? ValidationOutcome.ValidationState.Warning
+            : ValidationOutcome.ValidationState.Valid;
+
+    protected override void OnParametersSet()
+    {
+        _filteredValidationOutcomes = ValidationOutcomes.Where(x => x.FieldIdentifier.FieldName == FieldIdentifier.FieldName).ToList();
+    }
+}

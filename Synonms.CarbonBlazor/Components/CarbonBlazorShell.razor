@@ -1,5 +1,6 @@
-﻿<div class="cb-shell">
-    <CarbonBlazorHeader ProductName="@ProductName" ProductIconImagePath="@ProductIconImagePath" OnMenuClick="@(() => _sidebar.IsExpanded = !_sidebar.IsExpanded)">
+﻿@using Synonms.CarbonBlazor.Enumerations
+<div class="cb-shell @CarbonBlazorThemeMapper.ToCssClass(Theme)">
+    <CarbonBlazorHeader ProductName="@ProductName" ProductIconImagePath="@ProductIconImagePath" OnMenuClick="@(() => _sidebar.IsExpanded = !_sidebar.IsExpanded)" OnThemeChanged="@OnThemeChanged">
         <UserPanel>@UserPanel</UserPanel>
         <SwitcherPanel>@SwitcherPanel</SwitcherPanel>
     </CarbonBlazorHeader>
@@ -39,4 +40,11 @@
     [EditorRequired]
     public RenderFragment Body { get; set; } = null!;
 
+    [Parameter]
+    public CarbonBlazorTheme Theme { get; set; } = CarbonBlazorTheme.White;
+    
+    private void OnThemeChanged(CarbonBlazorTheme theme)
+    {
+        Theme = theme;
+    }
 }

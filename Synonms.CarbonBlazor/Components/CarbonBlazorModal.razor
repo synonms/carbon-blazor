@@ -5,18 +5,20 @@
 {
     <div class="cb-modal">
         <div class="@GetClass()">
-            <div class="cb-modal-header">
+            <div class="cb-modal-header-wrapper">
                 <div class="cb-modal-title-wrapper">
                     @if (string.IsNullOrWhiteSpace(Label) is false)
                     {
-                        <CarbonBlazorText Type="CarbonBlazorTextType.BodyCompact01">@Label</CarbonBlazorText>
+                        <span class="cb-modal-header-label">@Label</span>
                     }
                     @if (string.IsNullOrWhiteSpace(Title) is false)
                     {
-                        <CarbonBlazorText Type="CarbonBlazorTextType.Heading03">@Title</CarbonBlazorText>
+                        <span class="cb-modal-header">@Label</span>
                     }
                 </div>
-                <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.Cancel" OnClick="@(() => _isVisible = false)"></CarbonBlazorButton>
+                <button class="cb-modal-close-button" type="button" onclick="@(() => _isVisible = false)">
+                    @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.Cancel, 16))
+                </button>
             </div>
             @ChildContent
         </div>

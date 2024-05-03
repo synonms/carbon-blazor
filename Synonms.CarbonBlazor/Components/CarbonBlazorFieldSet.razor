@@ -1,8 +1,4 @@
-﻿@using System.Linq.Expressions
-@using Synonms.CarbonBlazor.Enumerations
-@using Microsoft.AspNetCore.Components.Forms;
-
-<fieldset class="cb-fieldset @(IsDoubleColumn ? "cb-fieldset-s" : string.Empty)" readonly="@IsReadOnly" disabled="@IsDisabled">
+﻿<fieldset class="cb-field-set @(IsDoubleColumn ? "double" : string.Empty)" readonly="@IsReadOnly" disabled="@IsDisabled">
     @ChildContent
 </fieldset>
 

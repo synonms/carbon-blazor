@@ -1,0 +1,26 @@
+﻿.cb-pane {
+    padding: 1rem 1rem 2rem;
+    background-color: var(--cb-layer);
+    color: var(--cb-text-primary);
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: flex-start;
+    justify-content: start;
+}
+.cb-pane-title-wrapper {
+    margin-bottom: 2.5rem;
+}
+.cb-pane-title {
+    font-size: var(--cb-heading-03-font-size);
+    font-weight: var(--cb-heading-03-font-weight);
+    line-height: var(--cb-heading-03-line-height);
+    letter-spacing: var(--cb-heading-03-letter-spacing);
+    margin-bottom: 0.25rem;
+}
+.cb-pane-info {
+    font-size: var(--cb-body-01-font-size);
+    font-weight: var(--cb-body-01-font-weight);
+    line-height: var(--cb-body-01-line-height);
+    letter-spacing: var(--cb-body-01-letter-spacing);
+}

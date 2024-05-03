@@ -12,15 +12,15 @@
     }
 
     <CarbonBlazorStack FlexDirection="FlexDirection.Row" AlignItems="AlignItems.Center" Gap="0.5rem">
-        <input type="checkbox" class="cb-input cb-checkbox" id="@Id" @bind="@CurrentValue">
-        <CarbonBlazorLabel For="@Id" Text="@Label" Style="padding-top: 0.5rem;"></CarbonBlazorLabel>
+        <input type="checkbox" class="cb-check-box" id="@Id" @bind="@CurrentValue">
+        <label for="@Id" class="cb-check-box-label">@Label</label>
     </CarbonBlazorStack>
     
     <ValidationMessage For="@ValidationFor"/>
 
     @if (string.IsNullOrWhiteSpace(HelperText) is false)
     {
-        <CarbonBlazorHelperText ComponentId="@Id" Text="@HelperText"/>
+        <div id="@Id-helper-text" class="cb-check-box-helper">@HelperText</div>
     }
 </CarbonBlazorFieldSet>
 

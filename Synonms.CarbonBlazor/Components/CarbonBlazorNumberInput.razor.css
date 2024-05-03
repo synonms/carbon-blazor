@@ -1,4 +1,4 @@
-﻿.cb-text-input-label {
+﻿.cb-number-input-label {
     color: var(--cb-text-secondary);
     font-size: var(--cb-label-01-font-size);
     font-weight: var(--cb-label-01-font-weight);
@@ -8,7 +8,7 @@
     vertical-align: baseline;
 }
 
-.cb-text-input-wrapper {
+.cb-number-input-wrapper {
     align-items: center;
     background-color: transparent;
     display: flex;
@@ -16,17 +16,17 @@
     width: 100%;
 }
 
-.cb-text-input-wrapper.small {
+.cb-number-input-wrapper.small {
     height: 2rem;
 }
-.cb-text-input-wrapper.medium {
+.cb-number-input-wrapper.medium {
     height: 2.5rem;
 }
-.cb-text-input-wrapper.large {
+.cb-number-input-wrapper.large {
     height: 3rem;
 }
 
-.cb-text-input {
+.cb-number-input {
     background-color: var(--cb-field);
     border: 0;
     border-bottom: 1px solid var(--cb-border-strong);
@@ -41,70 +41,119 @@
     vertical-align: baseline;
     width: 100%;
 }
-.cb-text-input.layer-00 {
+.cb-number-input.layer-00 {
     background-color: var(--cb-field);
     border-bottom: 1px solid var(--cb-border-strong);
 }
-.cb-text-input.layer-01 {
+.cb-number-input.layer-01 {
     background-color: var(--cb-field-01);
     border-bottom: 1px solid var(--cb-border-strong-01);
 }
-.cb-text-input.layer-02 {
+.cb-number-input.layer-02 {
     background-color: var(--cb-field-02);
     border-bottom: 1px solid var(--cb-border-strong-02);
 }
-.cb-text-input.layer-03 {
+.cb-number-input.layer-03 {
     background-color: var(--cb-field-03);
     border-bottom: 1px solid var(--cb-border-strong-03);
 }
-.cb-text-input::placeholder {
+
+.cb-number-input::placeholder {
     color: var(--cb-text-placeholder);
 }
-.cb-text-input:focus {
+.cb-number-input:focus {
     outline: 2px solid var(--cb-focus);
     outline-offset: -2px
 }
-.cb-text-input.error {
+.cb-number-input.error {
     outline: 2px solid var(--cb-support-error);
     outline-offset: -2px
 }
-.cb-text-input:disabled {
+.cb-number-input:disabled {
     border-bottom: 1px solid transparent;
-    color: var(--cb-text-disabled);    
+    color: var(--cb-text-disabled);
 }
-.cb-text-input[readonly="readonly"], .cb-text-input[readonly] {
+.cb-number-input[readonly="readonly"], .cb-number-input[readonly] {
     background-color: transparent;
     border-bottom: 1px solid var(--cb-border-subtle);
     color: var(--cb-text-primary);
 }
 
-.cb-text-input-icon {
+.cb-number-input-icon {
     display: none;
     fill: var(--cb-support-error);
     position: absolute;
     top: 0.5rem;
     right: 0.5rem;
 }
-.cb-text-input.error + .cb-text-input-icon {
+.cb-number-input.error + .cb-number-input-icon {
     fill: var(--cb-support-error);
     display: block;
 }
-.cb-text-input.warning + .cb-text-input-icon {
+.cb-number-input.warning + .cb-number-input-icon {
     fill: var(--cb-support-warning);
     display: block;
 }
-.cb-text-input-wrapper.small .cb-text-input-icon {
+.cb-number-input-wrapper.small .cb-number-input-icon {
     top: 0.5rem;
+    right: 4.5rem;
 }
-.cb-text-input-wrapper.medium .cb-text-input-icon {
+.cb-number-input-wrapper.medium .cb-number-input-icon {
     top: 0.75rem;
+    right: 5.5rem;
 }
-.cb-text-input-wrapper.large .cb-text-input-icon {
+.cb-number-input-wrapper.large .cb-number-input-icon {
     top: 1rem;
+    right: 6.5rem;
 }
 
+.cb-number-input-button {
+    background-color: transparent;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 1px;
+    cursor: pointer;
+    fill: var(--cb-icon-primary);
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.cb-number-input-wrapper.small .cb-number-input-button {
+    height: 2rem;
+    width: 2rem;
+}
+.cb-number-input-wrapper.small .cb-number-input-button.decrement {
+    right: 2rem;
+}
+.cb-number-input-wrapper.medium .cb-number-input-button {
+    height: 2.5rem;
+    width: 2.5rem;
+}
+.cb-number-input-wrapper.medium .cb-number-input-button.decrement {
+    right: 2.5rem;
+}
+.cb-number-input-wrapper.large .cb-number-input-button {
+    height: 3rem;
+    width: 3rem;
+}
+.cb-number-input-wrapper.large .cb-number-input-button.decrement {
+    right: 3rem;
+}
 
-.cb-text-input-helper {
+.cb-number-input-button:hover {
+    background-color: var(--cb-background-hover);
+}
+.cb-number-input-button:active {
+    background-color: var(--cb-background-active);
+}
+.cb-number-input-button:focus {
+    border-color: var(--cb-focus);
+}
+.cb-number-input-button:disabled {
+    fill: var(--cb-icon-disabled);
+}
+
+.cb-number-input-helper {
     color: var(--cb-text-helper);
     display: block;
     font-size: var(--cb-helper-text-01-font-size);
@@ -113,6 +162,6 @@
     letter-spacing: var(--cb-helper-text-01-letter-spacing);
     margin-top: 0.25rem;
 }
-.cb-validation-message + .cb-text-input-helper {
+.cb-validation-message + .cb-number-input-helper {
     display: none;
 }

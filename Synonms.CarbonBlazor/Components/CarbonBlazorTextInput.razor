@@ -1,16 +1,16 @@
 ﻿@using Microsoft.AspNetCore.Components.Forms
-@using Microsoft.AspNetCore.Components.Web <!-- Required for @bind attribute --> 
+@using Microsoft.AspNetCore.Components.Web <!-- Required for dynamic attributes with 'at' prefix -->
 @using Synonms.CarbonBlazor.Css
 @using Synonms.CarbonBlazor.Enumerations
-@using Synonms.CarbonBlazor.Validation
+@using Synonms.CarbonBlazor.Models
 
 <CarbonBlazorFieldSet IsDoubleColumn="@IsDoubleColumn" IsReadOnly="@IsReadOnly" IsDisabled="@IsDisabled">
     @if (string.IsNullOrWhiteSpace(Label) is false)
     {
-        <label for="@Id" class="cb-text-input-label" dir="ltr">@Label</label>
+        <label for="@Id" class="cb-text-input-label">@Label</label>
     }
 
-    <div class="cb-text-input-wrapper @CarbonBlazorTextInputSizeMapper.ToClass(Size)" disabled="@IsDisabled" readonly="@IsReadOnly">
+    <div class="cb-text-input-wrapper @CarbonBlazorInputSizeMapper.ToClass(Size)" disabled="@IsDisabled" readonly="@IsReadOnly">
         <input class="@GetClass()" id="@Id" name="@Id" type="text" value="@Value" @oninput="@OnValueChanged" placeholder="@Placeholder" readonly="@IsReadOnly" disabled="@IsDisabled"/>
         <svg focusable="false" preserveAspectRatio="xMidYMid meet" class="cb-text-input-icon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
         @if (_validationMessage?.ValidationState == ValidationOutcome.ValidationState.Error)
@@ -59,8 +59,11 @@
     public string? Id { get; set; }
 
     [Parameter]
-    public CarbonBlazorTextInputSize Size { get; set; } = CarbonBlazorTextInputSize.Medium;
+    public CarbonBlazorInputSize Size { get; set; } = CarbonBlazorInputSize.Medium;
 
+    [Parameter]
+    public CarbonBlazorLayer Layer { get; set; } = CarbonBlazorLayer.Two;
+        
     [Parameter]
     public string? Label { get; set; }
 
@@ -82,17 +85,17 @@
     private async Task OnValueChanged(ChangeEventArgs e)
     {
         Value = e.Value?.ToString() ?? string.Empty;
-
+        
         await ValueChanged.InvokeAsync(Value);
         
         EditContext.NotifyFieldChanged(FieldIdentifier);
-        EditContext.Validate();
     }
 
     private string GetClass()
     {
         const string baseClass = CssClasses.Prefix + "text-input";
-        string validationClass = _validationMessage is null 
+        string layerClass = CarbonBlazorLayerMapper.ToClass(Layer);
+        string validationClass = _validationMessage is null  
             ? string.Empty 
             : _validationMessage.ValidationState switch
             {
@@ -102,6 +105,6 @@
                 _ => string.Empty
             };
 
-        return CssClasses.Concatenate(baseClass, validationClass);
+        return CssClasses.Concatenate(baseClass, layerClass, validationClass);
     }
 }

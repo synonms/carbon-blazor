@@ -1,5 +1,6 @@
 ﻿@using Synonms.CarbonBlazor.Enumerations
-<span class="@CarbonBlazorTextTypeMapper.ToClass(Type)">@ChildContent</span>
+
+<span class="cb-text @CarbonBlazorTextTypeMapper.ToClass(Type)">@ChildContent</span>
 
 @code {
 
@@ -9,5 +10,4 @@
     [Parameter]
     [EditorRequired]
     public RenderFragment ChildContent { get; set; } = null!;
-
 }

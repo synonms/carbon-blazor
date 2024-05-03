@@ -1,4 +1,6 @@
-﻿@using Synonms.CarbonBlazor.Enumerations
+﻿@using Microsoft.JSInterop
+@using Synonms.CarbonBlazor.Enumerations
+@using Synonms.CarbonBlazor.Models
 
 <header class="cb-header">
     <CarbonBlazorStack FlexDirection="FlexDirection.Row" JustifyContent="JustifyContent.Start" AlignItems="AlignItems.Center" Gap="1rem">
@@ -10,12 +12,20 @@
     <CarbonBlazorStack FlexDirection="FlexDirection.Row" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center">
         <CarbonBlazorButton @ref="@_searchButton" Kind="CarbonBlazorButtonKind.Ghost" Size="CarbonBlazorButtonSize.LargeExpressive" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.Search" OnClick="@SearchClicked"></CarbonBlazorButton>
         <CarbonBlazorButton @ref="@_userAvatarButton" Kind="CarbonBlazorButtonKind.Ghost" Size="CarbonBlazorButtonSize.LargeExpressive" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.UserAvatar" OnClick="@UserAvatarClicked"></CarbonBlazorButton>
+        <CarbonBlazorButton @ref="@_themeButton" Kind="CarbonBlazorButtonKind.Ghost" Size="CarbonBlazorButtonSize.LargeExpressive" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.ColourPalette" OnClick="@ThemeClicked"></CarbonBlazorButton>
         <CarbonBlazorButton @ref="@_switcherButton" Kind="CarbonBlazorButtonKind.Ghost" Size="CarbonBlazorButtonSize.LargeExpressive" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.Switcher" OnClick="@SwitcherClicked"></CarbonBlazorButton>
     </CarbonBlazorStack>
 </header>
 
 <CarbonBlazorHeaderActionPanel @ref="@_userPanel">
     @UserPanel
+</CarbonBlazorHeaderActionPanel>
+
+<CarbonBlazorHeaderActionPanel @ref="@_themePanel">
+    <CarbonBlazorHeaderActionLink NavigationItem="@(NavigationItem.Create("White", ""))" OnClick="@(() => ChangeTheme(CarbonBlazorTheme.White))"></CarbonBlazorHeaderActionLink>
+    <CarbonBlazorHeaderActionLink NavigationItem="@(NavigationItem.Create("Grey 10", ""))" OnClick="@(() => ChangeTheme(CarbonBlazorTheme.Gray10))"></CarbonBlazorHeaderActionLink>
+    <CarbonBlazorHeaderActionLink NavigationItem="@(NavigationItem.Create("Grey 90", ""))" OnClick="@(() => ChangeTheme(CarbonBlazorTheme.Gray90))"></CarbonBlazorHeaderActionLink>
+    <CarbonBlazorHeaderActionLink NavigationItem="@(NavigationItem.Create("Grey 100", ""))" OnClick="@(() => ChangeTheme(CarbonBlazorTheme.Gray100))"></CarbonBlazorHeaderActionLink>
 </CarbonBlazorHeaderActionPanel>
 
 <CarbonBlazorHeaderActionPanel @ref="@_switcherPanel">
@@ -25,9 +35,14 @@
 @code {
     private CarbonBlazorButton _switcherButton = null!;
     private CarbonBlazorButton _searchButton = null!;
+    private CarbonBlazorButton _themeButton = null!;
     private CarbonBlazorButton _userAvatarButton = null!;
     private CarbonBlazorHeaderActionPanel _switcherPanel = null!;
+    private CarbonBlazorHeaderActionPanel _themePanel = null!;
     private CarbonBlazorHeaderActionPanel _userPanel = null!;
+
+    [Inject]
+    IJSRuntime JsRuntime { get; set; } = null!;
     
     [Parameter]
     [EditorRequired]
@@ -50,6 +65,9 @@
 
     [Parameter]
     public EventCallback<string> OnSearch { get; set; } = EventCallback<string>.Empty;
+
+    [Parameter]
+    public EventCallback<CarbonBlazorTheme> OnThemeChanged { get; set; }
 
     private void SearchClicked()
     {
@@ -84,9 +102,24 @@
         StateHasChanged();
     }
 
+    private void ThemeClicked()
+    {
+        if (_themePanel.IsExpanded)
+        {
+            CloseThemePanel();
+        }
+        else
+        {
+            OpenThemePanel();
+        }
+        
+        StateHasChanged();
+    }
+
     private void CloseAllPanels()
     {
         CloseSwitcherPanel();
+        CloseThemePanel();
         CloseUserPanel();
     }
     
@@ -95,7 +128,13 @@
         _switcherPanel.IsExpanded = false;
         _switcherButton.IsToggled = false;
     }
-    
+
+    private void CloseThemePanel()
+    {
+        _themePanel.IsExpanded = false;
+        _themeButton.IsToggled = false;
+    }
+
     private void CloseUserPanel()
     {
         _userPanel.IsExpanded = false;
@@ -110,11 +149,29 @@
         _switcherButton.IsToggled = true;
     }
 
+    private void OpenThemePanel()
+    {
+        CloseAllPanels();
+        
+        _themePanel.IsExpanded = true;
+        _themeButton.IsToggled = true;
+    }
+
     private void OpenUserPanel()
     {
         CloseAllPanels();
         
         _userPanel.IsExpanded = true;
         _userAvatarButton.IsToggled = true;
+    }
+
+    private async Task ChangeTheme(CarbonBlazorTheme theme)
+    {
+        if (OnThemeChanged.HasDelegate)
+        {
+            await OnThemeChanged.InvokeAsync(theme);
+        }
+        
+        CloseThemePanel();
     }
 }
