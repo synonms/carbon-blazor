@@ -1,22 +1,15 @@
-﻿@using System.Linq.Expressions
-@using Synonms.CarbonBlazor.Enumerations
+﻿@using Synonms.CarbonBlazor.Enumerations
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.AspNetCore.Components.Web
-
-@inherits InputBase<bool>
+@using Synonms.CarbonBlazor.Models
 
 <CarbonBlazorFieldSet IsDoubleColumn="@IsDoubleColumn" IsReadOnly="@IsReadOnly" IsDisabled="@IsDisabled">
-    @if (string.IsNullOrWhiteSpace(Legend) is false)
-    {
-        <legend>@Legend</legend>
-    }
-
     <CarbonBlazorStack FlexDirection="FlexDirection.Row" AlignItems="AlignItems.Center" Gap="0.5rem">
-        <input type="checkbox" class="cb-check-box" id="@Id" @bind="@CurrentValue">
+        <input type="checkbox" class="cb-check-box" id="@Id" name="@Id" @oninput="@OnValueChanged" checked="@Value">
         <label for="@Id" class="cb-check-box-label">@Label</label>
     </CarbonBlazorStack>
-    
-    <ValidationMessage For="@ValidationFor"/>
+
+    <CarbonBlazorValidationMessage @ref="@_validationMessage" FieldIdentifier="@FieldIdentifier"></CarbonBlazorValidationMessage>
 
     @if (string.IsNullOrWhiteSpace(HelperText) is false)
     {
@@ -25,16 +18,33 @@
 </CarbonBlazorFieldSet>
 
 @code {
+    private CarbonBlazorValidationMessage? _validationMessage;
+
+    [CascadingParameter]
+    public EditContext EditContext { get; set; } = null!;
+
+    [CascadingParameter]
+    public IEnumerable<ValidationOutcome> ValidationOutcomes { get; set; } = [];
+
     [Parameter]
     [EditorRequired]
-    public Expression<Func<bool>> ValidationFor { get; set; } = null!;
+    public FieldIdentifier FieldIdentifier { get; set; } = default!;
 
     [Parameter]
-    public string? Id { get; set; } = string.Empty;
+    public bool Value { get; set; }
 
     [Parameter]
-    public string? Legend { get; set; }
+    public EventCallback<bool> ValueChanged { get; set; }
 
+    [Parameter]
+    public CarbonBlazorInputSize Size { get; set; } = CarbonBlazorInputSize.Medium;
+
+    [Parameter]
+    public CarbonBlazorLayer Layer { get; set; } = CarbonBlazorLayer.Two;
+
+    [Parameter]
+    public string? Id { get; set; }
+    
     [Parameter]
     public string? Label { get; set; }
 
@@ -50,14 +60,17 @@
     [Parameter]
     public bool IsDoubleColumn { get; set; } = false;
 
-    protected override bool TryParseValueFromString(string? value, out bool result, out string? validationErrorMessage)
+    private async Task OnValueChanged(ChangeEventArgs changeEventArgs)
     {
-        bool isParsed = bool.TryParse(value, out result);
+        string newValueAsString = changeEventArgs.Value?.ToString() ?? string.Empty;
 
-        validationErrorMessage = isParsed 
-            ? null 
-            : $"Unable to parse '{value ?? string.Empty}' as bool.";
+        if (bool.TryParse(newValueAsString, out bool newValueAsBool))
+        {
+            Value = newValueAsBool;
 
-        return isParsed;
+            await ValueChanged.InvokeAsync(Value);
+            
+            EditContext.NotifyFieldChanged(FieldIdentifier);
+        }
     }
 }

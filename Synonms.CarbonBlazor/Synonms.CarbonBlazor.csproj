@@ -5,10 +5,10 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <IsPackable>true</IsPackable>
-        <PackageVersion>0.1.0</PackageVersion>
+        <PackageVersion>8.0.0</PackageVersion>
         <Title>Synonms Carbon Blazor</Title>
         <Authors>Synonms</Authors>
-        <Description>CarbonBlazor is a simple, opinionated implementation of the Carbon Design System for Blazor.</Description>
+        <Description>CarbonBlazor is a simple, opinionated implementation of IBM's Carbon Design System for Blazor.</Description>
         <Copyright>2024 Synonms</Copyright>
         <RepositoryUrl>https://github.com/synonms/carbon-blazor</RepositoryUrl>
         <RepositoryType>GitHub</RepositoryType>

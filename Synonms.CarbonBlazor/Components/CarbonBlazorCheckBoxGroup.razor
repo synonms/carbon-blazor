@@ -1,0 +1,110 @@
+﻿@using Synonms.CarbonBlazor.Enumerations
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Web
+@using Synonms.CarbonBlazor.Models
+
+<CarbonBlazorFieldSet IsDoubleColumn="@IsDoubleColumn" IsReadOnly="@IsReadOnly" IsDisabled="@IsDisabled">
+    @if (string.IsNullOrWhiteSpace(Label) is false)
+    {
+        <span class="cb-check-box-group-label">@Label</span>
+    }
+    
+    @foreach (CheckBoxItem item in Items)
+    {
+        <CarbonBlazorStack FlexDirection="FlexDirection.Row" AlignItems="AlignItems.Center" Gap="0.5rem">
+            <input type="checkbox" class="cb-check-box" id="@item.Id" name="@item.Id" @oninput="@(changeEventArgs => OnInput(changeEventArgs, item))" checked="@Values.Contains(item.Value)" value="@item.Value">
+            <label for="@item.Id" class="cb-check-box-label">@item.Label</label>
+        </CarbonBlazorStack>
+    }
+
+    <CarbonBlazorValidationMessage @ref="@_validationMessage" FieldIdentifier="@FieldIdentifier"></CarbonBlazorValidationMessage>
+
+    @if (string.IsNullOrWhiteSpace(HelperText) is false)
+    {
+        <div class="cb-check-box-group-helper">@HelperText</div>
+    }
+</CarbonBlazorFieldSet>
+
+@code {
+    private CarbonBlazorValidationMessage? _validationMessage;
+    private List<string> _selectedValues = [];
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        _selectedValues = Values.ToList();
+    }
+
+    [CascadingParameter]
+    public EditContext EditContext { get; set; } = null!;
+
+    [CascadingParameter]
+    public IEnumerable<ValidationOutcome> ValidationOutcomes { get; set; } = [];
+
+    [Parameter]
+    [EditorRequired]
+    public FieldIdentifier FieldIdentifier { get; set; } = default!;
+
+    [Parameter]
+    [EditorRequired]
+    public IEnumerable<CheckBoxItem> Items { get; set; } = [];
+
+    [Parameter]
+    public IEnumerable<string> Values { get; set; } = [];
+
+    [Parameter]
+    public EventCallback<IEnumerable<string>> ValuesChanged { get; set; }
+
+    [Parameter]
+    public CarbonBlazorInputSize Size { get; set; } = CarbonBlazorInputSize.Medium;
+
+    [Parameter]
+    public CarbonBlazorLayer Layer { get; set; } = CarbonBlazorLayer.Two;
+
+    [Parameter]
+    public string? Label { get; set; }
+
+    [Parameter]
+    public string? HelperText { get; set; }
+
+    [Parameter]
+    public bool IsDisabled { get; set; } = false;
+
+    [Parameter]
+    public bool IsReadOnly { get; set; } = false;
+
+    [Parameter]
+    public bool IsDoubleColumn { get; set; } = false;
+
+    private async Task OnInput(ChangeEventArgs changeEventArgs, CheckBoxItem item)
+    {
+        string isSelectedAsString = changeEventArgs.Value?.ToString() ?? string.Empty;
+
+        if (bool.TryParse(isSelectedAsString, out bool isSelectedAsBool))
+        {
+            Console.WriteLine(item.Value + " set to " + isSelectedAsBool);
+
+            if (isSelectedAsBool)
+            {
+                if (_selectedValues.Contains(item.Value) is false)
+                {
+                    _selectedValues.Add(item.Value);
+                    Values = _selectedValues;
+                    await ValuesChanged.InvokeAsync(Values);
+                    EditContext.NotifyFieldChanged(FieldIdentifier);
+                }
+            }
+            else
+            {
+                if (_selectedValues.Contains(item.Value))
+                {
+                    _selectedValues.Remove(item.Value);
+                    Values = _selectedValues;
+                    await ValuesChanged.InvokeAsync(Values);
+                    EditContext.NotifyFieldChanged(FieldIdentifier);
+                }
+            }
+        }
+    }
+}

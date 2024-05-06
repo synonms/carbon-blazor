@@ -56,7 +56,7 @@
 </CarbonBlazorPane>
 
 @code {
-    private CarbonBlazorNotificationInline _notification;
+    private CarbonBlazorNotificationInline _notification = null!;
     private const string ItemsTemplate = "{0}-{1} of {2} items";
     private const string FilteredItemsTemplate = " (filtered - {0} total)";
 
@@ -130,6 +130,11 @@
 
     public void Notify(Notification notification) =>
         _notification.Notify(notification);
+
+    public void Resize(CarbonBlazorDataTableRowSize size)
+    {
+        RowSize = size;
+    }
     
     public void RefreshData(IEnumerable<TModel> models, int size, int offset, int pageLimit)
     {

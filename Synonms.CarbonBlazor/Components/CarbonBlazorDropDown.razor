@@ -1,39 +1,49 @@
-﻿@using System.Linq.Expressions
-@using Synonms.CarbonBlazor.Enumerations
+﻿@using Synonms.CarbonBlazor.Enumerations
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.AspNetCore.Components.Web
+@using Synonms.CarbonBlazor.Css
+@using Synonms.CarbonBlazor.Models
 
-@typeparam TValue
-
-@inherits InputBase<TValue>
+@typeparam TValue where TValue : notnull
 
 <CarbonBlazorFieldSet IsDoubleColumn="@IsDoubleColumn" IsReadOnly="@IsReadOnly" IsDisabled="@IsDisabled">
-    @if (string.IsNullOrWhiteSpace(Legend) is false)
-    {
-        <legend>@Legend</legend>
-    }
     @if (string.IsNullOrWhiteSpace(Label) is false)
     {
         <label for="@Id" class="cb-drop-down-label">@Label</label>
     }
 
-    <div class="cb-drop-down-wrapper">
-        <div class="cb-drop-down-value" onclick="@(() => OnClicked())">@Value</div>
-        <CarbonBlazorButton @ref="@_dropDownButton" Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.IconOnly" Size="CarbonBlazorButtonSize.LargeProductive" Icon="CarbonBlazorIcon.ChevronDown" ToggledIcon="CarbonBlazorIcon.ChevronUp" OnClick="@OnClicked"></CarbonBlazorButton>
-        <div class="cb-drop-down-menu @(IsMenuOpen() ? "" : "collapsed")">
-            @foreach (TValue option in Options)
+    <div class="cb-drop-down-wrapper @CarbonBlazorInputSizeMapper.ToClass(Size)">
+        <div class="@GetClass()" onclick="@(() => OnClicked())">
+            @Value
+            <div class="cb-drop-down-button">
+                @if (_isExpanded)
+                {
+                    @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.ChevronUp, 16))
+                }
+                else
+                {
+                    @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.ChevronDown, 16))
+                }
+            </div>
+        </div>
+
+        <div class="cb-drop-down-menu @CarbonBlazorLayerMapper.ToClass(Layer) @(_isExpanded ? "" : "collapsed")">
+            @foreach (DropDownItem<TValue> item in Items)
             {
-                <div class="cb-dropdown-option" onclick="@(() => OptionClicked(option))">
-                    @{
-                        string label = OptionLabel.Invoke(option);
-                        <span>@label</span>
+                <div class="cb-drop-down-item @(item.Value.Equals(Value) ? "selected" : string.Empty)" onclick="@(() => ItemClicked(item))">
+                    @item.Label
+                    @if (item.Value.Equals(Value))
+                    {
+                        <svg focusable="false" preserveAspectRatio="xMidYMid meet" class="cb-number-input-icon" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                            <polygon points="13 24 4 15 5.414 13.586 13 21.171 26.586 7.586 28 9 13 24"/>
+                        </svg>
                     }
                 </div>
             }
         </div>
     </div>
 
-    <ValidationMessage For="@ValidationFor"/>
+    <CarbonBlazorValidationMessage @ref="@_validationMessage" FieldIdentifier="@FieldIdentifier"></CarbonBlazorValidationMessage>
 
     @if (string.IsNullOrWhiteSpace(HelperText) is false)
     {
@@ -42,14 +52,34 @@
 </CarbonBlazorFieldSet>
 
 @code {
-    private CarbonBlazorButton _dropDownButton = null!;
+    private CarbonBlazorValidationMessage? _validationMessage;
+    private bool _isExpanded = false;
+
+    [CascadingParameter]
+    public EditContext EditContext { get; set; } = null!;
+    
+    [CascadingParameter]
+    public IEnumerable<ValidationOutcome> ValidationOutcomes { get; set; } = [];
 
     [Parameter]
     [EditorRequired]
-    public Expression<Func<TValue>> ValidationFor { get; set; } = null!;
+    public FieldIdentifier FieldIdentifier { get; set; } = default!;
+
+    [Parameter]
+    [EditorRequired]
+    public TValue Value { get; set; } = default!;
+
+    [Parameter]
+    public EventCallback<TValue> ValueChanged { get; set; }
 
     [Parameter]
     public string? Id { get; set; }
+
+    [Parameter]
+    public CarbonBlazorInputSize Size { get; set; } = CarbonBlazorInputSize.Medium;
+
+    [Parameter]
+    public CarbonBlazorLayer Layer { get; set; } = CarbonBlazorLayer.Two;
 
     [Parameter]
     public string? Legend { get; set; }
@@ -71,57 +101,38 @@
 
     [Parameter]
     [EditorRequired]
-    public IEnumerable<TValue> Options { get; set; } = Enumerable.Empty<TValue>();
-
-    [Parameter]
-    public Func<TValue, string> OptionLabel { get; set; } = 
-        option => option?.ToString() ?? string.Empty;
-
-    [Parameter]
-    [EditorRequired]
-    public Func<string, TValue?> FromString { get; set; } = null!;
+    public IEnumerable<DropDownItem<TValue>> Items { get; set; } = [];
 
     private void OnClicked()
     {
-        if (IsMenuOpen())
-        {
-            CloseMenu();
-        }
-        else
-        {
-            OpenMenu();
-        }
+        _isExpanded = !_isExpanded;
     }
 
-    private bool IsMenuOpen() => _dropDownButton?.IsToggled ?? false;
-    
-    private void OpenMenu()
+    private async Task ItemClicked(DropDownItem<TValue> item)
     {
-        _dropDownButton.IsToggled = true;
-    }
+        Value = item.Value;
 
-    private void CloseMenu()
-    {
-        _dropDownButton.IsToggled = false;
-    }
-
-    private void OptionClicked(TValue option)
-    {
-        Value = option;
+        await ValueChanged.InvokeAsync(Value);
         
-        CloseMenu();
-        
-        StateHasChanged();
+        EditContext.NotifyFieldChanged(FieldIdentifier);
+
+        _isExpanded = false;
     }
 
-    protected override bool TryParseValueFromString(string? value, out TValue result, out string? validationErrorMessage)
+    private string GetClass()
     {
-        TValue? parsed = FromString.Invoke(value);
+        const string baseClass = CssClasses.Prefix + "drop-down-input";
+        string layerClass = CarbonBlazorLayerMapper.ToClass(Layer);
+        string validationClass = _validationMessage is null 
+            ? string.Empty 
+            : _validationMessage.ValidationState switch
+            {
+                ValidationOutcome.ValidationState.Valid => "valid",
+                ValidationOutcome.ValidationState.Warning => "warning",
+                ValidationOutcome.ValidationState.Error => "error",
+                _ => string.Empty
+            };
 
-        result = parsed is null ? default : parsed;
-        validationErrorMessage = parsed is null ? $"Unable to parse '{value ?? string.Empty}' as {typeof(TValue)}." : null;
-    
-        return parsed is not null;
+        return CssClasses.Concatenate(baseClass, layerClass, validationClass);
     }
-
 }

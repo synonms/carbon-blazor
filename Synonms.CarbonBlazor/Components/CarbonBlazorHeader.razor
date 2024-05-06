@@ -10,7 +10,7 @@
     </CarbonBlazorStack>
     
     <CarbonBlazorStack FlexDirection="FlexDirection.Row" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center">
-        <CarbonBlazorButton @ref="@_searchButton" Kind="CarbonBlazorButtonKind.Ghost" Size="CarbonBlazorButtonSize.LargeExpressive" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.Search" OnClick="@SearchClicked"></CarbonBlazorButton>
+        <CarbonBlazorSearch Size="CarbonBlazorInputSize.Large" SearchTextChangedCallback="@OnSearch"></CarbonBlazorSearch>
         <CarbonBlazorButton @ref="@_userAvatarButton" Kind="CarbonBlazorButtonKind.Ghost" Size="CarbonBlazorButtonSize.LargeExpressive" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.UserAvatar" OnClick="@UserAvatarClicked"></CarbonBlazorButton>
         <CarbonBlazorButton @ref="@_themeButton" Kind="CarbonBlazorButtonKind.Ghost" Size="CarbonBlazorButtonSize.LargeExpressive" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.ColourPalette" OnClick="@ThemeClicked"></CarbonBlazorButton>
         <CarbonBlazorButton @ref="@_switcherButton" Kind="CarbonBlazorButtonKind.Ghost" Size="CarbonBlazorButtonSize.LargeExpressive" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.Switcher" OnClick="@SwitcherClicked"></CarbonBlazorButton>
@@ -34,7 +34,6 @@
 
 @code {
     private CarbonBlazorButton _switcherButton = null!;
-    private CarbonBlazorButton _searchButton = null!;
     private CarbonBlazorButton _themeButton = null!;
     private CarbonBlazorButton _userAvatarButton = null!;
     private CarbonBlazorHeaderActionPanel _switcherPanel = null!;
@@ -68,11 +67,6 @@
 
     [Parameter]
     public EventCallback<CarbonBlazorTheme> OnThemeChanged { get; set; }
-
-    private void SearchClicked()
-    {
-        _searchButton.Icon = _searchButton.Icon == CarbonBlazorIcon.Switcher ? CarbonBlazorIcon.Cancel : CarbonBlazorIcon.Switcher;
-    }
 
     private void UserAvatarClicked()
     {

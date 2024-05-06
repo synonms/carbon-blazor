@@ -20,6 +20,9 @@ public static class IconSvgTags
     public const string Cancel =
         "<title>cancel</title><path d=\"M17.4141 16L24 9.4141 22.5859 8 16 14.5859 9.4143 8 8 9.4141 14.5859 16 8 22.5859 9.4143 24 16 17.4141 22.5859 24 24 22.5859 17.4141 16z\"></path>";
 
+    public const string Checkmark =
+        "<title>checkmark</title><polygon points=\"13 24 4 15 5.414 13.586 13 21.171 26.586 7.586 28 9 13 24\"/>";
+    
     public const string CheckmarkFilled =
         "<title>checkmark--filled</title><path d=\"M16,2A14,14,0,1,0,30,16,14,14,0,0,0,16,2ZM14,21.5908l-5-5L10.5906,15,14,18.4092,21.41,11l1.5957,1.5859Z\"/>";
 

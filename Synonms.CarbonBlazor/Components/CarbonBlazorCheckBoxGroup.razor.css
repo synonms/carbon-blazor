@@ -1,4 +1,14 @@
-﻿.cb-check-box-label {
+﻿.cb-check-box-group-label {
+    color: var(--cb-text-secondary);
+    font-size: var(--cb-label-01-font-size);
+    font-weight: var(--cb-label-01-font-weight);
+    letter-spacing: var(--cb-label-01-letter-spacing);
+    line-height: var(--cb-label-01-line-height);
+    margin-bottom: 0.5rem;
+    vertical-align: baseline;
+}
+
+.cb-check-box-label {
     color: var(--cb-text-primary);
     font-size: var(--cb-body-compact-01-font-size);
     font-weight: var(--cb-body-compact-01-font-weight);
@@ -22,7 +32,7 @@
     color: var(--cb-icon-inverse);
 }
 
-.cb-check-box-helper {
+.cb-check-box-group-helper {
     color: var(--cb-text-helper);
     display: block;
     font-size: var(--cb-helper-text-01-font-size);
@@ -31,3 +41,4 @@
     letter-spacing: var(--cb-helper-text-01-letter-spacing);
     margin-top: 0.25rem;
 }
+

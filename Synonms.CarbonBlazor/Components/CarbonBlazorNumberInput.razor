@@ -103,9 +103,9 @@
         _ => CarbonBlazorButtonSize.Medium
     };
     
-    private async Task OnValueChanged(ChangeEventArgs e)
+    private async Task OnValueChanged(ChangeEventArgs changeEventArgs)
     {
-        string newValueAsString = e.Value?.ToString() ?? string.Empty;
+        string newValueAsString = changeEventArgs.Value?.ToString() ?? string.Empty;
 
         if (int.TryParse(newValueAsString, out int newValueAsInt))
         {

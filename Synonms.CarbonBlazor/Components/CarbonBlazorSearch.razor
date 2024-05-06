@@ -1,8 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Components.Web 
 @using Synonms.CarbonBlazor.Css
-<!-- Required for @onchange attribute -->
 @using Synonms.CarbonBlazor.Enumerations
-@using Synonms.CarbonBlazor.Models
 
 <div class="cb-search-wrapper @CarbonBlazorInputSizeMapper.ToClass(Size) @(IsExpanded ? "expanded" : "collapsed")">
     <input class="@GetClass()" type="text" value="@SearchText" @onchange="@((ChangeEventArgs args) => OnSearchTextChanged(args.Value?.ToString() ?? string.Empty))" placeholder="Search" disabled="@IsDisabled"/>

@@ -1,0 +1,219 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+@using Synonms.CarbonBlazor.Enumerations
+@using Synonms.CarbonBlazor.Infrastructure
+@using Synonms.CarbonBlazor.Models
+@using Synonms.RestEasy.Core.Schema
+
+<CarbonBlazorStack FlexDirection="FlexDirection.Column" Gap="1rem">
+    <CarbonBlazorPane Title="Typography">
+        <CarbonBlazorText Type="CarbonBlazorTextType.Heading01">Heading01</CarbonBlazorText>
+        <CarbonBlazorText Type="CarbonBlazorTextType.Heading02">Heading02</CarbonBlazorText>
+        <CarbonBlazorText Type="CarbonBlazorTextType.Heading03">Heading03</CarbonBlazorText>
+        <CarbonBlazorText Type="CarbonBlazorTextType.Heading04">Heading04</CarbonBlazorText>
+        <CarbonBlazorText Type="CarbonBlazorTextType.Heading05">Heading05</CarbonBlazorText>
+        <CarbonBlazorText Type="CarbonBlazorTextType.Heading06">Heading06</CarbonBlazorText>
+        <CarbonBlazorText Type="CarbonBlazorTextType.Heading07">Heading07</CarbonBlazorText>
+        <CarbonBlazorText Type="CarbonBlazorTextType.HeadingCompact01">HeadingCompact01</CarbonBlazorText>
+        <CarbonBlazorText Type="CarbonBlazorTextType.HeadingCompact02">HeadingCompact02</CarbonBlazorText>
+        <CarbonBlazorText Type="CarbonBlazorTextType.Body01">Body01</CarbonBlazorText>
+        <CarbonBlazorText Type="CarbonBlazorTextType.Body02">Body02</CarbonBlazorText>
+        <CarbonBlazorText Type="CarbonBlazorTextType.BodyCompact01">BodyCompact01</CarbonBlazorText>
+        <CarbonBlazorText Type="CarbonBlazorTextType.BodyCompact02">BodyCompact02</CarbonBlazorText>
+        <CarbonBlazorText Type="CarbonBlazorTextType.HelperText01">HelperText01</CarbonBlazorText>
+        <CarbonBlazorText Type="CarbonBlazorTextType.HelperText02">HelperText02</CarbonBlazorText>
+        <CarbonBlazorText Type="CarbonBlazorTextType.Label01">Label01</CarbonBlazorText>
+        <CarbonBlazorText Type="CarbonBlazorTextType.Label02">Label02</CarbonBlazorText>
+    </CarbonBlazorPane>
+
+    <CarbonBlazorPane Title="Buttons">
+        <CarbonBlazorStack FlexDirection="FlexDirection.Column" Gap="1rem;">
+            <CarbonBlazorText Type="CarbonBlazorTextType.Heading02">Text Only</CarbonBlazorText>
+            <CarbonBlazorButtonSet>
+                <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.TextOnly" Kind="CarbonBlazorButtonKind.Primary" Text="Primary"></CarbonBlazorButton>
+                <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.TextOnly" Kind="CarbonBlazorButtonKind.Secondary" Text="Secondary"></CarbonBlazorButton>
+                <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.TextOnly" Kind="CarbonBlazorButtonKind.Tertiary" Text="Tertiary"></CarbonBlazorButton>
+                <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.TextOnly" Kind="CarbonBlazorButtonKind.Ghost" Text="Ghost"></CarbonBlazorButton>
+            </CarbonBlazorButtonSet>
+            <CarbonBlazorButtonSet>
+                <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.TextOnly" Kind="CarbonBlazorButtonKind.Danger" Text="Danger"></CarbonBlazorButton>
+                <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.TextOnly" Kind="CarbonBlazorButtonKind.DangerTertiary" Text="DangerTertiary"></CarbonBlazorButton>
+                <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.TextOnly" Kind="CarbonBlazorButtonKind.DangerGhost" Text="DangerGhost"></CarbonBlazorButton>
+            </CarbonBlazorButtonSet>
+            <CarbonBlazorText Type="CarbonBlazorTextType.Heading02">Text and Icon</CarbonBlazorText>
+            <CarbonBlazorButtonSet>
+                <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.TextAndIcon" Kind="CarbonBlazorButtonKind.Primary" Text="Primary" Icon="CarbonBlazorIcon.Dashboard"></CarbonBlazorButton>
+                <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.TextAndIcon" Kind="CarbonBlazorButtonKind.Secondary" Text="Secondary" Icon="CarbonBlazorIcon.Dashboard"></CarbonBlazorButton>
+                <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.TextAndIcon" Kind="CarbonBlazorButtonKind.Tertiary" Text="Tertiary" Icon="CarbonBlazorIcon.Dashboard"></CarbonBlazorButton>
+                <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.TextAndIcon" Kind="CarbonBlazorButtonKind.Ghost" Text="Ghost" Icon="CarbonBlazorIcon.Dashboard"></CarbonBlazorButton>
+            </CarbonBlazorButtonSet>
+            <CarbonBlazorButtonSet>
+                <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.TextAndIcon" Kind="CarbonBlazorButtonKind.Danger" Text="Danger" Icon="CarbonBlazorIcon.Dashboard"></CarbonBlazorButton>
+                <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.TextAndIcon" Kind="CarbonBlazorButtonKind.DangerTertiary" Text="DangerTertiary" Icon="CarbonBlazorIcon.Dashboard"></CarbonBlazorButton>
+                <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.TextAndIcon" Kind="CarbonBlazorButtonKind.DangerGhost" Text="DangerGhost" Icon="CarbonBlazorIcon.Dashboard"></CarbonBlazorButton>
+            </CarbonBlazorButtonSet>
+            <CarbonBlazorText Type="CarbonBlazorTextType.Heading02">Icon Only</CarbonBlazorText>
+            <CarbonBlazorButtonSet>
+                <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.IconOnly" Kind="CarbonBlazorButtonKind.Primary" Icon="CarbonBlazorIcon.Dashboard"></CarbonBlazorButton>
+                <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.IconOnly" Kind="CarbonBlazorButtonKind.Secondary" Icon="CarbonBlazorIcon.Dashboard"></CarbonBlazorButton>
+                <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.IconOnly" Kind="CarbonBlazorButtonKind.Tertiary" Icon="CarbonBlazorIcon.Dashboard"></CarbonBlazorButton>
+                <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.IconOnly" Kind="CarbonBlazorButtonKind.Ghost" Icon="CarbonBlazorIcon.Dashboard"></CarbonBlazorButton>
+            </CarbonBlazorButtonSet>
+            <CarbonBlazorButtonSet>
+                <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.IconOnly" Kind="CarbonBlazorButtonKind.Danger" Icon="CarbonBlazorIcon.Dashboard"></CarbonBlazorButton>
+                <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.IconOnly" Kind="CarbonBlazorButtonKind.DangerTertiary" Icon="CarbonBlazorIcon.Dashboard"></CarbonBlazorButton>
+                <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.IconOnly" Kind="CarbonBlazorButtonKind.DangerGhost" Icon="CarbonBlazorIcon.Dashboard"></CarbonBlazorButton>
+            </CarbonBlazorButtonSet>
+
+            <CarbonBlazorText Type="CarbonBlazorTextType.Heading02">Sizes</CarbonBlazorText>
+            <CarbonBlazorButtonSet>
+                <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.TextOnly" Kind="CarbonBlazorButtonKind.Primary" Text="Small" Size="CarbonBlazorButtonSize.Small"></CarbonBlazorButton>
+                <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.TextOnly" Kind="CarbonBlazorButtonKind.Primary" Text="Medium" Size="CarbonBlazorButtonSize.Medium"></CarbonBlazorButton>
+                <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.TextOnly" Kind="CarbonBlazorButtonKind.Primary" Text="Large (Productive)" Size="CarbonBlazorButtonSize.LargeProductive"></CarbonBlazorButton>
+                <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.TextOnly" Kind="CarbonBlazorButtonKind.Primary" Text="Large (Expressive)" Size="CarbonBlazorButtonSize.LargeExpressive"></CarbonBlazorButton>
+                <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.TextOnly" Kind="CarbonBlazorButtonKind.Primary" Text="Extra Large" Size="CarbonBlazorButtonSize.ExtraLarge"></CarbonBlazorButton>
+                <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.TextOnly" Kind="CarbonBlazorButtonKind.Primary" Text="Extra Extra Large" Size="CarbonBlazorButtonSize.ExtraExtraLarge"></CarbonBlazorButton>
+            </CarbonBlazorButtonSet>
+            <CarbonBlazorButtonSet>
+                <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.IconOnly" Kind="CarbonBlazorButtonKind.Primary" Icon="CarbonBlazorIcon.Add" Size="CarbonBlazorButtonSize.Small"></CarbonBlazorButton>
+                <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.IconOnly" Kind="CarbonBlazorButtonKind.Primary" Icon="CarbonBlazorIcon.Add" Size="CarbonBlazorButtonSize.Medium"></CarbonBlazorButton>
+                <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.IconOnly" Kind="CarbonBlazorButtonKind.Primary" Icon="CarbonBlazorIcon.Add" Size="CarbonBlazorButtonSize.LargeProductive"></CarbonBlazorButton>
+                <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.IconOnly" Kind="CarbonBlazorButtonKind.Primary" Icon="CarbonBlazorIcon.Add" Size="CarbonBlazorButtonSize.LargeExpressive"></CarbonBlazorButton>
+                <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.IconOnly" Kind="CarbonBlazorButtonKind.Primary" Icon="CarbonBlazorIcon.Add" Size="CarbonBlazorButtonSize.ExtraLarge"></CarbonBlazorButton>
+                <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.IconOnly" Kind="CarbonBlazorButtonKind.Primary" Icon="CarbonBlazorIcon.Add" Size="CarbonBlazorButtonSize.ExtraExtraLarge"></CarbonBlazorButton>
+            </CarbonBlazorButtonSet>
+        </CarbonBlazorStack>
+    </CarbonBlazorPane>
+
+    <CarbonBlazorPane Title="Form" Info="This is an example form with controls and stuff on it.">
+        <CarbonBlazorNotificationInline @ref="@_formNotification"></CarbonBlazorNotificationInline>
+        <CarbonBlazorForm TModel="StoryBookModel" Model="@_model" ValidationFunc="@ValidateForm" ValidSubmitCallback="@(_ => _formNotification.Notify("Thingy Saved", "The thingy has been saved successfully.", CarbonBlazorNotificationStyle.LowContrast, CarbonBlazorNotificationLevel.Success))">
+            <CarbonBlazorTextInput Id="SomeTextInput" Label="Text input label" HelperText="Optional help text" FieldIdentifier="@FieldIdentifier.Create(() => _model.SomeTextInputValue)" @bind-Value="@_model.SomeTextInputValue"></CarbonBlazorTextInput>
+            <CarbonBlazorCheckBox Id="SomeCheckBox" Label="Checkbox label" @bind-Value="@_model.SomeBoolInputValue" FieldIdentifier="@FieldIdentifier.Create(() => _model.SomeBoolInputValue)"></CarbonBlazorCheckBox>
+            <CarbonBlazorNumberInput Id="SomeNumberInput" Label="Number input label" @bind-Value="@_model.SomeIntInputValue" FieldIdentifier="@FieldIdentifier.Create(() => _model.SomeIntInputValue)" Min="0" Max="100" Step="5"></CarbonBlazorNumberInput>
+            <CarbonBlazorCheckBoxGroup Label="Checkbox group" @bind-Values="@_model.SomeCheckedValues" FieldIdentifier="@FieldIdentifier.Create(() => _model.SomeCheckedValues)" Items="@([CheckBoxItem.Create("Aardvark"), CheckBoxItem.Create("Chimp"), CheckBoxItem.Create("Giraffe"), CheckBoxItem.Create("Hippo")])"></CarbonBlazorCheckBoxGroup>
+            <CarbonBlazorDropDown Id="SomeDropDown" Label="Dropdown label" @bind-Value="@_model.SomeDropDownValue" FieldIdentifier="@FieldIdentifier.Create(() => _model.SomeDropDownValue)" Items="@([DropDownItem<string>.Create("One"), DropDownItem<string>.Create("Two"), DropDownItem<string>.Create("Three"), DropDownItem<string>.Create("Four")])"/>
+        </CarbonBlazorForm>
+    </CarbonBlazorPane>
+
+    <CarbonBlazorDataTable @ref="@_dataTable" TModel="StoryBookModel" Title="DataTable" Info="This is an example data table." Models="@_models" TotalSize="@_models.Count" Offset="0" PageLimit="10">
+        <ToolbarButtons>
+            <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.TextOnly" Text="XS" OnClick="@(() => _dataTable.Resize(CarbonBlazorDataTableRowSize.ExtraSmall))"></CarbonBlazorButton>
+            <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.TextOnly" Text="S" OnClick="@(() => _dataTable.Resize(CarbonBlazorDataTableRowSize.Small))"></CarbonBlazorButton>
+            <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.TextOnly" Text="M" OnClick="@(() => _dataTable.Resize(CarbonBlazorDataTableRowSize.Medium))"></CarbonBlazorButton>
+            <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.TextOnly" Text="L" OnClick="@(() => _dataTable.Resize(CarbonBlazorDataTableRowSize.Large))"></CarbonBlazorButton>
+            <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.TextOnly" Text="XL" OnClick="@(() => _dataTable.Resize(CarbonBlazorDataTableRowSize.ExtraLarge))"></CarbonBlazorButton>
+            <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.TextAndIcon" Icon="CarbonBlazorIcon.Add" Text="Add Model"></CarbonBlazorButton>
+        </ToolbarButtons>
+        <HeaderRowTemplate>
+            <CarbonBlazorDataTableHeaderCell>Some Text</CarbonBlazorDataTableHeaderCell>
+            <CarbonBlazorDataTableHeaderCell>Some Int</CarbonBlazorDataTableHeaderCell>
+            <CarbonBlazorDataTableHeaderCell>Some Bool</CarbonBlazorDataTableHeaderCell>
+            <CarbonBlazorDataTableHeaderCell>Some Dropdown</CarbonBlazorDataTableHeaderCell>
+            <CarbonBlazorDataTableHeaderCell></CarbonBlazorDataTableHeaderCell>
+        </HeaderRowTemplate>
+        <DataRowTemplate>
+            <CarbonBlazorDataTableDataCell>@context.SomeTextInputValue</CarbonBlazorDataTableDataCell>
+            <CarbonBlazorDataTableDataCell>@context.SomeIntInputValue</CarbonBlazorDataTableDataCell>
+            <CarbonBlazorDataTableDataCell>@context.SomeBoolInputValue</CarbonBlazorDataTableDataCell>
+            <CarbonBlazorDataTableDataCell>@context.SomeDropDownValue</CarbonBlazorDataTableDataCell>
+            <CarbonBlazorDataTableDataCell>
+                <CarbonBlazorButtonSet Style="justify-content: end;">
+                    <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.Edit" ToggledIcon="CarbonBlazorIcon.Cancel" OnClick="@(() => EditRow(context))"></CarbonBlazorButton>
+                    <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.TrashCan" ToggledIcon="CarbonBlazorIcon.Cancel" OnClick="@(() => DeleteRow(context))"></CarbonBlazorButton>
+                </CarbonBlazorButtonSet>
+            </CarbonBlazorDataTableDataCell>
+        </DataRowTemplate>
+    </CarbonBlazorDataTable>
+
+    <CarbonBlazorPane Title="Notifications" Info="Send notifications to the broker.">
+        <CarbonBlazorText Type="CarbonBlazorTextType.Heading02">Low Contrast</CarbonBlazorText>
+        <CarbonBlazorButtonSet>
+            <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Primary" Display="CarbonBlazorButtonDisplay.TextAndIcon" Icon="CarbonBlazorIcon.InformationFilled" Text="Information" OnClick="@(() => NotificationBroker.Send("StoryBook", "An exciting thing happened!", CarbonBlazorNotificationStyle.LowContrast, CarbonBlazorNotificationLevel.Information))"></CarbonBlazorButton>
+            <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Secondary" Display="CarbonBlazorButtonDisplay.TextAndIcon" Icon="CarbonBlazorIcon.CheckmarkFilled" Text="Success" OnClick="@(() => NotificationBroker.Send("StoryBook", "An exciting thing happened!", CarbonBlazorNotificationStyle.LowContrast, CarbonBlazorNotificationLevel.Success))"></CarbonBlazorButton>
+            <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Tertiary" Display="CarbonBlazorButtonDisplay.TextAndIcon" Icon="CarbonBlazorIcon.WarningFilled" Text="Warning" OnClick="@(() => NotificationBroker.Send("StoryBook", "An exciting thing happened!", CarbonBlazorNotificationStyle.LowContrast, CarbonBlazorNotificationLevel.Warning))"></CarbonBlazorButton>
+            <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Danger" Display="CarbonBlazorButtonDisplay.TextAndIcon" Icon="CarbonBlazorIcon.ErrorFilled" Text="Error" OnClick="@(() => NotificationBroker.Send("StoryBook", "An exciting thing happened!", CarbonBlazorNotificationStyle.LowContrast, CarbonBlazorNotificationLevel.Error))"></CarbonBlazorButton>
+        </CarbonBlazorButtonSet>
+        <CarbonBlazorText Type="CarbonBlazorTextType.Heading02">High Contrast</CarbonBlazorText>
+        <CarbonBlazorButtonSet>
+            <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Primary" Display="CarbonBlazorButtonDisplay.TextAndIcon" Icon="CarbonBlazorIcon.InformationFilled" Text="Information" OnClick="@(() => NotificationBroker.Send("StoryBook", "An exciting thing happened!", CarbonBlazorNotificationStyle.HighContrast, CarbonBlazorNotificationLevel.Information))"></CarbonBlazorButton>
+            <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Secondary" Display="CarbonBlazorButtonDisplay.TextAndIcon" Icon="CarbonBlazorIcon.CheckmarkFilled" Text="Success" OnClick="@(() => NotificationBroker.Send("StoryBook", "An exciting thing happened!", CarbonBlazorNotificationStyle.HighContrast, CarbonBlazorNotificationLevel.Success))"></CarbonBlazorButton>
+            <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Tertiary" Display="CarbonBlazorButtonDisplay.TextAndIcon" Icon="CarbonBlazorIcon.WarningFilled" Text="Warning" OnClick="@(() => NotificationBroker.Send("StoryBook", "An exciting thing happened!", CarbonBlazorNotificationStyle.HighContrast, CarbonBlazorNotificationLevel.Warning))"></CarbonBlazorButton>
+            <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Danger" Display="CarbonBlazorButtonDisplay.TextAndIcon" Icon="CarbonBlazorIcon.ErrorFilled" Text="Error" OnClick="@(() => NotificationBroker.Send("StoryBook", "An exciting thing happened!", CarbonBlazorNotificationStyle.HighContrast, CarbonBlazorNotificationLevel.Error))"></CarbonBlazorButton>
+        </CarbonBlazorButtonSet>
+    </CarbonBlazorPane>
+
+</CarbonBlazorStack>
+
+@code {
+    public class StoryBookModel
+    {
+        public StoryBookModel()
+        {
+        }
+
+        public StoryBookModel(string someTextInputValue, int someIntInputValue, bool someBoolInputValue, string someDropDownValue, IEnumerable<string> someCheckedValues)
+        {
+            SomeTextInputValue = someTextInputValue;
+            SomeIntInputValue = someIntInputValue;
+            SomeBoolInputValue = someBoolInputValue;
+            SomeDropDownValue = someDropDownValue;
+            SomeCheckedValues = someCheckedValues;
+        }
+
+        public string SomeTextInputValue { get; set; } = string.Empty;
+        public int SomeIntInputValue { get; set; } 
+        public bool SomeBoolInputValue { get; set; }
+        public string SomeDropDownValue { get; set; } = string.Empty;
+        public IEnumerable<string> SomeCheckedValues { get; set; } = [];
+    }
+
+    [Inject]
+    public INotificationBroker NotificationBroker { get; set; } = null!;
+
+    private CarbonBlazorDataTable<StoryBookModel> _dataTable = null!;
+    private CarbonBlazorNotificationInline _formNotification = null!;
+    private readonly StoryBookModel _model = new();
+    private readonly List<StoryBookModel> _models =
+    [
+        new StoryBookModel("Abacus", 1, true, "One", []),
+        new StoryBookModel("Berries", 2, false, "Two", []),
+        new StoryBookModel("Cherries", 3, true, "Three", []),
+        new StoryBookModel("Doofus", 4, false, "Four", []),
+    ];
+    private readonly Pagination _pagination = new(0, 4, 8, Link.EmptyLink(), Link.EmptyLink())
+    {
+        Next = Link.EmptyLink()
+    };
+
+    private IEnumerable<ValidationOutcome> ValidateForm(StoryBookModel model)
+    {
+        List<ValidationOutcome> validationOutcomes = [];
+
+        if (string.IsNullOrWhiteSpace(model.SomeTextInputValue))
+        {
+            validationOutcomes.Add(ValidationOutcome.Error(FieldIdentifier.Create(() => model.SomeTextInputValue), "SomeTextInputValue must be populated"));
+        }
+
+        if (model.SomeIntInputValue is < 0 or > 100 )
+        {
+            validationOutcomes.Add(ValidationOutcome.Error(FieldIdentifier.Create(() => model.SomeIntInputValue), "SomeIntInputValue must be between 0 and 100"));
+        }
+
+        if (model.SomeIntInputValue is 0)
+        {
+            validationOutcomes.Add(ValidationOutcome.Warning(FieldIdentifier.Create(() => model.SomeIntInputValue), "SomeIntInputValue should probably be > 0"));
+        }
+
+        return validationOutcomes;
+    }
+
+    private void EditRow(StoryBookModel model)
+    {
+        Console.WriteLine("Editing row for model " + model.SomeTextInputValue);
+    }
+
+    private void DeleteRow(StoryBookModel model)
+    {
+        Console.WriteLine("Deleting row for model " + model.SomeTextInputValue);
+    }
+}
