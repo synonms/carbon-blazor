@@ -344,6 +344,14 @@ Checkbox groups are used when there are multiple items to select in a list. User
 <CarbonBlazorCheckBoxGroup Label="Checkbox group" @bind-Values="@_model.SomeCheckedValues" FieldIdentifier="@FieldIdentifier.Create(() => _model.SomeCheckedValues)" Items="@([CheckBoxItem.Create("Aardvark"), CheckBoxItem.Create("Chimp"), CheckBoxItem.Create("Giraffe"), CheckBoxItem.Create("Hippo")])"></CarbonBlazorCheckBoxGroup>
 ```
 
+### CodeSnippet
+
+Code snippets are strings or small blocks of reusable code that can be copied and inserted in a code file.
+
+```htmlinblazor
+<CarbonBlazorCodeSnippet Type="CarbonBlazorCodeSnippetType.SingleLine">CodeSnippet singleLine = new();</CarbonBlazorCodeSnippet>
+```
+
 ### ConfirmDeleteModal
 
 Specialised modal used when asking the user to confirm the deletion of a RESTEasy resource.
@@ -432,6 +440,25 @@ Represents a dividing line to be used to break sets of links in the header actio
 
 ```htmlinblazor
 <CarbonBlazorHeaderActionPanelDivider />
+```
+
+### List
+
+Lists are vertical groupings of related content. List items begin with either a number or a bullet.
+
+```htmlinblazor
+<CarbonBlazorList IsOrdered="false">
+    <CarbonBlazorListItem>
+        Unordered list level 1
+        <CarbonBlazorList IsOrdered="false">
+            <CarbonBlazorListItem>Unordered list level 2</CarbonBlazorListItem>
+            <CarbonBlazorListItem>Unordered list level 2</CarbonBlazorListItem>
+            <CarbonBlazorListItem>Unordered list level 2</CarbonBlazorListItem>
+        </CarbonBlazorList>
+    </CarbonBlazorListItem>
+    <CarbonBlazorListItem>Unordered list level 1</CarbonBlazorListItem>
+    <CarbonBlazorListItem>Unordered list level 1</CarbonBlazorListItem>
+</CarbonBlazorList>
 ```
 
 ### LoadingSpinner
@@ -579,7 +606,7 @@ Provides horizontal or vertical flex layout of content.
 Provides access to pre-styled typography.
 
 ```htmlinblazor
-<CarbonBlazorText Type="CarbonBlazorTextType.Heading01">Heading01</CarbonBlazorText>
+<CarbonBlazorText Type="CarbonBlazorTextType.Heading">Heading01</CarbonBlazorText>
 ```
 
 ### TextInput

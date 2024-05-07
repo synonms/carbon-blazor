@@ -9,8 +9,8 @@
             @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorNotificationLevelMapper.ToIcon(_notification.Level), 20))
         </div>
         <div class="cb-notification-inline-content-wrapper">
-            <CarbonBlazorText Type="CarbonBlazorTextType.HeadingCompact01">@_notification.Title</CarbonBlazorText>
-            <CarbonBlazorText Type="CarbonBlazorTextType.BodyCompact01">@_notification.Message</CarbonBlazorText>
+            <CarbonBlazorText Type="CarbonBlazorTextType.HeadingCompact">@_notification.Title</CarbonBlazorText>
+            <CarbonBlazorText Type="CarbonBlazorTextType.BodyCompact">@_notification.Message</CarbonBlazorText>
         </div>
         <button class="cb-notification-inline-close-button" type="button" onclick="@(() => Hide())">
             @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.Cancel, 20))

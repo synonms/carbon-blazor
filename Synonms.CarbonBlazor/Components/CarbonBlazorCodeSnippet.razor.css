@@ -1,0 +1,65 @@
+﻿.cb-code-snippet {
+    color: var(--cb-text-primary);
+    fill: var(--cb-icon-primary);
+}
+.cb-code-snippet.layer-00 {
+    background-color: var(--cb-layer);
+}
+.cb-code-snippet.layer-01 {
+    background-color: var(--cb-layer-01);
+}
+.cb-code-snippet.layer-02 {
+    background-color: var(--cb-layer-02);
+}
+.cb-code-snippet.layer-03 {
+    background-color: var(--cb-layer-03);
+}
+
+.cb-code-snippet.inline {
+    border-radius: 2px;
+    display: inline-block;
+    height: 1rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+.cb-code-snippet.single-line {
+    align-content: center;
+    height: 3rem;
+    max-width: 48rem;
+    padding-right: 3rem;
+    padding-left: 1rem;
+}
+.cb-code-snippet.multi-line {
+    min-height: 18rem;
+    max-width: 48rem;
+    padding: 1rem 2.5rem 1rem 1rem;
+}
+
+.cb-code-snippet:focus {
+    border: 1px solid var(--cb-focus);
+}
+
+.cb-code-snippet.inline.layer-00:hover {
+    background-color: var(--cb-layer-hover);
+}
+.cb-code-snippet.inline.layer-01:hover {
+    background-color: var(--cb-layer-hover-01);
+}
+.cb-code-snippet.inline.layer-02:hover {
+    background-color: var(--cb-layer-hover-02);
+}
+.cb-code-snippet.inline.layer-03:hover {
+    background-color: var(--cb-layer-hover-03);
+}
+.cb-code-snippet.inline.layer-00:active {
+    background-color: var(--cb-layer-active);
+}
+.cb-code-snippet.inline.layer-01:active {
+    background-color: var(--cb-layer-active-01);
+}
+.cb-code-snippet.inline.layer-02:active {
+    background-color: var(--cb-layer-active-02);
+}
+.cb-code-snippet.inline.layer-03:active {
+    background-color: var(--cb-layer-active-03);
+}

@@ -2,46 +2,77 @@
 
 public enum CarbonBlazorTextType
 {
-    BodyCompact01,
-    BodyCompact02,
-    Body01,
-    Body02,
-    Heading01,
-    Heading02,
+    Code,
+    Label,
+    HelperText,
+    Legal,
+    BodyCompact,
+    Body,
+    HeadingCompact,
+    Heading,
     Heading03,
     Heading04,
     Heading05,
     Heading06,
     Heading07,
-    HeadingCompact01,
-    HeadingCompact02,
-    HelperText01,
-    HelperText02,
-    Label01,
-    Label02
+    FluidParagraph,
+    FluidQuotation01,
+    FluidQuotation02,
+    FluidDisplay01,
+    FluidDisplay02,
+    FluidDisplay03,
+    FluidDisplay04
 }
 
 public static class CarbonBlazorTextTypeMapper
 {
-    public static string ToClass(CarbonBlazorTextType textType) => textType switch
+    public static string ToClass(CarbonBlazorTextType textType, bool isExpressive) => textType switch
     {
-        CarbonBlazorTextType.BodyCompact01 => "body-compact-01",
-        CarbonBlazorTextType.BodyCompact02 => "body-compact-02",
-        CarbonBlazorTextType.Body01 => "body-01",
-        CarbonBlazorTextType.Body02 => "body-02",
-        CarbonBlazorTextType.Heading01 => "heading-01",
-        CarbonBlazorTextType.Heading02 => "heading-02",
-        CarbonBlazorTextType.Heading03 => "heading-03",
-        CarbonBlazorTextType.Heading04 => "heading-04",
-        CarbonBlazorTextType.Heading05 => "heading-05",
-        CarbonBlazorTextType.Heading06 => "heading-06",
+        CarbonBlazorTextType.Code => "code-" + (isExpressive ? "02" : "01"),
+        CarbonBlazorTextType.Label => "label-" + (isExpressive ? "02" : "01"),
+        CarbonBlazorTextType.HelperText => "helper-text-" + (isExpressive ? "02" : "01"),
+        CarbonBlazorTextType.Legal => "legal-" + (isExpressive ? "02" : "01"),
+        CarbonBlazorTextType.BodyCompact => "body-compact-" + (isExpressive ? "02" : "01"),
+        CarbonBlazorTextType.Body => "body-" + (isExpressive ? "02" : "01"),
+        CarbonBlazorTextType.HeadingCompact => "heading-compact-" + (isExpressive ? "02" : "01"),
+        CarbonBlazorTextType.Heading => "heading-" + (isExpressive ? "02" : "01"),
+        CarbonBlazorTextType.Heading03 => (isExpressive ? "fluid-" : string.Empty) + "heading-03",
+        CarbonBlazorTextType.Heading04 => (isExpressive ? "fluid-" : string.Empty) + "heading-04",
+        CarbonBlazorTextType.Heading05 => (isExpressive ? "fluid-" : string.Empty) + "heading-05",
+        CarbonBlazorTextType.Heading06 => (isExpressive ? "fluid-" : string.Empty) + "heading-06",
         CarbonBlazorTextType.Heading07 => "heading-07",
-        CarbonBlazorTextType.HeadingCompact01 => "heading-compact-01",
-        CarbonBlazorTextType.HeadingCompact02 => "heading-compact-02",
-        CarbonBlazorTextType.HelperText01 => "helper-text-01",
-        CarbonBlazorTextType.HelperText02 => "helper-text-02",
-        CarbonBlazorTextType.Label01 => "label-01",
-        CarbonBlazorTextType.Label02 => "label-02",
+        CarbonBlazorTextType.FluidParagraph => "fluid-paragraph-01",
+        CarbonBlazorTextType.FluidQuotation01 => "fluid-quotation-01",
+        CarbonBlazorTextType.FluidQuotation02 => "fluid-quotation-02",
+        CarbonBlazorTextType.FluidDisplay01 => "fluid-display-01",
+        CarbonBlazorTextType.FluidDisplay02 => "fluid-display-02",
+        CarbonBlazorTextType.FluidDisplay03 => "fluid-display-03",
+        CarbonBlazorTextType.FluidDisplay04 => "fluid-display-04",
+        _ => string.Empty
+    };
+    
+    public static string ToHtmlTag(CarbonBlazorTextType textType) => textType switch
+    {
+        CarbonBlazorTextType.Code => "code",
+        CarbonBlazorTextType.Label => "label",
+        CarbonBlazorTextType.HelperText => "span",
+        CarbonBlazorTextType.Legal => "span",
+        CarbonBlazorTextType.BodyCompact => "p",
+        CarbonBlazorTextType.Body => "p",
+        CarbonBlazorTextType.HeadingCompact => "h2",
+        CarbonBlazorTextType.Heading => "h1",
+        CarbonBlazorTextType.Heading03 => "h3",
+        CarbonBlazorTextType.Heading04 => "h4",
+        CarbonBlazorTextType.Heading05 => "h5",
+        CarbonBlazorTextType.Heading06 => "h6",
+        CarbonBlazorTextType.Heading07 => "h7",
+        CarbonBlazorTextType.FluidParagraph => "p",
+        CarbonBlazorTextType.FluidQuotation01 => "blockquote",
+        CarbonBlazorTextType.FluidQuotation02 => "blockquote",
+        CarbonBlazorTextType.FluidDisplay01 => "span",
+        CarbonBlazorTextType.FluidDisplay02 => "span",
+        CarbonBlazorTextType.FluidDisplay03 => "span",
+        CarbonBlazorTextType.FluidDisplay04 => "span",
         _ => string.Empty
     };
 }

@@ -1,0 +1,18 @@
+﻿@using Synonms.CarbonBlazor.Enumerations
+
+<div class="cb-code-snippet @CarbonBlazorCodeSnippetTypeMapper.ToClass(Type) @CarbonBlazorLayerMapper.ToClass(Layer)">
+    <p class="cb-text code-01 @CarbonBlazorLayerMapper.ToClass(Layer)" style="white-space: pre-wrap;">
+        @ChildContent
+    </p>
+</div>
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = null!;
+
+    [Parameter]
+    public CarbonBlazorCodeSnippetType Type { get; set; } = CarbonBlazorCodeSnippetType.Inline;
+    
+    [Parameter]
+    public CarbonBlazorLayer Layer { get; set; } = CarbonBlazorLayer.Two;
+}

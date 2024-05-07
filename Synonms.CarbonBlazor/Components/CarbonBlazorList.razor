@@ -1,0 +1,28 @@
+﻿
+@if (IsOrdered)
+{
+    <ol class="cb-list @(IsExpressive ? "expressive" : string.Empty)">
+        <CascadingValue Value="@IsExpressive">
+            @ChildContent
+        </CascadingValue>
+    </ol>
+}
+else
+{
+    <ul class="cb-list @(IsExpressive ? "expressive" : string.Empty)">
+        <CascadingValue Value="@IsExpressive">
+            @ChildContent
+        </CascadingValue>
+    </ul>
+}
+
+@code {
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public bool IsOrdered { get; set; } = false;
+
+    [Parameter]
+    public bool IsExpressive { get; set; } = false;
+}
