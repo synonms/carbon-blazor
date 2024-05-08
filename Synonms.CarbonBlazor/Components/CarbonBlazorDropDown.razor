@@ -14,7 +14,15 @@
 
     <div class="cb-drop-down-wrapper @CarbonBlazorInputSizeMapper.ToClass(Size)">
         <div class="@GetClass()" onclick="@(() => OnClicked())">
-            @Value
+            @if (_values.Any() is false)
+            {
+                <span>Choose an option</span>
+            }
+            else 
+            {
+                <CarbonBlazorTag Type="CarbonBlazorTagType.Dismissible" Colour="CarbonBlazorTagColour.Black" Text="@_values.Count.ToString()" OnDismissedCallback="@ClearSelected"></CarbonBlazorTag>
+                <span>Options selected</span>
+            }
             <div class="cb-drop-down-button">
                 @if (_isExpanded)
                 {
@@ -30,14 +38,10 @@
         <div class="cb-drop-down-menu @CarbonBlazorLayerMapper.ToClass(Layer) @(_isExpanded ? "" : "collapsed")">
             @foreach (DropDownItem<TValue> item in Items)
             {
-                <div class="cb-drop-down-item @(item.Value.Equals(Value) ? "selected" : string.Empty)" onclick="@(() => ItemClicked(item))">
+                <div class="cb-drop-down-item @(Values.Contains(item.Value) ? "selected" : string.Empty)" onclick="@(() => ItemSelected(item))">
+                    <input type="checkbox" class="cb-drop-down-check-box" id="@Id" name="@Id" @oninput="@(changeEventArgs => OnCheckBoxValueChanged(changeEventArgs, item))" checked="@Values.Contains(item.Value)">
+                    
                     @item.Label
-                    @if (item.Value.Equals(Value))
-                    {
-                        <svg focusable="false" preserveAspectRatio="xMidYMid meet" class="cb-number-input-icon" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-                            <polygon points="13 24 4 15 5.414 13.586 13 21.171 26.586 7.586 28 9 13 24"/>
-                        </svg>
-                    }
                 </div>
             }
         </div>
@@ -54,6 +58,7 @@
 @code {
     private CarbonBlazorValidationMessage? _validationMessage;
     private bool _isExpanded = false;
+    private List<TValue> _values = [];
 
     [CascadingParameter]
     public EditContext EditContext { get; set; } = null!;
@@ -67,10 +72,10 @@
 
     [Parameter]
     [EditorRequired]
-    public TValue Value { get; set; } = default!;
+    public IEnumerable<TValue> Values { get; set; } = default!;
 
     [Parameter]
-    public EventCallback<TValue> ValueChanged { get; set; }
+    public EventCallback<IEnumerable<TValue>> ValuesChanged { get; set; }
 
     [Parameter]
     public string? Id { get; set; }
@@ -103,20 +108,11 @@
     [EditorRequired]
     public IEnumerable<DropDownItem<TValue>> Items { get; set; } = [];
 
-    private void OnClicked()
+    protected override void OnInitialized()
     {
-        _isExpanded = !_isExpanded;
-    }
+        base.OnInitialized();
 
-    private async Task ItemClicked(DropDownItem<TValue> item)
-    {
-        Value = item.Value;
-
-        await ValueChanged.InvokeAsync(Value);
-        
-        EditContext.NotifyFieldChanged(FieldIdentifier);
-
-        _isExpanded = false;
+        _values = Values.ToList();
     }
 
     private string GetClass()
@@ -134,5 +130,63 @@
             };
 
         return CssClasses.Concatenate(baseClass, layerClass, validationClass);
+    }
+
+    private void OnClicked()
+    {
+        _isExpanded = !_isExpanded;
+    }
+
+    private async Task ItemSelected(DropDownItem<TValue> item)
+    {
+        if (_values.Contains(item.Value))
+        {
+            _values.Remove(item.Value);
+        }
+        else
+        {
+            _values.Add(item.Value);
+        }
+
+        Values = _values;
+        await ValuesChanged.InvokeAsync(Values);
+        
+        EditContext.NotifyFieldChanged(FieldIdentifier);
+    }
+
+    private async Task ClearSelected()
+    {
+        _values.Clear();
+        
+        Values = _values;
+        await ValuesChanged.InvokeAsync(Values);
+        
+        EditContext.NotifyFieldChanged(FieldIdentifier);
+
+        _isExpanded = !_isExpanded;
+    }
+    
+    private async Task OnCheckBoxValueChanged(ChangeEventArgs changeEventArgs, DropDownItem<TValue> item)
+    {
+        string newValueAsString = changeEventArgs.Value?.ToString() ?? string.Empty;
+
+        if (bool.TryParse(newValueAsString, out bool isSelected))
+        {
+            if (isSelected && _values.Contains(item.Value) is false)
+            {
+                _values.Add(item.Value);
+            }
+            
+            if (isSelected is false && _values.Contains(item.Value))
+            {
+                _values.Remove(item.Value);
+            }
+
+            Values = _values;
+            
+            await ValuesChanged.InvokeAsync(Values);
+        
+            EditContext.NotifyFieldChanged(FieldIdentifier);
+        }
     }
 }

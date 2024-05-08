@@ -1,0 +1,61 @@
+﻿@using Synonms.CarbonBlazor.Enumerations
+
+@if (_isVisible)
+{
+    <div class="cb-tag-wrapper @CarbonBlazorTagTypeMapper.ToClass(Type) @CarbonBlazorInputSizeMapper.ToClass(Size) @CarbonBlazorTagColourMapper.ToClass(Colour) @(Icon == CarbonBlazorIcon.None ? string.Empty : "decorated")">
+        @if (Icon != CarbonBlazorIcon.None)
+        {
+            @((MarkupString)CarbonBlazorIconMapper.ToSvg(Icon, 16))
+        }
+        <span class="cb-text label-01">@Text</span>
+        @if (Type == CarbonBlazorTagType.Dismissible)
+        {
+            <button class="cb-tag-close-button" type="button" onclick="@(() => Dismiss())">
+                @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.Cancel, 16))
+            </button>
+        }
+    </div>
+}
+
+@code {
+    private bool _isVisible = true;
+
+    [Parameter]
+    [EditorRequired]
+    public string Text { get; set; } = string.Empty;
+    
+    [Parameter]
+    public CarbonBlazorIcon Icon { get; set; } = CarbonBlazorIcon.None;
+
+    [Parameter]
+    public CarbonBlazorTagType Type { get; set; } = CarbonBlazorTagType.ReadOnly;
+
+    [Parameter]
+    public CarbonBlazorInputSize Size { get; set; } = CarbonBlazorInputSize.Medium;
+
+    [Parameter]
+    public CarbonBlazorTagColour Colour { get; set; } = CarbonBlazorTagColour.Blue;
+
+    [Parameter]
+    public EventCallback OnDismissedCallback { get; set; } = EventCallback.Empty;
+
+    public void Show()
+    {
+        _isVisible = true;
+    }
+
+    public void Hide()
+    {
+        _isVisible = false;
+    }
+
+    private async Task Dismiss()
+    {
+        Hide();
+
+        if (OnDismissedCallback.HasDelegate)
+        {
+            await OnDismissedCallback.InvokeAsync();
+        }
+    }
+}

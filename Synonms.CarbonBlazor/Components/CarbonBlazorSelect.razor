@@ -1,20 +1,129 @@
-﻿<div class="cds--form-item some-class">
-    <div class="cds--select">
-        <label for="select-1" class="cds--label" dir="ltr">Select</label>
-        <div class="cds--select-input__wrapper">
-            <select id="select-1" class="cds--select-input" title="">
-                <option class="cds--select-option" value="placeholder-item" disabled="" hidden="" selected="">Choose an option</option>
-                <option class="cds--select-option" value="option-1">Option 1</option>
-                <option class="cds--select-option" value="option-2">Option 2</option>
-                <option class="cds--select-option" value="option-3">Option 3</option>
-            </select>
-            <svg focusable="false" preserveAspectRatio="xMidYMid meet" fill="currentColor" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" class="cds--select__arrow" xmlns="http://www.w3.org/2000/svg">
-                <path d="M8 11L3 6 3.7 5.3 8 9.6 12.3 5.3 13 6z"></path>
-            </svg>
+﻿@using Synonms.CarbonBlazor.Enumerations
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Web
+@using Synonms.CarbonBlazor.Css
+@using Synonms.CarbonBlazor.Models
+
+@typeparam TValue where TValue : notnull
+
+<CarbonBlazorFieldSet IsDoubleColumn="@IsDoubleColumn" IsReadOnly="@IsReadOnly" IsDisabled="@IsDisabled">
+    @if (string.IsNullOrWhiteSpace(Label) is false)
+    {
+        <label for="@Id" class="cb-select-label">@Label</label>
+    }
+
+    <div class="cb-select-wrapper @CarbonBlazorInputSizeMapper.ToClass(Size)">
+        <div class="@GetClass()" onclick="@(() => OnClicked())">
+            @Value
+            <div class="cb-select-button">
+                @if (_isExpanded)
+                {
+                    @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.ChevronUp, 16))
+                }
+                else
+                {
+                    @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.ChevronDown, 16))
+                }
+            </div>
+        </div>
+
+        <div class="cb-select-menu @CarbonBlazorLayerMapper.ToClass(Layer) @(_isExpanded ? "" : "collapsed")">
+            @foreach (SelectItem<TValue> item in Items)
+            {
+                <div class="cb-select-item @(item.Value.Equals(Value) ? "selected" : string.Empty)" onclick="@(() => ItemClicked(item))">
+                    @item.Label
+                </div>
+            }
         </div>
     </div>
-</div>
+
+    <CarbonBlazorValidationMessage @ref="@_validationMessage" FieldIdentifier="@FieldIdentifier"></CarbonBlazorValidationMessage>
+
+    @if (string.IsNullOrWhiteSpace(HelperText) is false)
+    {
+        <div id="@Id-helper-text" class="cb-select-helper">@HelperText</div>
+    }
+</CarbonBlazorFieldSet>
 
 @code {
+    private CarbonBlazorValidationMessage? _validationMessage;
+    private bool _isExpanded = false;
+
+    [CascadingParameter]
+    public EditContext EditContext { get; set; } = null!;
     
+    [CascadingParameter]
+    public IEnumerable<ValidationOutcome> ValidationOutcomes { get; set; } = [];
+
+    [Parameter]
+    [EditorRequired]
+    public FieldIdentifier FieldIdentifier { get; set; } = default!;
+
+    [Parameter]
+    [EditorRequired]
+    public TValue Value { get; set; } = default!;
+
+    [Parameter]
+    public EventCallback<TValue> ValueChanged { get; set; }
+
+    [Parameter]
+    public string? Id { get; set; }
+
+    [Parameter]
+    public CarbonBlazorInputSize Size { get; set; } = CarbonBlazorInputSize.Medium;
+
+    [Parameter]
+    public CarbonBlazorLayer Layer { get; set; } = CarbonBlazorLayer.Two;
+
+    [Parameter]
+    public string? Label { get; set; }
+
+    [Parameter]
+    public string? HelperText { get; set; }
+
+    [Parameter]
+    public bool IsDisabled { get; set; } = false;
+
+    [Parameter]
+    public bool IsReadOnly { get; set; } = false;
+
+    [Parameter]
+    public bool IsDoubleColumn { get; set; } = false;
+
+    [Parameter]
+    [EditorRequired]
+    public IEnumerable<SelectItem<TValue>> Items { get; set; } = [];
+
+    private void OnClicked()
+    {
+        _isExpanded = !_isExpanded;
+    }
+
+    private async Task ItemClicked(SelectItem<TValue> item)
+    {
+        Value = item.Value;
+
+        await ValueChanged.InvokeAsync(Value);
+        
+        EditContext.NotifyFieldChanged(FieldIdentifier);
+
+        _isExpanded = false;
+    }
+
+    private string GetClass()
+    {
+        const string baseClass = CssClasses.Prefix + "select-input";
+        string layerClass = CarbonBlazorLayerMapper.ToClass(Layer);
+        string validationClass = _validationMessage is null 
+            ? string.Empty 
+            : _validationMessage.ValidationState switch
+            {
+                ValidationOutcome.ValidationState.Valid => "valid",
+                ValidationOutcome.ValidationState.Warning => "warning",
+                ValidationOutcome.ValidationState.Error => "error",
+                _ => string.Empty
+            };
+
+        return CssClasses.Concatenate(baseClass, layerClass, validationClass);
+    }
 }

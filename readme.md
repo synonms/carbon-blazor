@@ -407,10 +407,11 @@ Represents a table header to be used in the `HeaderRowTemplate` fragment of a `D
 
 ### DropDown
 
-Dropdowns present a list of options from which a user can select one option. The selected option can represent a value in a form, or can be used as an action to filter or sort existing content.
+Dropdowns present a list of options from which a user can select one option, or several. A selected option can represent a value in a form, or can be used as an action to filter or sort existing content.
+To constrain the user to a single selection, use a `Select` component instead.
 
 ```htmlinblazor
-<CarbonBlazorDropDown Id="SomeDropDown" Label="Dropdown label" @bind-Value="@_model.SomeDropDownValue" FieldIdentifier="@FieldIdentifier.Create(() => _model.SomeDropDownValue)" Items="@([DropDownItem<string>.Create("One"), DropDownItem<string>.Create("Two"), DropDownItem<string>.Create("Three"), DropDownItem<string>.Create("Four")])"/>
+<CarbonBlazorDropDown Id="SomeDropDown" Label="Dropdown label" @bind-Values="@_model.SomeDropDownValues" FieldIdentifier="@FieldIdentifier.Create(() => _model.SomeDropDownValues)" Items="@([DropDownItem<string>.Create("One"), DropDownItem<string>.Create("Two"), DropDownItem<string>.Create("Three"), DropDownItem<string>.Create("Four")])"/>
 ```
 
 ### Form
@@ -535,6 +536,14 @@ Search enables users to specify a word or a phrase to find relevant content with
 <CarbonBlazorSearch SearchTextChangedCallback="@OnSearchTextChanged"></CarbonBlazorSearch>
 ```
 
+### Select
+
+Select allows users to choose one option from a list of values.
+
+```htmlinblazor
+<CarbonBlazorSelect Id="SomeSelect" Label="Select label" @bind-Value="@_model.SomeSelectValue" FieldIdentifier="@FieldIdentifier.Create(() => _model.SomeSelectValue)" Items="@([SelectItem<string>.Create("One"), SelectItem<string>.Create("Two"), SelectItem<string>.Create("Three"), SelectItem<string>.Create("Four")])"/>
+```
+
 ### Shell
 
 The Shell provides the top level layout for your app.  It features a Header bar, sidebar for navigation and main content area.
@@ -599,6 +608,14 @@ Provides horizontal or vertical flex layout of content.
     <CarbonBlazorText Type="CarbonBlazorTextType.Label01">Label01</CarbonBlazorText>
     <CarbonBlazorText Type="CarbonBlazorTextType.Label02">Label02</CarbonBlazorText>
 </CarbonBlazorStack>
+```
+
+### Tag
+
+Use tags to label, categorize, or organize items using keywords that describe them.
+
+```htmlinblazor
+<CarbonBlazorTag Type="CarbonBlazorTagType.Operational" Text="Operational" Size="CarbonBlazorInputSize.Large" Icon="CarbonBlazorIcon.Add"></CarbonBlazorTag>
 ```
 
 ### Text
