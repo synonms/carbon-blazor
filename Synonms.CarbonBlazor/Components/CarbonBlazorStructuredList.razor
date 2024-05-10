@@ -1,0 +1,32 @@
+﻿@using Synonms.CarbonBlazor.Enumerations
+
+<table class="cb-structured-list @(Layer is not null ? CarbonBlazorLayerMapper.ToClass(Layer.Value) : string.Empty) @CarbonBlazorStructuredListRowSizeMapper.ToClass(RowSize)">
+    <thead>
+    <tr>
+        <CascadingValue Value="@Layer">
+            @HeaderCells
+        </CascadingValue>
+    </tr>
+    </thead>
+    <tbody>
+        <CascadingValue Value="@Layer">
+            @DataRows
+        </CascadingValue>
+    </tbody>
+</table>
+
+@code {
+    [Parameter]
+    [EditorRequired]
+    public RenderFragment HeaderCells { get; set; } = null!;
+
+    [Parameter]
+    [EditorRequired]
+    public RenderFragment DataRows { get; set; } = null!;
+
+    [Parameter]
+    public CarbonBlazorLayer? Layer { get; set; }
+    
+    [Parameter]
+    public CarbonBlazorStructuredListRowSize RowSize { get; set; } = CarbonBlazorStructuredListRowSize.Normal;
+}

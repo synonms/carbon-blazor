@@ -610,6 +610,32 @@ Provides horizontal or vertical flex layout of content.
 </CarbonBlazorStack>
 ```
 
+### StructuredList
+
+Structured lists group content that is similar or related, such as terms and definitions.
+
+```htmlinblazor
+<CarbonBlazorStructuredList RowSize="CarbonBlazorStructuredListRowSize.Normal">
+    <HeaderCells>
+        <CarbonBlazorStructuredListHeaderCell>ColumnA</CarbonBlazorStructuredListHeaderCell>
+        <CarbonBlazorStructuredListHeaderCell>ColumnB</CarbonBlazorStructuredListHeaderCell>
+        <CarbonBlazorStructuredListHeaderCell>ColumnC</CarbonBlazorStructuredListHeaderCell>
+    </HeaderCells>
+    <DataRows>
+        <CarbonBlazorStructuredListDataRow>
+            <CarbonBlazorStructuredListDataCell>Row 1</CarbonBlazorStructuredListDataCell>
+            <CarbonBlazorStructuredListDataCell>Row 1</CarbonBlazorStructuredListDataCell>
+            <CarbonBlazorStructuredListDataCell>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc dui magna, finibus id tortor sed, aliquet bibendum augue. Aenean posuere sem vel euismod dignissim. Nulla ut cursus dolor. Pellentesque vulputate nisl a porttitor interdum.</CarbonBlazorStructuredListDataCell>
+        </CarbonBlazorStructuredListDataRow>
+        <CarbonBlazorStructuredListDataRow>
+            <CarbonBlazorStructuredListDataCell>Row 2</CarbonBlazorStructuredListDataCell>
+            <CarbonBlazorStructuredListDataCell>Row 2</CarbonBlazorStructuredListDataCell>
+            <CarbonBlazorStructuredListDataCell>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc dui magna, finibus id tortor sed, aliquet bibendum augue. Aenean posuere sem vel euismod dignissim. Nulla ut cursus dolor. Pellentesque vulputate nisl a porttitor interdum.</CarbonBlazorStructuredListDataCell>
+        </CarbonBlazorStructuredListDataRow>
+    </DataRows>
+</CarbonBlazorStructuredList>
+```
+
 ### Tag
 
 Use tags to label, categorize, or organize items using keywords that describe them.

@@ -1,0 +1,9 @@
+﻿<tr class="cb-structured-list-data-row">
+    @ChildContent
+</tr>
+
+@code {
+    [Parameter]
+    [EditorRequired]
+    public RenderFragment ChildContent { get; set; } = null!;
+}

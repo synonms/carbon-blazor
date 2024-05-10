@@ -1,0 +1,149 @@
+﻿.cb-structured-list {
+    padding: 0;
+    background-color: var(--cb-layer);
+    color: var(--cb-text-primary);
+    width: 100%;
+}
+
+.cb-structured-list table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    inline-size: 100%;
+}
+.cb-structured-list thead {
+    background-color: transparent;
+    color: var(--cb-text-primary);
+    font-size: var(--cb-heading-compact-01-font-size);
+    font-weight: var(--cb-heading-compact-01-font-weight);
+    line-height: var(--cb-heading-compact-01-line-height);
+    letter-spacing: var(--cb-heading-compact-01-letter-spacing);
+    text-align: left;
+}
+.cb-structured-list.layer-00 thead {
+    background-color: var(--cb-layer);
+}
+.cb-structured-list.layer-01 thead {
+    background-color: var(--cb-layer-01);
+}
+.cb-structured-list.layer-02 thead {
+    background-color: var(--cb-layer-02);
+}
+.cb-structured-list.layer-03 thead {
+    background-color: var(--cb-layer-03);
+}
+
+.cb-structured-list ::deep tr {
+    min-height: 3.75rem;
+}
+.cb-structured-list.condensed ::deep tr {
+    min-height: 2.25rem;
+}
+
+.cb-structured-list ::deep th {
+    padding: 1rem 1rem 0.5rem;
+}
+
+.cb-structured-list ::deep td {
+    padding: 1rem 1rem 1.5rem;
+}
+.cb-structured-list.condensed ::deep td {
+    padding: 0.5rem 1rem;
+}
+
+.cb-structured-list thead tr {
+    border-bottom: 1px solid var(--cb-border-subtle);
+    block-size: 3rem;
+    inline-size: 100%;
+}
+.cb-structured-list.layer-00 thead tr {
+    border-bottom: 1px solid var(--cb-border-subtle);
+}
+.cb-structured-list.layer-01 thead tr {
+    border-bottom: 1px solid var(--cb-border-subtle-01);
+}
+.cb-structured-list.layer-02 thead tr {
+    border-bottom: 1px solid var(--cb-border-subtle-02);
+}
+.cb-structured-list.layer-03 thead tr {
+    border-bottom: 1px solid var(--cb-border-subtle-03);
+}
+
+.cb-structured-list tbody {
+    background-color: var(--cb-layer);
+    font-size: var(--cb-body-compact-01-font-size);
+    font-weight: var(--cb-body-compact-01-font-weight);
+    inline-size: 100%;
+    line-height: var(--cb-body-compact-01-line-height);
+    letter-spacing: var(--cb-body-compact-01-letter-spacing);
+}
+.cb-structured-list.layer-00 tbody {
+    background-color: var(--cb-layer);
+}
+.cb-structured-list.layer-01 tbody {
+    background-color: var(--cb-layer-01);
+}
+.cb-structured-list.layer-02 tbody {
+    background-color: var(--cb-layer-02);
+}
+.cb-structured-list.layer-03 tbody {
+    background-color: var(--cb-layer-03);
+}
+
+.cb-structured-list tbody ::deep tr {
+    background-color: transparent;
+    border: none;
+    block-size: 3rem;
+    color: var(--cb-text-secondary);
+    inline-size: 100%;
+    transition: background-color 70ms cubic-bezier(0,0,.38,.9);
+    cursor: pointer;
+}
+.cb-structured-list.layer-00 tbody ::deep tr {
+    background-color: var(--cb-layer);
+    border-bottom: 1px solid var(--cb-border-subtle);
+}
+.cb-structured-list.layer-01 tbody ::deep tr {
+    background-color: var(--cb-layer-01);
+    border-bottom: 1px solid var(--cb-border-subtle-01);
+}
+.cb-structured-list.layer-02 tbody ::deep tr {
+    background-color: var(--cb-layer-02);
+    border-bottom: 1px solid var(--cb-border-subtle-02);
+}
+.cb-structured-list.layer-03 tbody ::deep tr {
+    background-color: var(--cb-layer-03);
+    border-bottom: 1px solid var(--cb-border-subtle-03);
+}
+
+.cb-structured-list tbody ::deep tr:hover {
+    background-color: var(--cb-layer-hover);
+    color: var(--cb-text-primary);
+}
+.cb-structured-list.layer-00 tbody ::deep tr:hover {
+    background-color: var(--cb-layer-hover);
+}
+.cb-structured-list.layer-01 tbody ::deep tr:hover {
+    background-color: var(--cb-layer-hover-01);
+}
+.cb-structured-list.layer-02 tbody ::deep tr:hover {
+    background-color: var(--cb-layer-hover-02);
+}
+.cb-structured-list.layer-03 tbody ::deep tr:hover {
+    background-color: var(--cb-layer-hover-03);
+}
+
+.cb-structured-list tbody ::deep tr:active {
+    background-color: var(--cb-layer-active);
+}
+.cb-structured-list.layer-00 tbody ::deep tr:active {
+    background-color: var(--cb-layer-active);
+}
+.cb-structured-list.layer-01 tbody ::deep tr:active {
+    background-color: var(--cb-layer-active-01);
+}
+.cb-structured-list.layer-02 tbody ::deep tr:active {
+    background-color: var(--cb-layer-active-02);
+}
+.cb-structured-list.layer-03 tbody ::deep tr:active {
+    background-color: var(--cb-layer-active-03);
+}
