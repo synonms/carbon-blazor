@@ -95,6 +95,13 @@
     [Parameter]
     public bool IsDoubleColumn { get; set; } = false;
 
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        
+        _valueAsString = Value.ToString();
+    }
+
     private CarbonBlazorButtonSize GetButtonSize() => Size switch
     {
         CarbonBlazorInputSize.Small => CarbonBlazorButtonSize.Small,

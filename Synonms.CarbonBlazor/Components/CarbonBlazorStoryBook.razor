@@ -396,7 +396,7 @@ if (isSuperExciting)
 
     private CarbonBlazorDataTable<StoryBookModel> _dataTable = null!;
     private CarbonBlazorNotificationInline _formNotification = null!;
-    private readonly StoryBookModel _model = new();
+    private readonly StoryBookModel _model = new() { SomeIntInputValue = 10 };
     private readonly List<StoryBookModel> _models =
     [
         new StoryBookModel("Abacus", 1, true, "One", [], []),

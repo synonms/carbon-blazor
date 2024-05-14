@@ -123,7 +123,7 @@ public abstract class ResourcesPage<TResource> : ComponentBase
 
     protected async Task ConfirmOperation()
     {
-        if (ActiveResource.Id == Guid.Empty)
+        if (ActiveResource.Id == Guid.Empty && _mode is Mode.Update or Mode.Delete)
         {
             EndOperation();
             return;
