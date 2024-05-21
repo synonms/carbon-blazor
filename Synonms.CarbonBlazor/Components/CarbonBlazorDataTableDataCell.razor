@@ -1,5 +1,5 @@
 ﻿@using Synonms.CarbonBlazor.Enumerations
-<td class="cb-data-table-data-cell @CarbonBlazorLayerMapper.ToClass(Layer)">
+<td class="cb-data-table-data-cell @CarbonBlazorLayerMapper.ToClass(Layer) @Class" style="@Style">
     @ChildContent    
 </td>
 
@@ -11,4 +11,10 @@
     [Parameter]
     [EditorRequired]
     public RenderFragment ChildContent { get; set; } = null!;
+
+    [Parameter]
+    public string Class { get; set; } = string.Empty;
+    
+    [Parameter]
+    public string Style { get; set; } = string.Empty;
 }

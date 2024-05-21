@@ -1,4 +1,4 @@
-﻿<th class="cb-data-table-header-cell">
+﻿<th class="cb-data-table-header-cell @Class" style="@Style">
     @ChildContent    
 </th>
 
@@ -6,4 +6,10 @@
 
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
+    
+    [Parameter]
+    public string Class { get; set; } = string.Empty;
+    
+    [Parameter]
+    public string Style { get; set; } = string.Empty;
 }

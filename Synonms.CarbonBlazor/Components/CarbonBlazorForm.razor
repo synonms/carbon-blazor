@@ -38,13 +38,13 @@
     public Func<TModel, IEnumerable<ValidationOutcome>>? ValidationFunc { get; set; }
 
     [Parameter]
-    public EventCallback<TModel> CancelCallback { get; set; } = EventCallback<TModel>.Empty;
+    public EventCallback CancelCallback { get; set; } = EventCallback.Empty;
 
     [Parameter]
-    public EventCallback<TModel> EditCallback { get; set; } = EventCallback<TModel>.Empty;
+    public EventCallback EditCallback { get; set; } = EventCallback.Empty;
 
     [Parameter]
-    public EventCallback<TModel> ValidSubmitCallback { get; set; } = EventCallback<TModel>.Empty;
+    public EventCallback ValidSubmitCallback { get; set; } = EventCallback.Empty;
 
     [Parameter]
     public bool IsReadOnly { get; set; }

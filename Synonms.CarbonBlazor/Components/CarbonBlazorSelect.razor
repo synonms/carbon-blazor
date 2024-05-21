@@ -12,9 +12,9 @@
         <label for="@Id" class="cb-select-label">@Label</label>
     }
 
-    <div class="cb-select-wrapper @CarbonBlazorInputSizeMapper.ToClass(Size)">
-        <div class="@GetClass()" onclick="@(() => OnClicked())">
-            @Value
+    <div class="cb-select-wrapper @CarbonBlazorInputSizeMapper.ToClass(Size)" disabled="@IsDisabled" readonly="@IsReadOnly">
+        <div class="@GetClass()" onclick="@(() => OnClicked())" disabled="@IsDisabled" readonly="@IsReadOnly">
+            @(Items.FirstOrDefault(x => x.Value.Equals(Value))?.Label ?? string.Empty)
             <div class="cb-select-button">
                 @if (_isExpanded)
                 {

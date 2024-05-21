@@ -1,6 +1,7 @@
-﻿@using Synonms.CarbonBlazor.Enumerations
+﻿@using Microsoft.AspNetCore.Components.Web
+@using Synonms.CarbonBlazor.Enumerations
 @using Synonms.CarbonBlazor.Models
-@typeparam TModel
+@typeparam TModel where TModel : notnull
 
 <CarbonBlazorPane Title="@Title" Info="@Info">
     <CarbonBlazorNotificationInline @ref="@_notification"></CarbonBlazorNotificationInline>
@@ -8,7 +9,7 @@
         @if (IsFilterEnabled || ToolbarButtons is not null)
         {
             <div class="cb-data-table-toolbar-wrapper">
-                <CarbonBlazorButtonSet Style="width: 100%; justify-content: end;">
+                <CarbonBlazorButtonSet JustifyContent="JustifyContent.End" Style="width: 100%">
                     @if (IsFilterEnabled)
                     {
                         <CarbonBlazorSearch SearchTextChangedCallback="@OnSearchTextChanged" Size="@GetSearchSize()"></CarbonBlazorSearch>
@@ -23,6 +24,12 @@
         <table>
             <thead>
             <tr>
+                @if (IsSelectionEnabled)
+                {
+                    <CarbonBlazorDataTableHeaderCell>
+                        <input type="checkbox" id="select_all" class="cb-data-table-check-box" @oninput="@OnSelectAllChanged" checked="@(_selectionState != SelectionState.None)">
+                    </CarbonBlazorDataTableHeaderCell>
+                }
                 @HeaderRowTemplate
             </tr>
             </thead>
@@ -30,6 +37,12 @@
             @foreach (TModel model in _filteredAndPagedModels)
             {
                 <tr>
+                    @if (IsSelectionEnabled)
+                    {
+                        <CarbonBlazorDataTableDataCell>
+                            <input type="checkbox" class="cb-data-table-check-box" @oninput="@(changeEventArgs => OnCheckBoxValueChanged(changeEventArgs, model))" checked="@_selectedModels.Any(x => IsSelectedPredicate.Invoke(x, model))">
+                        </CarbonBlazorDataTableDataCell>
+                    }
                     <CascadingValue Value="@Layer">
                         @DataRowTemplate(model)
                     </CascadingValue>
@@ -56,18 +69,34 @@
 </CarbonBlazorPane>
 
 @code {
+
+    private enum SelectionState
+    {
+        None = 0,
+        Some,
+        All
+    }
+    
     private CarbonBlazorNotificationInline _notification = null!;
     private const string ItemsTemplate = "{0}-{1} of {2} items";
     private const string FilteredItemsTemplate = " (filtered - {0} total)";
 
     private IEnumerable<TModel> _filteredModels = Enumerable.Empty<TModel>();
     private IEnumerable<TModel> _filteredAndPagedModels = Enumerable.Empty<TModel>();
+    
+    private List<TModel> _selectedModels = [];
+    private SelectionState _selectionState = SelectionState.None;
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
 
         _filteredModels = Models;
+        _selectedModels = SelectedModels.ToList();
+        _selectionState = SelectedModels.Any()
+            ? SelectedModels.Count() == Models.Count() ? SelectionState.All : SelectionState.Some
+            : SelectionState.None;
+        
         PageModels();
     }
     
@@ -80,6 +109,12 @@
     [Parameter]
     [EditorRequired]
     public IEnumerable<TModel> Models { get; set; } = default!;
+
+    [Parameter]
+    public IEnumerable<TModel> SelectedModels { get; set; } = Enumerable.Empty<TModel>();
+
+    [Parameter]
+    public EventCallback<IEnumerable<TModel>> SelectedModelsChanged { get; set; } = EventCallback<IEnumerable<TModel>>.Empty;
 
     [Parameter]
     [EditorRequired]
@@ -102,7 +137,16 @@
     public Func<int, Task<IEnumerable<TModel>>> RefreshModelsFunc { get; set; } = _ => Task.FromResult(Enumerable.Empty<TModel>());
 
     [Parameter]
+    public bool IsReadOnly { get; set; } = false;
+
+    [Parameter]
     public bool IsFilterEnabled { get; set; } = true;
+
+    [Parameter]
+    public bool IsSelectionEnabled { get; set; } = false;
+
+    [Parameter]
+    public Func<TModel, TModel, bool> IsSelectedPredicate { get; set; } = (m1, m2) => m1.Equals(m2); 
     
     [Parameter]
     public Func<IEnumerable<TModel>, string, IEnumerable<TModel>> FilterModelsFunc { get; set; } = (models, _) => models;
@@ -242,4 +286,61 @@
         _ => CarbonBlazorInputSize.Large
     };
 
+    private async Task OnSelectAllChanged(ChangeEventArgs changeEventArgs)
+    {
+        string newValueAsString = changeEventArgs.Value?.ToString() ?? string.Empty;
+
+        if (bool.TryParse(newValueAsString, out bool isBoxChecked))
+        {
+            if (isBoxChecked)
+            {
+                if (_selectedModels.Count != Models.Count())
+                {
+                    await UpdateSelectedModels(Models.ToList());
+                }
+            }
+            else
+            {
+                if (_selectedModels.Any())
+                {
+                    await UpdateSelectedModels([]);
+                }
+            }
+        }
+    }
+    
+    private async Task OnCheckBoxValueChanged(ChangeEventArgs changeEventArgs, TModel model)
+    {
+        string newValueAsString = changeEventArgs.Value?.ToString() ?? string.Empty;
+
+        if (bool.TryParse(newValueAsString, out bool isSelected))
+        {
+            if (isSelected && _selectedModels.Any(selectedModel => IsSelectedPredicate.Invoke(selectedModel, model)) is false)
+            {
+                _selectedModels.Add(model);
+            }
+            
+            if (isSelected is false && _selectedModels.Any(selectedModel => IsSelectedPredicate.Invoke(selectedModel, model)))
+            {
+                _selectedModels.RemoveAll(selectedModel => IsSelectedPredicate.Invoke(selectedModel, model));
+            }
+
+            await UpdateSelectedModels(_selectedModels);
+        }
+    }
+
+    private async Task UpdateSelectedModels(List<TModel> models)
+    {
+        _selectedModels = models.ToList();
+        _selectionState = _selectedModels.Any()
+            ? _selectedModels.Count() == Models.Count() ? SelectionState.All : SelectionState.Some
+            : SelectionState.None;
+                    
+        SelectedModels = _selectedModels;
+        
+        if (SelectedModelsChanged.HasDelegate)
+        {
+            await SelectedModelsChanged.InvokeAsync(SelectedModels);
+        }
+    }
 }

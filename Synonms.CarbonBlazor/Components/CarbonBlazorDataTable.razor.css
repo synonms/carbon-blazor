@@ -226,3 +226,19 @@
     width: min-content;
     justify-content: end;
 }
+
+.cb-data-table-check-box {
+    background-color: transparent;
+    border: 1px solid var(--cb-icon-primary);
+    cursor: pointer;
+    height: 1rem;
+    inline-size: 1rem;
+    overflow: hidden;
+    padding: 0;
+    white-space: nowrap;
+    width: 1rem;
+}
+.cb-data-table-check-box:checked {
+    background-color: var(--cb-icon-primary);
+    color: var(--cb-icon-inverse);
+}

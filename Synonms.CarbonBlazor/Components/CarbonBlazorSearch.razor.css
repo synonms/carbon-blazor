@@ -85,6 +85,9 @@
 .cb-search-button:focus {
     border-color: var(--cb-focus);
 }
+.cb-search-button.search:focus {
+    border-color: transparent;
+}
 .cb-search-button:disabled {
     fill: var(--cb-icon-disabled);
 }

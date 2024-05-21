@@ -1,4 +1,5 @@
-﻿<div class="cb-button-set" style="@Style">
+﻿@using Synonms.CarbonBlazor.Enumerations
+<div class="cb-button-set" style="@JustifyContentMapper.ToStyle(JustifyContent); @Style">
     @ChildContent
 </div>
 
@@ -10,4 +11,7 @@
 
     [Parameter]
     public string Style { get; set; } = string.Empty;
+
+    [Parameter]
+    public JustifyContent JustifyContent { get; set; } = JustifyContent.Start;
 }

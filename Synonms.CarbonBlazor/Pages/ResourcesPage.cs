@@ -1,6 +1,8 @@
 ﻿using System.Text.Json;
 using Microsoft.AspNetCore.Components;
 using Synonms.CarbonBlazor.Client;
+using Synonms.CarbonBlazor.Enumerations;
+using Synonms.CarbonBlazor.Infrastructure;
 using Synonms.CarbonBlazor.Models;
 using Synonms.CarbonBlazor.Serialisation;
 using Synonms.Functional;
@@ -35,6 +37,9 @@ public abstract class ResourcesPage<TResource> : ComponentBase
     private Mode _mode = Mode.None;
     private string _activeResourceJson = string.Empty;
     
+    [Inject]
+    public INotificationBroker NotificationBroker { get; set; } = null!;
+
     [Inject] 
     public ICarbonBlazorHttpClient HttpClient { get; set; } = null!;
 
@@ -56,8 +61,10 @@ public abstract class ResourcesPage<TResource> : ComponentBase
     
     protected async Task RefreshResourcesAsync(int offset)
     {
+        string uri = CollectionPath + "?limit=0&offset=" + offset;
+        
         // TODO: Get uri from service root
-        Result<ResourceCollectionDocument<TResource>> response = await HttpClient.GetAllAsync<TResource>(CollectionPath + "?limit=0&offset=" + offset, CancellationToken.None);
+        Result<ResourceCollectionDocument<TResource>> response = await HttpClient.GetAllAsync<TResource>(uri, CancellationToken.None);
 
         response.Match(
             resourceCollectionDocument =>
@@ -67,7 +74,7 @@ public abstract class ResourcesPage<TResource> : ComponentBase
             },
             fault =>
             {
-                // TODO: Display errors for client
+                NotificationBroker.Send("Server error", $"Fault occurred retrieving resources from URI '{uri}': {fault}", CarbonBlazorNotificationStyle.LowContrast, CarbonBlazorNotificationLevel.Error);
 
                 Resources = new List<TResource>();
             });
@@ -150,11 +157,17 @@ public abstract class ResourcesPage<TResource> : ComponentBase
         ActiveResource = new TResource();
     }
 
-    protected abstract void OnBeginCreate();
-    protected abstract void OnBeginRead();
-    protected abstract void OnBeginUpdate();
-    protected abstract void OnBeginDelete();
+    protected virtual Task OnBeginCreate() => Task.CompletedTask;
+
+    protected virtual Task OnBeginRead() => Task.CompletedTask;
+
+    protected virtual Task OnBeginUpdate() => Task.CompletedTask;
+
+    protected virtual Task OnBeginDelete() => Task.CompletedTask;
+    
     protected abstract Task OnCancel(Mode mode, TResource? resource);
+    
     protected abstract Task OnSuccess(Mode mode, TResource resource);
+    
     protected abstract Task OnFault(Mode mode, TResource resource, Fault fault);
 }

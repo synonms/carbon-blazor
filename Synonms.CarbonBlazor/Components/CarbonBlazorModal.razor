@@ -16,7 +16,7 @@
                         <span class="cb-modal-header">@Label</span>
                     }
                 </div>
-                <button class="cb-modal-close-button" type="button" onclick="@(() => _isVisible = false)">
+                <button class="cb-modal-close-button" type="button" onclick="@(() => Close())">
                     @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.Cancel, 16))
                 </button>
             </div>
@@ -42,16 +42,42 @@
     public string Title { get; set; } = string.Empty;
 
     [Parameter]
-    public EventCallback<bool> IsVisibleChanged { get; set; }
+    public EventCallback OnClosedCallback { get; set; } = EventCallback.Empty;
 
-    public void Show()
+    [Parameter]
+    public EventCallback OnShownCallback { get; set; } = EventCallback.Empty;
+
+    [Parameter]
+    public EventCallback OnHiddenCallback { get; set; } = EventCallback.Empty;
+
+    public async Task Show()
     {
+        if (_isVisible)
+        {
+            return;
+        }
+        
         _isVisible = true;
+
+        if (OnShownCallback.HasDelegate)
+        {
+            await OnShownCallback.InvokeAsync();
+        }
     }
 
-    public void Hide()
+    public async Task Hide()
     {
+        if (_isVisible is false)
+        {
+            return;
+        }
+        
         _isVisible = false;
+
+        if (OnHiddenCallback.HasDelegate)
+        {
+            await OnHiddenCallback.InvokeAsync();
+        }
     }
 
     private string GetClass()
@@ -60,5 +86,15 @@
         string sizeClass = CarbonBlazorModalSizeMapper.ToClass(Size);
 
         return CssClasses.Concatenate(baseClass, sizeClass);
+    }
+    
+    private async Task Close()
+    {
+        await Hide();
+
+        if (OnClosedCallback.HasDelegate)
+        {
+            await OnClosedCallback.InvokeAsync();
+        }
     }
 }

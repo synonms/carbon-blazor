@@ -12,6 +12,6 @@ public class SelectItem<TValue> where TValue : notnull
     
     public TValue Value { get; }
 
-    public static SelectItem<TValue> Create(TValue value) => new(value.ToString(), value);
+    public static SelectItem<TValue> Create(TValue value) => new(value.ToString()!, value);
     public static SelectItem<TValue> Create(string label, TValue value) => new(label, value);
 }

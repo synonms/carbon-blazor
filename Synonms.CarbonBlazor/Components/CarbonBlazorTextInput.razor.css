@@ -9,21 +9,12 @@
 }
 
 .cb-text-input-wrapper {
-    align-items: center;
+    align-items: start;
     background-color: transparent;
     display: flex;
+    height: min-content;
     position: relative;
     width: 100%;
-}
-
-.cb-text-input-wrapper.small {
-    height: 2rem;
-}
-.cb-text-input-wrapper.medium {
-    height: 2.5rem;
-}
-.cb-text-input-wrapper.large {
-    height: 3rem;
 }
 
 .cb-text-input {
@@ -36,11 +27,31 @@
     height: 100%;
     letter-spacing: var(--cb-body-compact-01-letter-spacing);
     line-height: var(--cb-body-compact-01-line-height);
+    min-height: 2.5rem;
     padding-left: 1rem;
     padding-right: 1rem;
     vertical-align: baseline;
     width: 100%;
 }
+.cb-text-input-wrapper.small .cb-text-input {
+    height: 2rem;
+}
+.cb-text-input-wrapper.medium .cb-text-input {
+    height: 2.5rem;
+}
+.cb-text-input-wrapper.large .cb-text-input {
+    height: 3rem;
+}
+
+textarea.cb-text-input {
+    /*    field-sizing: content;*/
+    max-width: 100%;
+    overflow: auto;
+    padding-top: 0.6875rem;
+    padding-bottom: 0.6875rem;
+    resize: vertical;
+}
+
 .cb-text-input.layer-00 {
     background-color: var(--cb-field);
     border-bottom: 1px solid var(--cb-border-strong);

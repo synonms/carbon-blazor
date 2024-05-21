@@ -12,6 +12,6 @@ public class DropDownItem<TValue> where TValue : notnull
     
     public TValue Value { get; }
 
-    public static DropDownItem<TValue> Create(TValue value) => new(value.ToString(), value);
+    public static DropDownItem<TValue> Create(TValue value) => new(value.ToString()!, value);
     public static DropDownItem<TValue> Create(string label, TValue value) => new(label, value);
 }

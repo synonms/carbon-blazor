@@ -10,7 +10,7 @@
     left: 0;
     line-height: var(--cb-body-01-line-height);
     letter-spacing: var(--cb-body-01-letter-spacing);
-    position: absolute;
+    position: fixed;
     top: 0;
     width: 100vw;
     z-index: 2000;
@@ -138,9 +138,6 @@
     cursor: pointer;
     fill: var(--cb-icon-primary);
     height: 3rem;
-    position: absolute;
-    right: 0;
-    top: 0;
     width: 3rem;
 }
 
