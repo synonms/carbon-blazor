@@ -5,6 +5,11 @@
     align-items: flex-start;
     width: 100%;
 }
-.cb-field-set .double {
+.cb-field-set.double {
     width: calc(50% - 1rem);
+}
+.cb-field-set.inline {
+    align-items: baseline;
+    flex-direction: row;
+    gap: 1rem;
 }

@@ -1,4 +1,4 @@
-﻿<fieldset class="cb-field-set @(IsDoubleColumn ? "double" : string.Empty)" readonly="@IsReadOnly" disabled="@IsDisabled">
+﻿<fieldset class="cb-field-set @(IsDoubleColumn ? "double" : string.Empty) @(IsInline ? "inline" : string.Empty)" readonly="@IsReadOnly" disabled="@IsDisabled">
     @ChildContent
 </fieldset>
 
@@ -16,4 +16,7 @@
 
     [Parameter]
     public bool IsDoubleColumn { get; set; } = false;
+
+    [Parameter]
+    public bool IsInline { get; set; } = false;
 }

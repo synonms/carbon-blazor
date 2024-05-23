@@ -14,6 +14,12 @@ public class CarbonBlazorText : ComponentBase
     
     [Parameter]
     public bool IsExpressive { get; set; } = false;
+
+    [Parameter]
+    public string Class { get; set; } = string.Empty;
+
+    [Parameter]
+    public string Style { get; set; } = string.Empty;
     
     [Parameter]
     [EditorRequired]
@@ -21,11 +27,11 @@ public class CarbonBlazorText : ComponentBase
 
     protected override void BuildRenderTree(RenderTreeBuilder builder)
     {
-        string cssClass = "cb-text " + CarbonBlazorTextTypeMapper.ToClass(Type, IsExpressive);
+        string cssClass = "cb-text " + CarbonBlazorTextTypeMapper.ToClass(Type, IsExpressive) + " " + Class;
         
         builder.OpenElement(0, CarbonBlazorTextTypeMapper.ToHtmlTag(Type));
         builder.AddAttribute(1, "class", cssClass);
-        builder.AddAttribute(2, "style", WhiteSpaceMapper.ToStyle(WhiteSpace));
+        builder.AddAttribute(2, "style", WhiteSpaceMapper.ToStyle(WhiteSpace) + Style);
         builder.AddContent(3, ChildContent);
         builder.CloseElement();
     }

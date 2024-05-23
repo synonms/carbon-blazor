@@ -276,7 +276,7 @@ if (isSuperExciting)
         </CarbonBlazorForm>
     </CarbonBlazorPane>
 
-    <CarbonBlazorDataTable @ref="@_dataTable" TModel="StoryBookModel" Title="DataTable" Info="This is an example data table." Models="@_models" TotalSize="@_models.Count" Offset="0" PageLimit="10">
+    <CarbonBlazorDataTable @ref="@_dataTable" TModel="StoryBookModel" Title="DataTable" Description="This is an example data table." Models="@_models" TotalSize="@_models.Count" Offset="0" PageLimit="10">
         <ToolbarButtons>
             <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.TextOnly" Text="XS" OnClick="@(() => _dataTable.Resize(CarbonBlazorDataTableRowSize.ExtraSmall))"></CarbonBlazorButton>
             <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.TextOnly" Text="S" OnClick="@(() => _dataTable.Resize(CarbonBlazorDataTableRowSize.Small))"></CarbonBlazorButton>

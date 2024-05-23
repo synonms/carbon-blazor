@@ -6,7 +6,7 @@
 
 @typeparam TValue where TValue : notnull
 
-<CarbonBlazorFieldSet IsDoubleColumn="@IsDoubleColumn" IsReadOnly="@IsReadOnly" IsDisabled="@IsDisabled">
+<CarbonBlazorFieldSet IsDoubleColumn="@IsDoubleColumn" IsInline="@IsInline" IsReadOnly="@IsReadOnly" IsDisabled="@IsDisabled">
     @if (string.IsNullOrWhiteSpace(Label) is false)
     {
         <label for="@Id" class="cb-select-label">@Label</label>
@@ -89,6 +89,9 @@
 
     [Parameter]
     public bool IsDoubleColumn { get; set; } = false;
+
+    [Parameter]
+    public bool IsInline { get; set; } = false;
 
     [Parameter]
     [EditorRequired]

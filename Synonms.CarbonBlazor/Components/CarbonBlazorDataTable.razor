@@ -3,12 +3,34 @@
 @using Synonms.CarbonBlazor.Models
 @typeparam TModel where TModel : notnull
 
-<CarbonBlazorPane Title="@Title" Info="@Info">
-    <CarbonBlazorNotificationInline @ref="@_notification"></CarbonBlazorNotificationInline>
-    <div class="cb-data-table @CarbonBlazorDataTableRowSizeMapper.ToClass(RowSize)">
+<div class="cb-data-table-wrapper @CarbonBlazorLayerMapper.ToClass(Layer) @(ShouldFillPane ? "fill-pane" : string.Empty)">
+    @if (string.IsNullOrWhiteSpace(Title) is false || string.IsNullOrWhiteSpace(Description) is false)
+    {
+        <div class="cb-data-table-title-wrapper">
+            @if (string.IsNullOrWhiteSpace(Title) is false)
+            {
+                <CarbonBlazorText Type="CarbonBlazorTextType.Heading03">@Title</CarbonBlazorText>
+            }
+
+            @if (string.IsNullOrWhiteSpace(Description) is false)
+            {
+                <CarbonBlazorText Type="CarbonBlazorTextType.Body" Style="color: var(--cb-text-secondary);">@Description</CarbonBlazorText>
+            }
+        </div>
+    }
+    
+    <div style="padding-left: 1rem; padding-right: 1rem;">
+        <CarbonBlazorNotificationInline @ref="@_notification"></CarbonBlazorNotificationInline>
+    </div>
+    
+    <div class="cb-data-table @CarbonBlazorDataTableRowSizeMapper.ToClass(RowSize) @CarbonBlazorLayerMapper.ToClass(Layer)">
         @if (IsFilterEnabled || ToolbarButtons is not null)
         {
             <div class="cb-data-table-toolbar-wrapper">
+                @if (ToolbarContent is not null)
+                {
+                    @ToolbarContent
+                }
                 <CarbonBlazorButtonSet JustifyContent="JustifyContent.End" Style="width: 100%">
                     @if (IsFilterEnabled)
                     {
@@ -66,7 +88,7 @@
             </div>
         </div>
     </div>
-</CarbonBlazorPane>
+</div>
 
 @code {
 
@@ -101,12 +123,6 @@
     }
     
     [Parameter]
-    public string Title { get; set; } = string.Empty;
-
-    [Parameter]
-    public string Info { get; set; } = string.Empty;
-    
-    [Parameter]
     [EditorRequired]
     public IEnumerable<TModel> Models { get; set; } = default!;
 
@@ -115,6 +131,15 @@
 
     [Parameter]
     public EventCallback<IEnumerable<TModel>> SelectedModelsChanged { get; set; } = EventCallback<IEnumerable<TModel>>.Empty;
+
+    [Parameter]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter]
+    public string Description { get; set; } = string.Empty;
+
+    [Parameter]
+    public RenderFragment? ToolbarContent { get; set; }
 
     [Parameter]
     [EditorRequired]
@@ -126,6 +151,9 @@
 
     [Parameter]
     public CarbonBlazorDataTableRowSize RowSize { get; set; } = CarbonBlazorDataTableRowSize.Medium;
+
+    [Parameter]
+    public bool ShouldFillPane { get; set; } = false;
     
     [Parameter]
     public RenderFragment? ToolbarButtons { get; set; }
@@ -152,7 +180,7 @@
     public Func<IEnumerable<TModel>, string, IEnumerable<TModel>> FilterModelsFunc { get; set; } = (models, _) => models;
 
     [Parameter]
-    public CarbonBlazorLayer Layer { get; set; } = CarbonBlazorLayer.Two;
+    public CarbonBlazorLayer Layer { get; set; } = CarbonBlazorLayer.One;
 
     [Parameter]
     public int TotalSize { get; set; }
@@ -190,6 +218,13 @@
         _filteredModels = Models;
 
         PageModels();
+    }
+
+    public async Task RefreshData(IEnumerable<TModel> models, int size, int offset, int pageLimit, IEnumerable<TModel> selectedModels)
+    {
+        RefreshData(models, size, offset, pageLimit);
+
+        await UpdateSelectedModels(selectedModels.ToList());
     }
 
     private void OnSearchTextChanged(string searchText)
