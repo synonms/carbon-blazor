@@ -27,11 +27,13 @@ public abstract class CarbonBlazorHttpClient : ICarbonBlazorHttpClient
         _authorizationFunc = authorizationFunc;
     }
 
-    public virtual async Task<Result<FormDocument>> CreateFormAsync(string uri, CancellationToken cancellationToken) =>
+    public virtual async Task<Result<FormDocument>> CreateFormAsync(string uri, Action<HttpRequestMessage>? requestConfiguration = null, CancellationToken cancellationToken = new()) =>
         await _authorizationFunc.Invoke(HttpClient)
             .BindAsync(async authorisedHttpClient =>
             {
-                HttpResponseMessage response = await authorisedHttpClient.GetAsync(uri, cancellationToken);
+                HttpRequestMessage request = new(HttpMethod.Get, uri);
+                requestConfiguration?.Invoke(request);
+                HttpResponseMessage response = await authorisedHttpClient.SendAsync(request, cancellationToken);
 
                 if (response.IsSuccessStatusCode is false)
                 {
@@ -44,11 +46,13 @@ public abstract class CarbonBlazorHttpClient : ICarbonBlazorHttpClient
                 return formDocument is null ? new ApiFault("Unable to deserialise response body.") : Result<FormDocument>.Success(formDocument);
             });
 
-    public virtual async Task<Maybe<Fault>> DeleteAsync(string uri, CancellationToken cancellationToken) =>
+    public virtual async Task<Maybe<Fault>> DeleteAsync(string uri, Action<HttpRequestMessage>? requestConfiguration = null, CancellationToken cancellationToken = new()) =>
         await _authorizationFunc.Invoke(HttpClient)
             .BindAsync(async authorisedHttpClient =>
             {
-                HttpResponseMessage response = await authorisedHttpClient.DeleteAsync(uri, cancellationToken);
+                HttpRequestMessage request = new(HttpMethod.Delete, uri);
+                requestConfiguration?.Invoke(request);
+                HttpResponseMessage response = await authorisedHttpClient.SendAsync(request, cancellationToken);
 
                 if (response.IsSuccessStatusCode is false)
                 {
@@ -58,11 +62,13 @@ public abstract class CarbonBlazorHttpClient : ICarbonBlazorHttpClient
                 return Maybe<Fault>.None;
             });
 
-    public virtual async Task<Result<FormDocument>> EditFormAsync(string uri, CancellationToken cancellationToken) =>
+    public virtual async Task<Result<FormDocument>> EditFormAsync(string uri, Action<HttpRequestMessage>? requestConfiguration = null, CancellationToken cancellationToken = new()) =>
         await _authorizationFunc.Invoke(HttpClient)
             .BindAsync(async authorisedHttpClient =>
             {
-                HttpResponseMessage response = await authorisedHttpClient.GetAsync(uri, cancellationToken);
+                HttpRequestMessage request = new(HttpMethod.Get, uri);
+                requestConfiguration?.Invoke(request);
+                HttpResponseMessage response = await authorisedHttpClient.SendAsync(request, cancellationToken);
 
                 if (response.IsSuccessStatusCode is false)
                 {
@@ -75,11 +81,13 @@ public abstract class CarbonBlazorHttpClient : ICarbonBlazorHttpClient
                 return formDocument is null ? new ApiFault("Unable to deserialise response body.") : Result<FormDocument>.Success(formDocument);
             });
 
-    public virtual async Task<Result<ResourceCollectionDocument<TResource>>> GetAllAsync<TResource>(string uri, CancellationToken cancellationToken) where TResource : Resource =>
+    public virtual async Task<Result<ResourceCollectionDocument<TResource>>> GetAllAsync<TResource>(string uri, Action<HttpRequestMessage>? requestConfiguration = null, CancellationToken cancellationToken = new()) where TResource : Resource =>
         await _authorizationFunc.Invoke(HttpClient)
             .BindAsync(async authorisedHttpClient =>
             {
-                HttpResponseMessage response = await authorisedHttpClient.GetAsync(uri, cancellationToken);
+                HttpRequestMessage request = new(HttpMethod.Get, uri);
+                requestConfiguration?.Invoke(request);
+                HttpResponseMessage response = await authorisedHttpClient.SendAsync(request, cancellationToken);
 
                 if (response.IsSuccessStatusCode is false)
                 {
@@ -99,11 +107,13 @@ public abstract class CarbonBlazorHttpClient : ICarbonBlazorHttpClient
                     Result<ResourceCollectionDocument<TResource>>.Success);
             });
 
-    public virtual async Task<Result<ResourceDocument<TResource>>> GetByIdAsync<TResource>(string uri, CancellationToken cancellationToken) where TResource : Resource =>
+    public virtual async Task<Result<ResourceDocument<TResource>>> GetByIdAsync<TResource>(string uri, Action<HttpRequestMessage>? requestConfiguration = null, CancellationToken cancellationToken = new()) where TResource : Resource =>
         await _authorizationFunc.Invoke(HttpClient)
             .BindAsync(async authorisedHttpClient =>
             {
-                HttpResponseMessage response = await authorisedHttpClient.GetAsync(uri, cancellationToken);
+                HttpRequestMessage request = new(HttpMethod.Get, uri);
+                requestConfiguration?.Invoke(request);
+                HttpResponseMessage response = await authorisedHttpClient.SendAsync(request, cancellationToken);
 
                 if (response.IsSuccessStatusCode is false)
                 {
@@ -123,23 +133,36 @@ public abstract class CarbonBlazorHttpClient : ICarbonBlazorHttpClient
                     resourceDocument => Result<ResourceDocument<TResource>>.Success(resourceDocument));
             });
 
-    public virtual async Task<Result<T?>> GetFromJsonAsync<T>(string uri, CancellationToken cancellationToken) =>
+    public virtual async Task<Result<T?>> GetFromJsonAsync<T>(string uri, Action<HttpRequestMessage>? requestConfiguration = null, CancellationToken cancellationToken = new()) =>
         await _authorizationFunc.Invoke(HttpClient)
             .BindAsync(async authorisedHttpClient =>
             {
-                T? resource = await authorisedHttpClient.GetFromJsonAsync<T>(uri, _jsonSerializerOptions, cancellationToken);
-                
-                return Result<T?>.Success(resource);
+                HttpRequestMessage request = new(HttpMethod.Get, uri);
+                requestConfiguration?.Invoke(request);
+                HttpResponseMessage response = await authorisedHttpClient.SendAsync(request, cancellationToken);
+
+                if (response.IsSuccessStatusCode is false)
+                {
+                    return new ApiFault($"Received status code '{response.StatusCode}'.");
+                }
+
+                string json = await response.Content.ReadAsStringAsync(cancellationToken);
+                T? body = JsonSerializer.Deserialize<T>(json, _jsonSerializerOptions);
+
+                return Result<T?>.Success(body);
             });
 
-    public virtual async Task<Maybe<Fault>> PostAsync<TResource>(string uri, TResource resource, CancellationToken cancellationToken) where TResource : Resource =>
+    public virtual async Task<Maybe<Fault>> PostAsync<TResource>(string uri, TResource resource, Action<HttpRequestMessage>? requestConfiguration = null, CancellationToken cancellationToken = new()) where TResource : Resource =>
         await _authorizationFunc.Invoke(HttpClient)
             .BindAsync(async authorisedHttpClient =>
             {
                 string json = JsonSerializer.Serialize(resource, _jsonSerializerOptions);
                 StringContent stringContent = new(json, Encoding.UTF8, MediaTypes.Ion);
 
-                HttpResponseMessage response = await authorisedHttpClient.PostAsync(uri, stringContent, cancellationToken);
+                HttpRequestMessage request = new(HttpMethod.Post, uri);
+                request.Content = stringContent;
+                requestConfiguration?.Invoke(request);
+                HttpResponseMessage response = await authorisedHttpClient.SendAsync(request, cancellationToken);
 
                 if (response.IsSuccessStatusCode is false)
                 {
@@ -149,14 +172,17 @@ public abstract class CarbonBlazorHttpClient : ICarbonBlazorHttpClient
                 return Maybe<Fault>.None;
             });
 
-    public virtual async Task<Maybe<Fault>> PutAsync<TResource>(string uri, TResource resource, CancellationToken cancellationToken) where TResource : Resource =>
+    public virtual async Task<Maybe<Fault>> PutAsync<TResource>(string uri, TResource resource, Action<HttpRequestMessage>? requestConfiguration = null, CancellationToken cancellationToken = new()) where TResource : Resource =>
         await _authorizationFunc.Invoke(HttpClient)
             .BindAsync(async authorisedHttpClient =>
             {
                 string json = JsonSerializer.Serialize(resource, _jsonSerializerOptions);
                 StringContent stringContent = new(json, Encoding.UTF8, MediaTypes.Ion);
 
-                HttpResponseMessage response = await authorisedHttpClient.PutAsync(uri, stringContent, cancellationToken);
+                HttpRequestMessage request = new(HttpMethod.Put, uri);
+                request.Content = stringContent;
+                requestConfiguration?.Invoke(request);
+                HttpResponseMessage response = await authorisedHttpClient.SendAsync(request, cancellationToken);
 
                 if (response.IsSuccessStatusCode is false)
                 {

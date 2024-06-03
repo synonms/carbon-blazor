@@ -66,7 +66,7 @@ public abstract class UpdateResourcePage<TResource> : ComponentBase
         string uri = _collectionPath + "/" + Id;
         
         // TODO: Get uri from service root
-        Result<ResourceDocument<TResource>> response = await HttpClient.GetByIdAsync<TResource>(uri, CancellationToken.None);
+        Result<ResourceDocument<TResource>> response = await HttpClient.GetByIdAsync<TResource>(uri);
 
         response.Match(
             resourceDocument =>
@@ -89,7 +89,7 @@ public abstract class UpdateResourcePage<TResource> : ComponentBase
             return;
         }
         
-        await HttpClient.PutAsync(_collectionPath + "/" + Id, Resource, CancellationToken.None)
+        await HttpClient.PutAsync(_collectionPath + "/" + Id, Resource)
             .MatchAsync(OnFault, OnSuccess);
     }
     

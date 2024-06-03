@@ -64,7 +64,7 @@ public abstract class ResourcesPage<TResource> : ComponentBase
         string uri = CollectionPath + "?limit=0&offset=" + offset;
         
         // TODO: Get uri from service root
-        Result<ResourceCollectionDocument<TResource>> response = await HttpClient.GetAllAsync<TResource>(uri, CancellationToken.None);
+        Result<ResourceCollectionDocument<TResource>> response = await HttpClient.GetAllAsync<TResource>(uri);
 
         response.Match(
             resourceCollectionDocument =>
@@ -138,9 +138,9 @@ public abstract class ResourcesPage<TResource> : ComponentBase
         
         Maybe<Fault> outcome = _mode switch
         {
-            Mode.Create => await HttpClient.PostAsync(CollectionPath, ActiveResource, CancellationToken.None),
-            Mode.Update => await HttpClient.PutAsync(CollectionPath + "/" + ActiveResource.Id, ActiveResource, CancellationToken.None),
-            Mode.Delete => await HttpClient.DeleteAsync(CollectionPath + "/" + ActiveResource.Id, CancellationToken.None),
+            Mode.Create => await HttpClient.PostAsync(CollectionPath, ActiveResource),
+            Mode.Update => await HttpClient.PutAsync(CollectionPath + "/" + ActiveResource.Id, ActiveResource),
+            Mode.Delete => await HttpClient.DeleteAsync(CollectionPath + "/" + ActiveResource.Id),
             _ => Maybe<Fault>.None
         };
 

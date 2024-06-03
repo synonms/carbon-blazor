@@ -48,7 +48,7 @@ public abstract class CreateResourcePage<TResource> : ComponentBase
     public NavigationManager NavigationManager { get; set; } = null!;
 
     protected async Task Submit() =>
-        await HttpClient.PostAsync(_collectionPath, Resource, CancellationToken.None)
+        await HttpClient.PostAsync(_collectionPath, Resource)
             .MatchAsync(OnFault, OnSuccess);
     
     protected void ResetResource() =>

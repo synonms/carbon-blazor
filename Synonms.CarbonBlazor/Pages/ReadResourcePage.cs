@@ -48,7 +48,7 @@ public abstract class ReadResourcePage<TResource> : ComponentBase
         string uri = _collectionPath + "/" + Id;
         
         // TODO: Get uri from service root
-        Result<ResourceDocument<TResource>> response = await HttpClient.GetByIdAsync<TResource>(uri, CancellationToken.None);
+        Result<ResourceDocument<TResource>> response = await HttpClient.GetByIdAsync<TResource>(uri);
 
         response.Match(
             resourceDocument =>

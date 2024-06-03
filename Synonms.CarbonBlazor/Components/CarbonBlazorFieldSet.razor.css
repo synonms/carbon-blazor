@@ -9,7 +9,7 @@
     width: calc(50% - 1rem);
 }
 .cb-field-set.inline {
-    align-items: baseline;
+    align-items: center;
     flex-direction: row;
     gap: 1rem;
 }

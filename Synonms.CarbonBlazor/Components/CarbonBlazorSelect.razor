@@ -9,7 +9,7 @@
 <CarbonBlazorFieldSet IsDoubleColumn="@IsDoubleColumn" IsInline="@IsInline" IsReadOnly="@IsReadOnly" IsDisabled="@IsDisabled">
     @if (string.IsNullOrWhiteSpace(Label) is false)
     {
-        <label for="@Id" class="cb-select-label">@Label</label>
+        <label for="@Id" class="cb-select-label @(IsInline ? "inline" : string.Empty)">@Label</label>
     }
 
     <div class="cb-select-wrapper @CarbonBlazorInputSizeMapper.ToClass(Size)" disabled="@IsDisabled" readonly="@IsReadOnly">
@@ -50,7 +50,7 @@
     private bool _isExpanded = false;
 
     [CascadingParameter]
-    public EditContext EditContext { get; set; } = null!;
+    public EditContext? EditContext { get; set; }
     
     [CascadingParameter]
     public IEnumerable<ValidationOutcome> ValidationOutcomes { get; set; } = [];
@@ -104,13 +104,13 @@
 
     private async Task ItemClicked(SelectItem<TValue> item)
     {
+        _isExpanded = false;
+        
         Value = item.Value;
 
         await ValueChanged.InvokeAsync(Value);
         
-        EditContext.NotifyFieldChanged(FieldIdentifier);
-
-        _isExpanded = false;
+        EditContext?.NotifyFieldChanged(FieldIdentifier);
     }
 
     private string GetClass()
