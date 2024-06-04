@@ -1,9 +1,63 @@
-﻿@using Synonms.CarbonBlazor.Enumerations
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Forms
+@using Synonms.CarbonBlazor.Enumerations
+@using Synonms.CarbonBlazor.Infrastructure.MultiTenancy
+@using Synonms.CarbonBlazor.Models
+
 <div class="cb-shell @CarbonBlazorThemeMapper.ToCssClass(Theme)">
-    <CarbonBlazorHeader ProductName="@ProductName" ProductIconImagePath="@ProductIconImagePath" OnMenuClick="@(() => _sidebar.IsExpanded = !_sidebar.IsExpanded)" OnThemeChanged="@OnThemeChanged">
-        <UserPanel>@UserPanel</UserPanel>
-        <SwitcherPanel>@SwitcherPanel</SwitcherPanel>
-    </CarbonBlazorHeader>
+    <header class="cb-header">
+        <CarbonBlazorStack FlexDirection="FlexDirection.Row" JustifyContent="JustifyContent.Start" AlignItems="AlignItems.Center" Gap="1rem">
+            <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.IconOnly" Size="CarbonBlazorButtonSize.LargeExpressive" Icon="CarbonBlazorIcon.Menu" OnClick="@OnMenuClick"></CarbonBlazorButton>
+            <img class="cb-header-product-icon" alt="@ProductName Logo" src="@ProductIconImagePath" />
+            <span class="cb-header-product-name">@ProductName</span>
+        </CarbonBlazorStack>
+
+        <CarbonBlazorStack FlexDirection="FlexDirection.Row" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center">
+            @if (IsTenantSelectionEnabled)
+            {
+                <CarbonBlazorSelect TValue="Guid" Value="@TenantSelector.SelectedTenantId" ValueChanged="@OnSelectedTenantIdChanged" FieldIdentifier="@FieldIdentifier.Create(() => TenantSelector.SelectedTenantId)"
+                                Items="@_availableTenants" IsInline="true"></CarbonBlazorSelect>
+            }
+            @if (OnSearch.HasDelegate)
+            {
+                <CarbonBlazorSearch Size="CarbonBlazorInputSize.Large" SearchTextChangedCallback="@OnSearch"></CarbonBlazorSearch>
+            }
+            @if (UserPanel is not null)
+            {
+                <CarbonBlazorButton @ref="@_userAvatarButton" Kind="CarbonBlazorButtonKind.Ghost" Size="CarbonBlazorButtonSize.LargeExpressive" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.UserAvatar" OnClick="@UserAvatarClicked"></CarbonBlazorButton>
+            }
+            @if (IsThemeEnabled)
+            {
+                <CarbonBlazorButton @ref="@_themeButton" Kind="CarbonBlazorButtonKind.Ghost" Size="CarbonBlazorButtonSize.LargeExpressive" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.ColourPalette" OnClick="@ThemeClicked"></CarbonBlazorButton>
+            }
+            @if (SwitcherPanel is not null)
+            {
+                <CarbonBlazorButton @ref="@_switcherButton" Kind="CarbonBlazorButtonKind.Ghost" Size="CarbonBlazorButtonSize.LargeExpressive" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.Switcher" OnClick="@SwitcherClicked"></CarbonBlazorButton>
+            }
+        </CarbonBlazorStack>
+    </header>
+
+    @if (UserPanel is not null)
+    {
+        <CarbonBlazorHeaderActionPanel @ref="@_userPanel">
+            @UserPanel
+        </CarbonBlazorHeaderActionPanel>
+    }
+
+    <CarbonBlazorHeaderActionPanel @ref="@_themePanel">
+        <CarbonBlazorHeaderActionLink NavigationItem="@(NavigationItem.Create("White", ""))" OnClick="@(() => ChangeTheme(CarbonBlazorTheme.White))"></CarbonBlazorHeaderActionLink>
+        <CarbonBlazorHeaderActionLink NavigationItem="@(NavigationItem.Create("Grey 10", ""))" OnClick="@(() => ChangeTheme(CarbonBlazorTheme.Gray10))"></CarbonBlazorHeaderActionLink>
+        <CarbonBlazorHeaderActionLink NavigationItem="@(NavigationItem.Create("Grey 90", ""))" OnClick="@(() => ChangeTheme(CarbonBlazorTheme.Gray90))"></CarbonBlazorHeaderActionLink>
+        <CarbonBlazorHeaderActionLink NavigationItem="@(NavigationItem.Create("Grey 100", ""))" OnClick="@(() => ChangeTheme(CarbonBlazorTheme.Gray100))"></CarbonBlazorHeaderActionLink>
+    </CarbonBlazorHeaderActionPanel>
+
+    @if (SwitcherPanel is not null)
+    {
+        <CarbonBlazorHeaderActionPanel @ref="@_switcherPanel">
+            @SwitcherPanel
+        </CarbonBlazorHeaderActionPanel>
+    }
+
     <CarbonBlazorSidebar @ref="@_sidebar">
         @SideNav
     </CarbonBlazorSidebar>
@@ -15,7 +69,51 @@
 
 @code {
     private CarbonBlazorSidebar _sidebar = null!;
+    private CarbonBlazorButton _switcherButton = null!;
+    private CarbonBlazorButton _themeButton = null!;
+    private CarbonBlazorButton _userAvatarButton = null!;
+    private CarbonBlazorHeaderActionPanel _switcherPanel = null!;
+    private CarbonBlazorHeaderActionPanel _themePanel = null!;
+    private CarbonBlazorHeaderActionPanel _userPanel = null!;
+    private List<SelectItem<Guid>> _availableTenants = [SelectItem<Guid>.Create("No tenant selected", Guid.Empty)];
+
+    [Inject]
+    public AuthenticationStateProvider AuthenticationStateProvider { get; set; } = null!;
+
+    [Inject]
+    public ITenantProvider TenantProvider { get; set; } = null!;
     
+    [Inject]
+    public TenantSelector TenantSelector { get; set; } = null!;
+    
+    [Parameter]
+    [EditorRequired]
+    public RenderFragment SideNav { get; set; } = null!;
+
+    [Parameter]
+    [EditorRequired]
+    public RenderFragment Body { get; set; } = null!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        AuthenticationState authenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        
+        if (authenticationState.User.Identity?.IsAuthenticated ?? false)
+        {
+            await GetTenantsAsync();
+        }
+
+        AuthenticationStateProvider.AuthenticationStateChanged += AuthenticationStateChangedHandler;
+    }
+
+
+    #region Header
+    
+    [Parameter]
+    public EventCallback OnMenuClick { get; set; } = EventCallback.Empty;
+
     [Parameter]
     [EditorRequired]
     public string ProductName { get; set; } = string.Empty;
@@ -24,27 +122,202 @@
     [EditorRequired]
     public string ProductIconImagePath { get; set; } = string.Empty;
 
-    [Parameter]
-    [EditorRequired]
-    public RenderFragment SideNav { get; set; } = null!;
+    private void CloseAllPanels()
+    {
+        CloseSwitcherPanel();
+        CloseThemePanel();
+        CloseUserPanel();
+    }
+    
+    #endregion
+    
+    
+    #region UserProfile
 
     [Parameter]
-    [EditorRequired]
-    public RenderFragment UserPanel { get; set; } = null!;
+    public RenderFragment? UserPanel { get; set; }
+
+    private void UserAvatarClicked()
+    {
+        if (_userPanel.IsExpanded)
+        {
+            CloseUserPanel();
+        }
+        else
+        {
+            OpenUserPanel();
+        }
+        
+        StateHasChanged();
+    }
+
+    private void OpenUserPanel()
+    {
+        CloseAllPanels();
+        
+        _userPanel.IsExpanded = true;
+        _userAvatarButton.IsToggled = true;
+    }
+
+    private void CloseUserPanel()
+    {
+        _userPanel.IsExpanded = false;
+        _userAvatarButton.IsToggled = false;
+    }
+
+    #endregion
+    
+    
+    #region Switcher
+    
+    [Parameter]
+    public RenderFragment? SwitcherPanel { get; set; }
+    
+    private void SwitcherClicked()
+    {
+        if (_switcherPanel.IsExpanded)
+        {
+            CloseSwitcherPanel();
+        }
+        else
+        {
+            OpenSwitcherPanel();
+        }
+        
+        StateHasChanged();
+    }
+
+    private void CloseSwitcherPanel()
+    {
+        _switcherPanel.IsExpanded = false;
+        _switcherButton.IsToggled = false;
+    }
+
+    private void OpenSwitcherPanel()
+    {
+        CloseAllPanels();
+        
+        _switcherPanel.IsExpanded = true;
+        _switcherButton.IsToggled = true;
+    }
+
+    #endregion
+    
+    
+    #region MultiTenancy
+    
+    [Parameter]
+    public bool IsTenantSelectionEnabled { get; set; } = false;
 
     [Parameter]
-    [EditorRequired]
-    public RenderFragment SwitcherPanel { get; set; } = null!;
+    public EventCallback<Guid> SelectedTenantIdChanged { get; set; } = EventCallback<Guid>.Empty;
 
+    private void OnSelectedTenantIdChanged(Guid selectedTenantId)
+    {
+        string name = _availableTenants.FirstOrDefault(tenant => tenant.Value == selectedTenantId)?.Label ?? string.Empty;
+        
+        TenantSelector.Select(selectedTenantId, name);
+    }
+
+    private async void AuthenticationStateChangedHandler(Task<AuthenticationState> authenticationTask)
+    {
+        AuthenticationState authenticationState = await authenticationTask;
+        
+        if (authenticationState.User.Identity?.IsAuthenticated ?? false)
+        {
+            await GetTenantsAsync();
+        }
+        else
+        {
+            _availableTenants = [SelectItem<Guid>.Create("No tenant selected", Guid.Empty)];
+        }
+
+        StateHasChanged();
+    }
+
+    private async Task GetTenantsAsync()
+    {
+        _availableTenants = (await TenantProvider.GetAvailableAsync(CancellationToken.None)).ToList();
+        
+        if (_availableTenants.Any(tenant => tenant.Value == Guid.Empty) is false)
+        {
+            _availableTenants.Insert(0, SelectItem<Guid>.Create("No tenant selected", Guid.Empty));
+        }
+    }
+    
+    #endregion
+    
+    
+    #region Search
+    
     [Parameter]
-    [EditorRequired]
-    public RenderFragment Body { get; set; } = null!;
+    public EventCallback<string> OnSearch { get; set; }
+
+    #endregion
+    
+    
+    #region Theme
 
     [Parameter]
     public CarbonBlazorTheme Theme { get; set; } = CarbonBlazorTheme.White;
+
+    [Parameter] 
+    public bool IsThemeEnabled { get; set; } = true;
+
+    [Parameter] 
+    public EventCallback<CarbonBlazorTheme> OnThemeChanged { get; set; } = EventCallback<CarbonBlazorTheme>.Empty;
     
-    private void OnThemeChanged(CarbonBlazorTheme theme)
+    private async Task ChangeTheme(CarbonBlazorTheme theme)
     {
-        Theme = theme;
+        if (OnThemeChanged.HasDelegate)
+        {
+            await OnThemeChanged.InvokeAsync(theme);
+        }
+
+        CloseThemePanel();
     }
+
+    private void ThemeClicked()
+    {
+        if (_themePanel.IsExpanded)
+        {
+            CloseThemePanel();
+        }
+        else
+        {
+            OpenThemePanel();
+        }
+        
+        StateHasChanged();
+    }
+
+    private void OpenThemePanel()
+    {
+        CloseAllPanels();
+        
+        _themePanel.IsExpanded = true;
+        _themeButton.IsToggled = true;
+    }
+
+    private void CloseThemePanel()
+    {
+        _themePanel.IsExpanded = false;
+        _themeButton.IsToggled = false;
+    }
+
+    #endregion
+
+    
+
+    
+
+
+    
+
+    
+    
+
+    
+
+
 }

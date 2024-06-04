@@ -40,6 +40,7 @@
     height: 100%;
     letter-spacing: var(--cb-body-compact-01-letter-spacing);
     line-height: var(--cb-body-compact-01-line-height);
+    min-width: 10rem;
     padding-left: 1rem;
     padding-right: 1rem;
     vertical-align: baseline;
@@ -77,6 +78,15 @@
     background-color: transparent;
     border-bottom: 1px solid var(--cb-border-subtle);
     color: var(--cb-text-primary);
+}
+.cb-select-wrapper.small .cb-select-input {
+    padding-right: 2.5rem;
+}
+.cb-select-wrapper.medium .cb-select-input {
+    padding-right: 3rem;
+}
+.cb-select-wrapper.large .cb-select-input {
+    padding-right: 3.5rem;
 }
 
 .cb-select-menu {

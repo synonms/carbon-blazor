@@ -1433,6 +1433,28 @@ input[type=number] {
     }
 }
 
+.cb-header {
+    align-items: center;
+    background-color: var(--cb-background);
+    border-bottom: 1px solid var(--cb-border-subtle);
+    color: var(--cb-text-primary);
+    display: flex;
+    grid-area: header;
+    height: 3rem;
+    justify-content: space-between;
+    width: 100%;
+    z-index: 1000;
+}
+.cb-header-product-icon {
+    height: 32px;
+}
+.cb-header-product-name {
+    font-family: "IBM Plex Sans Var", "Helvetica Neue", Arial, sans-serif;
+    font-weight: var(--cb-heading-compact-01-font-weight,600);
+    font-size: var(--cb-heading-compact-01-font-size,16px);
+    line-height: var(--cb-heading-compact-01-line-height,22px);
+}
+
 .cb-text.code-01 {
     font-family: var(--cb-code-01-font-family);
     font-size: var(--cb-code-01-font-size);
