@@ -45,6 +45,8 @@ public abstract class ResourcesPage<TResource> : ComponentBase
 
     public TResource ActiveResource { get; set; } = new();
     
+    protected virtual Action<HttpRequestMessage>? RequestConfiguration { get; set; }
+
     protected ResourcesPage(string collectionName, string collectionPath)
     {
         CollectionPath = collectionPath;
@@ -63,8 +65,7 @@ public abstract class ResourcesPage<TResource> : ComponentBase
     {
         string uri = CollectionPath + "?limit=0&offset=" + offset;
         
-        // TODO: Get uri from service root
-        Result<ResourceCollectionDocument<TResource>> response = await HttpClient.GetAllAsync<TResource>(uri);
+        Result<ResourceCollectionDocument<TResource>> response = await HttpClient.GetAllAsync<TResource>(uri, RequestConfiguration);
 
         response.Match(
             resourceCollectionDocument =>
@@ -76,10 +77,16 @@ public abstract class ResourcesPage<TResource> : ComponentBase
             {
                 NotificationBroker.Send("Server error", $"Fault occurred retrieving resources from URI '{uri}': {fault}", CarbonBlazorNotificationStyle.LowContrast, CarbonBlazorNotificationLevel.Error);
 
-                Resources = new List<TResource>();
+                ResetData();
             });
     }
 
+    protected void ResetData()
+    {
+        Resources = null;
+        Pagination = null;
+    }
+    
     protected void BeginOperation(Mode mode, TResource resource)
     {
         _mode = mode;
@@ -138,9 +145,9 @@ public abstract class ResourcesPage<TResource> : ComponentBase
         
         Maybe<Fault> outcome = _mode switch
         {
-            Mode.Create => await HttpClient.PostAsync(CollectionPath, ActiveResource),
-            Mode.Update => await HttpClient.PutAsync(CollectionPath + "/" + ActiveResource.Id, ActiveResource),
-            Mode.Delete => await HttpClient.DeleteAsync(CollectionPath + "/" + ActiveResource.Id),
+            Mode.Create => await HttpClient.PostAsync(CollectionPath, ActiveResource, RequestConfiguration),
+            Mode.Update => await HttpClient.PutAsync(CollectionPath + "/" + ActiveResource.Id, ActiveResource, RequestConfiguration),
+            Mode.Delete => await HttpClient.DeleteAsync(CollectionPath + "/" + ActiveResource.Id, RequestConfiguration),
             _ => Maybe<Fault>.None
         };
 

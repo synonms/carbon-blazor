@@ -1,7 +1,4 @@
-﻿@using Microsoft.AspNetCore.Components.Authorization
-@using Microsoft.AspNetCore.Components.Forms
-@using Synonms.CarbonBlazor.Enumerations
-@using Synonms.CarbonBlazor.Infrastructure.MultiTenancy
+﻿@using Synonms.CarbonBlazor.Enumerations
 @using Synonms.CarbonBlazor.Models
 
 <div class="cb-shell @CarbonBlazorThemeMapper.ToCssClass(Theme)">
@@ -13,11 +10,6 @@
         </CarbonBlazorStack>
 
         <CarbonBlazorStack FlexDirection="FlexDirection.Row" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center">
-            @if (IsTenantSelectionEnabled)
-            {
-                <CarbonBlazorSelect TValue="Guid" Value="@TenantSelector.SelectedTenantId" ValueChanged="@OnSelectedTenantIdChanged" FieldIdentifier="@FieldIdentifier.Create(() => TenantSelector.SelectedTenantId)"
-                                Items="@_availableTenants" IsInline="true"></CarbonBlazorSelect>
-            }
             @if (OnSearch.HasDelegate)
             {
                 <CarbonBlazorSearch Size="CarbonBlazorInputSize.Large" SearchTextChangedCallback="@OnSearch"></CarbonBlazorSearch>
@@ -75,17 +67,7 @@
     private CarbonBlazorHeaderActionPanel _switcherPanel = null!;
     private CarbonBlazorHeaderActionPanel _themePanel = null!;
     private CarbonBlazorHeaderActionPanel _userPanel = null!;
-    private List<SelectItem<Guid>> _availableTenants = [SelectItem<Guid>.Create("No tenant selected", Guid.Empty)];
 
-    [Inject]
-    public AuthenticationStateProvider AuthenticationStateProvider { get; set; } = null!;
-
-    [Inject]
-    public ITenantProvider TenantProvider { get; set; } = null!;
-    
-    [Inject]
-    public TenantSelector TenantSelector { get; set; } = null!;
-    
     [Parameter]
     [EditorRequired]
     public RenderFragment SideNav { get; set; } = null!;
@@ -93,20 +75,6 @@
     [Parameter]
     [EditorRequired]
     public RenderFragment Body { get; set; } = null!;
-
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-
-        AuthenticationState authenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        
-        if (authenticationState.User.Identity?.IsAuthenticated ?? false)
-        {
-            await GetTenantsAsync();
-        }
-
-        AuthenticationStateProvider.AuthenticationStateChanged += AuthenticationStateChangedHandler;
-    }
 
 
     #region Header
@@ -204,50 +172,6 @@
     #endregion
     
     
-    #region MultiTenancy
-    
-    [Parameter]
-    public bool IsTenantSelectionEnabled { get; set; } = false;
-
-    [Parameter]
-    public EventCallback<Guid> SelectedTenantIdChanged { get; set; } = EventCallback<Guid>.Empty;
-
-    private void OnSelectedTenantIdChanged(Guid selectedTenantId)
-    {
-        string name = _availableTenants.FirstOrDefault(tenant => tenant.Value == selectedTenantId)?.Label ?? string.Empty;
-        
-        TenantSelector.Select(selectedTenantId, name);
-    }
-
-    private async void AuthenticationStateChangedHandler(Task<AuthenticationState> authenticationTask)
-    {
-        AuthenticationState authenticationState = await authenticationTask;
-        
-        if (authenticationState.User.Identity?.IsAuthenticated ?? false)
-        {
-            await GetTenantsAsync();
-        }
-        else
-        {
-            _availableTenants = [SelectItem<Guid>.Create("No tenant selected", Guid.Empty)];
-        }
-
-        StateHasChanged();
-    }
-
-    private async Task GetTenantsAsync()
-    {
-        _availableTenants = (await TenantProvider.GetAvailableAsync(CancellationToken.None)).ToList();
-        
-        if (_availableTenants.Any(tenant => tenant.Value == Guid.Empty) is false)
-        {
-            _availableTenants.Insert(0, SelectItem<Guid>.Create("No tenant selected", Guid.Empty));
-        }
-    }
-    
-    #endregion
-    
-    
     #region Search
     
     [Parameter]
@@ -306,18 +230,4 @@
     }
 
     #endregion
-
-    
-
-    
-
-
-    
-
-    
-    
-
-    
-
-
 }
