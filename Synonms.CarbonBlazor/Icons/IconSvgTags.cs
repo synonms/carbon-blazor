@@ -16,6 +16,9 @@ public static class IconSvgTags
 
     public const string Building =
         "<title>building</title><path d=\"M28,2H16a2.002,2.002,0,0,0-2,2V14H4a2.002,2.002,0,0,0-2,2V30H30V4A2.0023,2.0023,0,0,0,28,2ZM9,28V21h4v7Zm19,0H15V20a1,1,0,0,0-1-1H8a1,1,0,0,0-1,1v8H4V16H16V4H28Z\"/><rect x=\"18\" y=\"8\" width=\"2\" height=\"2\"/><rect x=\"24\" y=\"8\" width=\"2\" height=\"2\"/><rect x=\"18\" y=\"14\" width=\"2\" height=\"2\"/><rect x=\"24\" y=\"14\" width=\"2\" height=\"2\"/><rect x=\"18\" y=\"19.9996\" width=\"2\" height=\"2\"/><rect x=\"24\" y=\"19.9996\" width=\"2\" height=\"2\"/>";
+
+    public const string Calendar =
+        "<title>calendar</title><path d=\"M26,4h-4V2h-2v2h-8V2h-2v2H6C4.9,4,4,4.9,4,6v20c0,1.1,0.9,2,2,2h20c1.1,0,2-0.9,2-2V6C28,4.9,27.1,4,26,4z M26,26H6V12h20tV26z M26,10H6V6h4v2h2V6h8v2h2V6h4V10z\"/>";
     
     public const string Cancel =
         "<title>cancel</title><path d=\"M17.4141 16L24 9.4141 22.5859 8 16 14.5859 9.4143 8 8 9.4141 14.5859 16 8 22.5859 9.4143 24 16 17.4141 22.5859 24 24 22.5859 17.4141 16z\"></path>";

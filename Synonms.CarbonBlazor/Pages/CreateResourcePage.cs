@@ -12,27 +12,28 @@ namespace Synonms.CarbonBlazor.Pages;
 public abstract class CreateResourcePage<TResource> : ComponentBase
     where TResource : Resource, new()
 {
-    private readonly string _collectionPath;
-    private string _originalResourceJson = string.Empty;
-    
+    protected readonly string CollectionPath;
+    protected string OriginalResourceJson = string.Empty;
     protected TResource Resource = new();
     protected readonly List<BreadcrumbItem> Breadcrumbs;
     
     protected CreateResourcePage(string collectionName, string collectionPath)
     {
-        _collectionPath = collectionPath;
+        CollectionPath = collectionPath;
         Breadcrumbs =
         [
-            new BreadcrumbItem(collectionName, $"/{collectionPath}"),
-            new BreadcrumbItem("Add", $"/{collectionPath}/add")
+            new BreadcrumbItem(collectionName, $"/{CollectionPageUri}"),
+            new BreadcrumbItem("Add", $"/{CollectionPageUri}/add")
         ];
     }
 
+    protected virtual string CollectionPageUri => CollectionPath;
+    
     protected virtual void OnSuccess()
     {
         NotificationBroker.Send("Resource created", $"Resource Id '{Resource.Id}' created successfully.", CarbonBlazorNotificationStyle.LowContrast, CarbonBlazorNotificationLevel.Success);
 
-        NavigationManager.NavigateTo(_collectionPath);
+        NavigationManager.NavigateTo(CollectionPageUri);
     }
 
     protected virtual void OnFault(Fault fault) =>
@@ -47,8 +48,10 @@ public abstract class CreateResourcePage<TResource> : ComponentBase
     [Inject]
     public NavigationManager NavigationManager { get; set; } = null!;
 
+    protected virtual Action<HttpRequestMessage>? RequestConfiguration { get; set; }
+
     protected async Task Submit() =>
-        await HttpClient.PostAsync(_collectionPath, Resource)
+        await HttpClient.PostAsync(CollectionPath, Resource, RequestConfiguration)
             .MatchAsync(OnFault, OnSuccess);
     
     protected void ResetResource() =>

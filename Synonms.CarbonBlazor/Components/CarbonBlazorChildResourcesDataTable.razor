@@ -1,4 +1,5 @@
 ﻿@using System.Text.Json
+@using Microsoft.AspNetCore.Components.Rendering
 @using Synonms.CarbonBlazor.Enumerations
 @using Synonms.CarbonBlazor.Models
 @using Synonms.CarbonBlazor.Serialisation
@@ -7,14 +8,14 @@
 <CarbonBlazorDataTable @ref="@_dataTable" TModel="TChildResource" Title="@Title" Models="@ChildResources" TotalSize="@ChildResources.Count" Offset="0" PageLimit="20"
                        PaginationMode="CarbonBlazorPaginationMode.Client" FilterModelsFunc="@FilterChildResourcesFunc">
     <ToolbarButtons>
-        <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.TextAndIcon" Icon="CarbonBlazorIcon.Add" Text="Add Role" OnClick="@(() => BeginOperation(Mode.Create, new TChildResource()))"></CarbonBlazorButton>
+        <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.TextAndIcon" Icon="CarbonBlazorIcon.Add" Text="Add" OnClick="@(() => BeginOperation(Mode.Create, new TChildResource()))"></CarbonBlazorButton>
     </ToolbarButtons>
     <HeaderRowTemplate>
         @HeaderRowTemplate
         <CarbonBlazorDataTableHeaderCell></CarbonBlazorDataTableHeaderCell>
     </HeaderRowTemplate>
     <DataRowTemplate>
-        @DataRowTemplate
+        @DataRowTemplate(context)
         <CarbonBlazorDataTableDataCell>
             <CarbonBlazorButtonSet JustifyContent="JustifyContent.End">
                 <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Size="CarbonBlazorButtonSize.LargeExpressive" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.View" OnClick="@(() => BeginOperation(Mode.Read, context))"></CarbonBlazorButton>

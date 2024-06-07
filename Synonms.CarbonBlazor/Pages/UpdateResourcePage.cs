@@ -14,20 +14,19 @@ namespace Synonms.CarbonBlazor.Pages;
 public abstract class UpdateResourcePage<TResource> : ComponentBase
     where TResource : Resource, new()
 {
-    private readonly string _collectionPath;
-    private string _originalResourceJson = string.Empty;
-    
+    protected readonly string CollectionPath;
+    protected string OriginalResourceJson = string.Empty;
     protected TResource? Resource;
     protected readonly List<BreadcrumbItem> Breadcrumbs;
     
     protected UpdateResourcePage(string collectionName, string resourceName, string collectionPath)
     {
-        _collectionPath = collectionPath;
+        CollectionPath = collectionPath;
         Breadcrumbs =
         [
-            new BreadcrumbItem(collectionName, $"/{collectionPath}"),
-            new BreadcrumbItem(resourceName, $"/{collectionPath}/{Id}"),
-            new BreadcrumbItem("Edit", $"/{collectionPath}/{Id}/edit")
+            new BreadcrumbItem(collectionName, $"/{CollectionPageUri}"),
+            new BreadcrumbItem(resourceName, $"/{CollectionPageUri}/{Id}"),
+            new BreadcrumbItem("Edit", $"/{CollectionPageUri}/{Id}/edit")
         ];
     }
 
@@ -35,7 +34,7 @@ public abstract class UpdateResourcePage<TResource> : ComponentBase
     {
         NotificationBroker.Send("Resource updated", $"Resource Id '{Id}' updated successfully.", CarbonBlazorNotificationStyle.LowContrast, CarbonBlazorNotificationLevel.Success);
 
-        NavigationManager.NavigateTo(_collectionPath);
+        NavigationManager.NavigateTo(CollectionPageUri);
     }
 
     protected virtual void OnFault(Fault fault) =>
@@ -54,6 +53,10 @@ public abstract class UpdateResourcePage<TResource> : ComponentBase
     [EditorRequired]
     public Guid Id { get; set; }
 
+    protected virtual Action<HttpRequestMessage>? RequestConfiguration { get; set; }
+
+    protected virtual string CollectionPageUri => CollectionPath;
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
@@ -63,16 +66,16 @@ public abstract class UpdateResourcePage<TResource> : ComponentBase
     
     protected async Task RefreshResourceAsync()
     {
-        string uri = _collectionPath + "/" + Id;
+        string uri = CollectionPath + "/" + Id;
         
         // TODO: Get uri from service root
-        Result<ResourceDocument<TResource>> response = await HttpClient.GetByIdAsync<TResource>(uri);
+        Result<ResourceDocument<TResource>> response = await HttpClient.GetByIdAsync<TResource>(uri, RequestConfiguration);
 
         response.Match(
             resourceDocument =>
             {
                 Resource = resourceDocument.Resource;
-                _originalResourceJson = JsonSerializer.Serialize(Resource, DefaultSerialiser.JsonSerializerOptions);
+                OriginalResourceJson = JsonSerializer.Serialize(Resource, DefaultSerialiser.JsonSerializerOptions);
             },
             fault =>
             {
@@ -89,10 +92,10 @@ public abstract class UpdateResourcePage<TResource> : ComponentBase
             return;
         }
         
-        await HttpClient.PutAsync(_collectionPath + "/" + Id, Resource)
+        await HttpClient.PutAsync(CollectionPath + "/" + Id, Resource, RequestConfiguration)
             .MatchAsync(OnFault, OnSuccess);
     }
     
     protected void ResetResource() =>
-        Resource = JsonSerializer.Deserialize<TResource>(_originalResourceJson, DefaultSerialiser.JsonSerializerOptions) ?? new TResource();
+        Resource = JsonSerializer.Deserialize<TResource>(OriginalResourceJson, DefaultSerialiser.JsonSerializerOptions) ?? new TResource();
 }

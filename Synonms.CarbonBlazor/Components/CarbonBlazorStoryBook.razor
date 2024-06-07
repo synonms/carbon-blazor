@@ -273,6 +273,7 @@ if (isSuperExciting)
             <CarbonBlazorCheckBoxGroup Label="Checkbox group" @bind-Values="@_model.SomeCheckedValues" FieldIdentifier="@FieldIdentifier.Create(() => _model.SomeCheckedValues)" Items="@([CheckBoxItem.Create("Aardvark"), CheckBoxItem.Create("Chimp"), CheckBoxItem.Create("Giraffe"), CheckBoxItem.Create("Hippo")])"></CarbonBlazorCheckBoxGroup>
             <CarbonBlazorSelect Id="SomeSelect" Label="Select label" @bind-Value="@_model.SomeSelectValue" FieldIdentifier="@FieldIdentifier.Create(() => _model.SomeSelectValue)" Items="@([SelectItem<string>.Create("One"), SelectItem<string>.Create("Two"), SelectItem<string>.Create("Three"), SelectItem<string>.Create("Four")])"/>
             <CarbonBlazorDropDown Id="SomeDropDown" Label="Dropdown label" @bind-Values="@_model.SomeDropDownValues" FieldIdentifier="@FieldIdentifier.Create(() => _model.SomeDropDownValues)" Items="@([DropDownItem<string>.Create("One"), DropDownItem<string>.Create("Two"), DropDownItem<string>.Create("Three"), DropDownItem<string>.Create("Four")])"/>
+            <CarbonBlazorDatePicker Id="SomeDatePicker" Label="Datepicker label" @bind-Value="@_model.SomeDateValue" FieldIdentifier="@FieldIdentifier.Create(() => _model.SomeDateValue)"></CarbonBlazorDatePicker>
         </CarbonBlazorForm>
     </CarbonBlazorPane>
 
@@ -387,6 +388,7 @@ if (isSuperExciting)
         public int SomeIntInputValue { get; set; } 
         public bool SomeBoolInputValue { get; set; }
         public string SomeSelectValue { get; set; } = string.Empty;
+        public DateOnly? SomeDateValue { get; set; } = DateOnly.FromDateTime(DateTime.Today);
         public IEnumerable<string> SomeDropDownValues { get; set; } = [];
         public IEnumerable<string> SomeCheckedValues { get; set; } = [];
     }

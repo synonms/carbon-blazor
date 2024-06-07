@@ -11,18 +11,17 @@ namespace Synonms.CarbonBlazor.Pages;
 public abstract class ReadResourcePage<TResource> : ComponentBase
     where TResource : Resource, new()
 {
-    private readonly string _collectionPath;
-    
+    protected readonly string CollectionPath;
     protected TResource? Resource;
     protected readonly List<BreadcrumbItem> Breadcrumbs;
 
     protected ReadResourcePage(string collectionName, string resourceName, string collectionPath)
     {
-        _collectionPath = collectionPath;
+        CollectionPath = collectionPath;
         Breadcrumbs =
         [
-            new BreadcrumbItem(collectionName, $"/{collectionPath}"),
-            new BreadcrumbItem(resourceName, $"/{collectionPath}/{Id}")
+            new BreadcrumbItem(collectionName, $"/{CollectionPageUri}"),
+            new BreadcrumbItem(resourceName, $"/{CollectionPageUri}/{Id}")
         ];
     }
     
@@ -36,6 +35,10 @@ public abstract class ReadResourcePage<TResource> : ComponentBase
     [EditorRequired]
     public Guid Id { get; set; }
 
+    protected virtual Action<HttpRequestMessage>? RequestConfiguration { get; set; }
+
+    protected virtual string CollectionPageUri => CollectionPath;
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
@@ -45,10 +48,10 @@ public abstract class ReadResourcePage<TResource> : ComponentBase
     
     protected async Task RefreshResourceAsync()
     {
-        string uri = _collectionPath + "/" + Id;
+        string uri = CollectionPath + "/" + Id;
         
         // TODO: Get uri from service root
-        Result<ResourceDocument<TResource>> response = await HttpClient.GetByIdAsync<TResource>(uri);
+        Result<ResourceDocument<TResource>> response = await HttpClient.GetByIdAsync<TResource>(uri, RequestConfiguration);
 
         response.Match(
             resourceDocument =>
