@@ -236,6 +236,8 @@
 
     private async Task SelectDate(DateOnly date)
     {
+        _isExpanded = false;
+
         Value = date;
 
         await ValueUpdated();

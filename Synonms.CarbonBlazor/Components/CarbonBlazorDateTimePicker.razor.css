@@ -1,0 +1,17 @@
+﻿.cb-date-time-picker-label {
+    color: var(--cb-text-secondary);
+    font-size: var(--cb-label-01-font-size);
+    font-weight: var(--cb-label-01-font-weight);
+    letter-spacing: var(--cb-label-01-letter-spacing);
+    line-height: var(--cb-label-01-line-height);
+    margin-bottom: 0.5rem;
+    vertical-align: baseline;
+}
+
+.cb-date-time-picker-wrapper {
+    display: flex; 
+    flex-direction: row; 
+    gap: 1rem; 
+    justify-content: stretch; 
+    width: 100%;
+}

@@ -1,0 +1,130 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Web <!-- Required for dynamic attributes with 'at' prefix -->
+@using Synonms.CarbonBlazor.Enumerations
+@using Synonms.CarbonBlazor.Models
+
+<CarbonBlazorFieldSet IsDoubleColumn="@IsDoubleColumn" IsReadOnly="@IsReadOnly" IsDisabled="@IsDisabled">
+    @if (string.IsNullOrWhiteSpace(Label) is false)
+    {
+        <label for="@Id" class="cb-date-time-picker-label">@Label</label>
+    }
+
+    <div class="cb-date-time-picker-wrapper">
+        @{
+            string dateId = Id + "_Date";
+            string timeId = Id + "_Time";
+            <CarbonBlazorDatePicker Id="@dateId" Size="@Size" Layer="@Layer" IsDisabled="@IsDisabled" IsReadOnly="@IsReadOnly" IsDoubleColumn="true" Value="@_date" ValueChanged="@OnDateChanged" FieldIdentifier="@FieldIdentifier.Create(() => _date)"></CarbonBlazorDatePicker>
+            <CarbonBlazorTimePicker Id="@timeId" Size="@Size" Layer="@Layer" IsDisabled="@IsDisabled" IsReadOnly="@IsReadOnly" IsDoubleColumn="true" Value="@_time" ValueChanged="@OnTimeChanged" FieldIdentifier="@FieldIdentifier.Create(() => _time)"></CarbonBlazorTimePicker>
+        }
+    </div>
+
+    <CarbonBlazorValidationMessage @ref="@_validationMessage" FieldIdentifier="@FieldIdentifier"></CarbonBlazorValidationMessage>
+
+    @if (string.IsNullOrWhiteSpace(HelperText) is false)
+    {
+        <div id="@Id-helper-text" class="cb-date-time-picker-helper">@HelperText</div>
+    }
+</CarbonBlazorFieldSet>
+
+@code {
+    private CarbonBlazorValidationMessage? _validationMessage;
+    private DateOnly? _date;
+    private TimeOnly? _time;
+
+    [CascadingParameter]
+    public EditContext EditContext { get; set; } = null!;
+    
+    [CascadingParameter]
+    public IEnumerable<ValidationOutcome> ValidationOutcomes { get; set; } = [];
+
+    [Parameter]
+    [EditorRequired]
+    public FieldIdentifier FieldIdentifier { get; set; } = default!;
+    
+    [Parameter]
+    [EditorRequired]
+    public DateTime? Value { get; set; }
+    
+    [Parameter]
+    public EventCallback<DateTime?> ValueChanged { get; set; }
+
+    [Parameter]
+    public string? Id { get; set; }
+    
+    [Parameter]
+    public CarbonBlazorInputSize Size { get; set; } = CarbonBlazorInputSize.Medium;
+
+    [Parameter]
+    public CarbonBlazorLayer Layer { get; set; } = CarbonBlazorLayer.Two;
+
+    [Parameter]
+    public string? Label { get; set; }
+
+    [Parameter]
+    public string? HelperText { get; set; }
+    
+    [Parameter]
+    public bool IsDisabled { get; set; } = false;
+
+    [Parameter]
+    public bool IsReadOnly { get; set; } = false;
+    
+    [Parameter]
+    public bool IsDoubleColumn { get; set; } = false;
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        
+        Console.WriteLine("OnParametersSet");
+
+        _date = Value is null || DateOnly.FromDateTime(Value.Value) == DateOnly.MinValue ? null : DateOnly.FromDateTime(Value.Value);
+        _time = Value is null ? null : TimeOnly.FromDateTime(Value.Value);
+    }
+
+    private async Task OnDateChanged(DateOnly? date)
+    {
+        _date = date;
+        
+        await ValueUpdated();
+    }
+
+    private async Task OnTimeChanged(TimeOnly? time)
+    {
+        _time = time;
+
+        await ValueUpdated();
+    }
+    
+    private async Task ValueUpdated()
+    {
+        Console.WriteLine("ValueUpdated");
+        
+        if (_date is not null)
+        {
+            if (_time is not null)
+            {
+                Value = _date.Value.ToDateTime(_time.Value);
+            }
+            else
+            {
+                Value = _date.Value.ToDateTime(TimeOnly.MinValue);
+            }
+        }
+        else
+        {
+            if (_time is not null)
+            {
+                Value = DateOnly.MinValue.ToDateTime(_time.Value);
+            }
+            else
+            {
+                Value = null;
+            }
+        }
+
+        await ValueChanged.InvokeAsync(Value);
+
+        EditContext.NotifyFieldChanged(FieldIdentifier);
+    }
+}

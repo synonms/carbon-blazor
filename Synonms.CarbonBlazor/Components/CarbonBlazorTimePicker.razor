@@ -1,0 +1,136 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Web <!-- Required for dynamic attributes with 'at' prefix -->
+@using Synonms.CarbonBlazor.Css
+@using Synonms.CarbonBlazor.Enumerations
+@using Synonms.CarbonBlazor.Models
+
+<CarbonBlazorFieldSet IsDoubleColumn="@IsDoubleColumn" IsReadOnly="@IsReadOnly" IsDisabled="@IsDisabled">
+    @if (string.IsNullOrWhiteSpace(Label) is false)
+    {
+        <label for="@Id" class="cb-time-picker-label">@Label</label>
+    }
+
+    <div class="cb-time-picker-wrapper @CarbonBlazorInputSizeMapper.ToClass(Size)">
+        <input class="@GetClass()" id="@(Id)_Time" name="@Id" type="text" value="@_timeValueAsString" @onchange="@OnValueChanged" pattern="\d{1,2}:\d{1,2}" readonly="@IsReadOnly" disabled="@IsDisabled" placeholder="hh:mm">
+        <svg focusable="false" preserveAspectRatio="xMidYMid meet" class="cb-time-picker-icon" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+            @if (_validationMessage?.ValidationState == ValidationOutcome.ValidationState.Error)
+            {
+                <path d="M8,1C4.2,1,1,4.2,1,8s3.2,7,7,7s7-3.1,7-7S11.9,1,8,1z M7.5,4h1v5h-1C7.5,9,7.5,4,7.5,4z M8,12.2 c-0.4,0-0.8-0.4-0.8-0.8s0.3-0.8,0.8-0.8c0.4,0,0.8,0.4,0.8,0.8S8.4,12.2,8,12.2z"></path>
+                <path d="M7.5,4h1v5h-1C7.5,9,7.5,4,7.5,4z M8,12.2c-0.4,0-0.8-0.4-0.8-0.8s0.3-0.8,0.8-0.8 c0.4,0,0.8,0.4,0.8,0.8S8.4,12.2,8,12.2z" data-icon-path="inner-path" opacity="0"></path>
+            }
+            else
+            {
+                <path id="inner-path" fill="none" d="M16,26a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,16,26Zm-1.125-5h2.25V12h-2.25Z"/>
+                <path d="M16.002,6.1714h-.004L4.6487,27.9966,4.6506,28H27.3494l.0019-.0034ZM14.875,12h2.25v9h-2.25ZM16,26a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,16,26Z"/>
+                <path d="M29,30H3a1,1,0,0,1-.8872-1.4614l13-25a1,1,0,0,1,1.7744,0l13,25A1,1,0,0,1,29,30ZM4.6507,28H27.3493l.002-.0033L16.002,6.1714h-.004L4.6487,27.9967Z"/>
+            }
+        </svg>
+    </div>
+
+    <CarbonBlazorValidationMessage @ref="@_validationMessage" FieldIdentifier="@FieldIdentifier"></CarbonBlazorValidationMessage>
+
+    @if (string.IsNullOrWhiteSpace(HelperText) is false)
+    {
+        string helperId = Id + "helper-text";
+        <div id="@helperId" class="cb-time-picker-helper">@HelperText</div>
+    }
+</CarbonBlazorFieldSet>
+
+@code {
+    private CarbonBlazorValidationMessage? _validationMessage;
+    private string _timeValueAsString = string.Empty;
+
+    [CascadingParameter]
+    public EditContext EditContext { get; set; } = null!;
+    
+    [CascadingParameter]
+    public IEnumerable<ValidationOutcome> ValidationOutcomes { get; set; } = [];
+
+    [Parameter]
+    [EditorRequired]
+    public FieldIdentifier FieldIdentifier { get; set; } = default!;
+    
+    [Parameter]
+    [EditorRequired]
+    public TimeOnly? Value { get; set; }
+    
+    [Parameter]
+    public EventCallback<TimeOnly?> ValueChanged { get; set; }
+
+    [Parameter]
+    public string? Id { get; set; }
+    
+    [Parameter]
+    public CarbonBlazorInputSize Size { get; set; } = CarbonBlazorInputSize.Medium;
+
+    [Parameter]
+    public CarbonBlazorLayer Layer { get; set; } = CarbonBlazorLayer.Two;
+
+    [Parameter]
+    public string? Label { get; set; }
+
+    [Parameter]
+    public string? HelperText { get; set; }
+    
+    [Parameter]
+    public bool IsDisabled { get; set; } = false;
+
+    [Parameter]
+    public bool IsReadOnly { get; set; } = false;
+    
+    [Parameter]
+    public bool IsDoubleColumn { get; set; } = false;
+    
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        
+        _timeValueAsString = Value?.ToString("HH:mm") ?? string.Empty;
+    }
+
+    private async Task OnValueChanged(ChangeEventArgs changeEventArgs)
+    {
+        string newValueAsString = changeEventArgs.Value?.ToString() ?? string.Empty;
+        
+        if (TimeOnly.TryParse(newValueAsString, out TimeOnly newValueAsTimeOnly))
+        {
+            Value = newValueAsTimeOnly;
+        }
+        else
+        {
+            // Force renderer to detect value change and rebind input (so it clears invalid value in browser DOM during ValueUpdated()) 
+            _timeValueAsString = "invalid";
+            await Task.Delay(1);
+            
+            Value = null;
+        }
+
+        await ValueUpdated();
+    }
+
+    private async Task ValueUpdated()
+    {
+        _timeValueAsString = Value?.ToString("HH:mm") ?? string.Empty;
+
+        await ValueChanged.InvokeAsync(Value);
+
+        EditContext.NotifyFieldChanged(FieldIdentifier);
+    }
+
+    private string GetClass()
+    {
+        const string baseClass = CssClasses.Prefix + "time-picker";
+        string layerClass = CarbonBlazorLayerMapper.ToClass(Layer);
+        string validationClass = _validationMessage is null 
+            ? string.Empty 
+            : _validationMessage.ValidationState switch
+            {
+                ValidationOutcome.ValidationState.Valid => "valid",
+                ValidationOutcome.ValidationState.Warning => "warning",
+                ValidationOutcome.ValidationState.Error => "error",
+                _ => string.Empty
+            };
+
+        return CssClasses.Concatenate(baseClass, layerClass, validationClass);
+    }
+}
