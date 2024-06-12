@@ -96,15 +96,15 @@
 }
 .cb-time-picker-wrapper.small .cb-time-picker-icon {
     top: 0.5rem;
-    right: 4.5rem;
+    right: 0.5rem;
 }
 .cb-time-picker-wrapper.medium .cb-time-picker-icon {
     top: 0.75rem;
-    right: 5.5rem;
+    right: 0.75rem;
 }
 .cb-time-picker-wrapper.large .cb-time-picker-icon {
     top: 1rem;
-    right: 6.5rem;
+    right: 1rem;
 }
 
 .cb-time-picker-helper {

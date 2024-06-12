@@ -99,6 +99,11 @@
 
     private void OnClicked()
     {
+        if (IsReadOnly || IsDisabled)
+        {
+            return;
+        }
+        
         _isExpanded = !_isExpanded;
     }
 

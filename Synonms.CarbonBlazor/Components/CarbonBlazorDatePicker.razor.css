@@ -96,15 +96,15 @@
 }
 .cb-date-picker-wrapper.small .cb-date-picker-icon {
     top: 0.5rem;
-    right: 4.5rem;
+    right: 2.5rem;
 }
 .cb-date-picker-wrapper.medium .cb-date-picker-icon {
     top: 0.75rem;
-    right: 5.5rem;
+    right: 3rem;
 }
 .cb-date-picker-wrapper.large .cb-date-picker-icon {
     top: 1rem;
-    right: 6.5rem;
+    right: 3.5rem;
 }
 
 .cb-date-picker-button {

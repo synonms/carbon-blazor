@@ -13,8 +13,8 @@
         @{
             string dateId = Id + "_Date";
             string timeId = Id + "_Time";
-            <CarbonBlazorDatePicker Id="@dateId" Size="@Size" Layer="@Layer" IsDisabled="@IsDisabled" IsReadOnly="@IsReadOnly" IsDoubleColumn="true" Value="@_date" ValueChanged="@OnDateChanged" FieldIdentifier="@FieldIdentifier.Create(() => _date)"></CarbonBlazorDatePicker>
-            <CarbonBlazorTimePicker Id="@timeId" Size="@Size" Layer="@Layer" IsDisabled="@IsDisabled" IsReadOnly="@IsReadOnly" IsDoubleColumn="true" Value="@_time" ValueChanged="@OnTimeChanged" FieldIdentifier="@FieldIdentifier.Create(() => _time)"></CarbonBlazorTimePicker>
+            <CarbonBlazorDatePicker Id="@dateId" Size="@Size" Layer="@Layer" IsDisabled="@IsDisabled" IsReadOnly="@IsReadOnly" IsDoubleColumn="true" Value="@_date" ValueChanged="@OnDateChanged" FieldIdentifier="@FieldIdentifier"></CarbonBlazorDatePicker>
+            <CarbonBlazorTimePicker Id="@timeId" Size="@Size" Layer="@Layer" IsDisabled="@IsDisabled" IsReadOnly="@IsReadOnly" IsDoubleColumn="true" Value="@_time" ValueChanged="@OnTimeChanged" FieldIdentifier="@FieldIdentifier"></CarbonBlazorTimePicker>
         }
     </div>
 

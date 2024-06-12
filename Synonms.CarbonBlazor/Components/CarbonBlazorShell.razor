@@ -193,12 +193,14 @@
     
     private async Task ChangeTheme(CarbonBlazorTheme theme)
     {
+        CloseThemePanel();
+
+        Theme = theme;
+
         if (OnThemeChanged.HasDelegate)
         {
-            await OnThemeChanged.InvokeAsync(theme);
+            await OnThemeChanged.InvokeAsync();
         }
-
-        CloseThemePanel();
     }
 
     private void ThemeClicked()
