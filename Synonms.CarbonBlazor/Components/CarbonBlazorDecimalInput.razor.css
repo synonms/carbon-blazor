@@ -1,0 +1,167 @@
+﻿.cb-decimal-input-label {
+    color: var(--cb-text-secondary);
+    font-size: var(--cb-label-01-font-size);
+    font-weight: var(--cb-label-01-font-weight);
+    letter-spacing: var(--cb-label-01-letter-spacing);
+    line-height: var(--cb-label-01-line-height);
+    margin-bottom: 0.5rem;
+    vertical-align: baseline;
+}
+
+.cb-decimal-input-wrapper {
+    align-items: center;
+    background-color: transparent;
+    display: flex;
+    position: relative;
+    width: 100%;
+}
+
+.cb-decimal-input-wrapper.small {
+    height: 2rem;
+}
+.cb-decimal-input-wrapper.medium {
+    height: 2.5rem;
+}
+.cb-decimal-input-wrapper.large {
+    height: 3rem;
+}
+
+.cb-decimal-input {
+    background-color: var(--cb-field);
+    border: 0;
+    border-bottom: 1px solid var(--cb-border-strong);
+    color: var(--cb-text-primary);
+    font-size: var(--cb-body-compact-01-font-size);
+    font-weight: var(--cb-body-compact-01-font-weight);
+    height: 100%;
+    letter-spacing: var(--cb-body-compact-01-letter-spacing);
+    line-height: var(--cb-body-compact-01-line-height);
+    padding-left: 1rem;
+    padding-right: 1rem;
+    vertical-align: baseline;
+    width: 100%;
+}
+.cb-decimal-input.layer-00 {
+    background-color: var(--cb-field);
+    border-bottom: 1px solid var(--cb-border-strong);
+}
+.cb-decimal-input.layer-01 {
+    background-color: var(--cb-field-01);
+    border-bottom: 1px solid var(--cb-border-strong-01);
+}
+.cb-decimal-input.layer-02 {
+    background-color: var(--cb-field-02);
+    border-bottom: 1px solid var(--cb-border-strong-02);
+}
+.cb-decimal-input.layer-03 {
+    background-color: var(--cb-field-03);
+    border-bottom: 1px solid var(--cb-border-strong-03);
+}
+
+.cb-decimal-input::placeholder {
+    color: var(--cb-text-placeholder);
+}
+.cb-decimal-input:focus {
+    outline: 2px solid var(--cb-focus);
+    outline-offset: -2px
+}
+.cb-decimal-input.error {
+    outline: 2px solid var(--cb-support-error);
+    outline-offset: -2px
+}
+.cb-decimal-input:disabled {
+    border-bottom: 1px solid transparent;
+    color: var(--cb-text-disabled);
+}
+.cb-decimal-input[readonly="readonly"], .cb-decimal-input[readonly] {
+    background-color: transparent;
+    border-bottom: 1px solid var(--cb-border-subtle);
+    color: var(--cb-text-primary);
+}
+
+.cb-decimal-input-icon {
+    display: none;
+    fill: var(--cb-support-error);
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+}
+.cb-decimal-input.error + .cb-decimal-input-icon {
+    fill: var(--cb-support-error);
+    display: block;
+}
+.cb-decimal-input.warning + .cb-decimal-input-icon {
+    fill: var(--cb-support-warning);
+    display: block;
+}
+.cb-decimal-input-wrapper.small .cb-decimal-input-icon {
+    top: 0.5rem;
+    right: 4.5rem;
+}
+.cb-decimal-input-wrapper.medium .cb-decimal-input-icon {
+    top: 0.75rem;
+    right: 5.5rem;
+}
+.cb-decimal-input-wrapper.large .cb-decimal-input-icon {
+    top: 1rem;
+    right: 6.5rem;
+}
+
+.cb-decimal-input-button {
+    background-color: transparent;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 1px;
+    cursor: pointer;
+    fill: var(--cb-icon-primary);
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.cb-decimal-input-wrapper.small .cb-decimal-input-button {
+    height: 2rem;
+    width: 2rem;
+}
+.cb-decimal-input-wrapper.small .cb-decimal-input-button.decrement {
+    right: 2rem;
+}
+.cb-decimal-input-wrapper.medium .cb-decimal-input-button {
+    height: 2.5rem;
+    width: 2.5rem;
+}
+.cb-decimal-input-wrapper.medium .cb-decimal-input-button.decrement {
+    right: 2.5rem;
+}
+.cb-decimal-input-wrapper.large .cb-decimal-input-button {
+    height: 3rem;
+    width: 3rem;
+}
+.cb-decimal-input-wrapper.large .cb-decimal-input-button.decrement {
+    right: 3rem;
+}
+
+.cb-decimal-input-button:hover {
+    background-color: var(--cb-background-hover);
+}
+.cb-decimal-input-button:active {
+    background-color: var(--cb-background-active);
+}
+.cb-decimal-input-button:focus {
+    border-color: var(--cb-focus);
+}
+.cb-decimal-input-button:disabled {
+    fill: var(--cb-icon-disabled);
+}
+
+.cb-decimal-input-helper {
+    color: var(--cb-text-helper);
+    display: block;
+    font-size: var(--cb-helper-text-01-font-size);
+    font-weight: var(--cb-helper-text-01-font-weight);
+    line-height: var(--cb-helper-text-01-line-height);
+    letter-spacing: var(--cb-helper-text-01-letter-spacing);
+    margin-top: 0.25rem;
+}
+.cb-validation-message + .cb-decimal-input-helper {
+    display: none;
+}

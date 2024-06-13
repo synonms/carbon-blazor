@@ -1,12 +1,17 @@
-﻿<nav class="cb-sidebar @(IsExpanded ? "" : "collapsed")">
+﻿<nav class="cb-sidebar @(_isExpanded ? "" : "collapsed")">
     <ul>
         @ChildContent
     </ul>
 </nav>
 
 @code {
+    private bool _isExpanded = true;
+    
     [Parameter]
     public RenderFragment ChildContent { get; set; } = null!;
 
-    public bool IsExpanded { get; set; } = true;
+    public void ToggleVisibility()
+    {
+        _isExpanded = !_isExpanded;
+    }
 }

@@ -1,4 +1,5 @@
-﻿@using Microsoft.AspNetCore.Components.Forms
+﻿@using System.Globalization
+@using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.AspNetCore.Components.Web <!-- Required for dynamic attributes with 'at' prefix -->
 @using Synonms.CarbonBlazor.Css
 @using Synonms.CarbonBlazor.Enumerations
@@ -7,12 +8,12 @@
 <CarbonBlazorFieldSet IsDoubleColumn="@IsDoubleColumn" IsReadOnly="@IsReadOnly" IsDisabled="@IsDisabled">
     @if (string.IsNullOrWhiteSpace(Label) is false)
     {
-        <label for="@Id" class="cb-number-input-label">@Label</label>
+        <label for="@Id" class="cb-decimal-input-label">@Label</label>
     }
 
-    <div class="cb-number-input-wrapper @CarbonBlazorInputSizeMapper.ToClass(Size)">
-        <input class="@GetClass()" id="@Id" name="@Id" type="number" value="@_valueAsString" @oninput="@OnValueChanged" pattern="[0-9]*" readonly="@IsReadOnly" disabled="@IsDisabled">
-        <svg focusable="false" preserveAspectRatio="xMidYMid meet" class="cb-number-input-icon" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <div class="cb-decimal-input-wrapper @CarbonBlazorInputSizeMapper.ToClass(Size)">
+        <input class="@GetClass()" id="@Id" name="@Id" type="number" value="@_valueAsString" @oninput="@OnValueChanged" pattern="[0-9]*.[0-9]*" readonly="@IsReadOnly" disabled="@IsDisabled">
+        <svg focusable="false" preserveAspectRatio="xMidYMid meet" class="cb-decimal-input-icon" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
             @if (_validationMessage?.ValidationState == ValidationOutcome.ValidationState.Error)
             {
                 <path d="M8,1C4.2,1,1,4.2,1,8s3.2,7,7,7s7-3.1,7-7S11.9,1,8,1z M7.5,4h1v5h-1C7.5,9,7.5,4,7.5,4z M8,12.2 c-0.4,0-0.8-0.4-0.8-0.8s0.3-0.8,0.8-0.8c0.4,0,0.8,0.4,0.8,0.8S8.4,12.2,8,12.2z"></path>
@@ -25,10 +26,10 @@
                 <path d="M29,30H3a1,1,0,0,1-.8872-1.4614l13-25a1,1,0,0,1,1.7744,0l13,25A1,1,0,0,1,29,30ZM4.6507,28H27.3493l.002-.0033L16.002,6.1714h-.004L4.6487,27.9967Z"/>
             }
         </svg>
-        <button class="cb-number-input-button decrement" type="button" onclick="@(() => Decrement())" disabled="@IsDisabled">
+        <button class="cb-decimal-input-button decrement" type="button" onclick="@(() => Decrement())" disabled="@IsDisabled">
             @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.Subtract, 16))
         </button>
-        <button class="cb-number-input-button increment" type="button" onclick="@(() => Increment())" disabled="@IsDisabled">
+        <button class="cb-decimal-input-button increment" type="button" onclick="@(() => Increment())" disabled="@IsDisabled">
             @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.Add, 16))
         </button>
     </div>
@@ -37,7 +38,7 @@
 
     @if (string.IsNullOrWhiteSpace(HelperText) is false)
     {
-        <div id="@Id-helper-text" class="cb-number-input-helper">@HelperText</div>
+        <div id="@Id-helper-text" class="cb-decimal-input-helper">@HelperText</div>
     }
 </CarbonBlazorFieldSet>
 
@@ -57,10 +58,10 @@
     
     [Parameter]
     [EditorRequired]
-    public int Value { get; set; }
+    public decimal Value { get; set; }
     
     [Parameter]
-    public EventCallback<int> ValueChanged { get; set; }
+    public EventCallback<decimal> ValueChanged { get; set; }
 
     [Parameter]
     public string? Id { get; set; }
@@ -78,13 +79,13 @@
     public string? HelperText { get; set; }
     
     [Parameter]
-    public int Min { get; set; } = 0;
+    public decimal Min { get; set; } = 0.0m;
 
     [Parameter]
-    public int Max { get; set; } = int.MaxValue;
+    public decimal Max { get; set; } = decimal.MaxValue;
 
     [Parameter]
-    public int Step { get; set; } = 1;
+    public decimal Step { get; set; } = 1.0m;
 
     [Parameter]
     public bool IsDisabled { get; set; } = false;
@@ -99,24 +100,16 @@
     {
         base.OnParametersSet();
         
-        _valueAsString = Value.ToString();
+        _valueAsString = Value.ToString(CultureInfo.InvariantCulture);
     }
-
-    private CarbonBlazorButtonSize GetButtonSize() => Size switch
-    {
-        CarbonBlazorInputSize.Small => CarbonBlazorButtonSize.Small,
-        CarbonBlazorInputSize.Medium => CarbonBlazorButtonSize.Medium,
-        CarbonBlazorInputSize.Large => CarbonBlazorButtonSize.LargeProductive,
-        _ => CarbonBlazorButtonSize.Medium
-    };
     
     private async Task OnValueChanged(ChangeEventArgs changeEventArgs)
     {
         string newValueAsString = changeEventArgs.Value?.ToString() ?? string.Empty;
 
-        if (int.TryParse(newValueAsString, out int newValueAsInt))
+        if (decimal.TryParse(newValueAsString, out decimal newValueAsDecimal))
         {
-            Value = newValueAsInt;
+            Value = newValueAsDecimal;
 
             await ValueUpdated();
         }
@@ -124,7 +117,7 @@
 
     private async Task ValueUpdated()
     {
-        _valueAsString = Value.ToString();
+        _valueAsString = Value.ToString(CultureInfo.InvariantCulture);
         
         await ValueChanged.InvokeAsync(Value);
             
@@ -151,7 +144,7 @@
 
     private string GetClass()
     {
-        const string baseClass = CssClasses.Prefix + "number-input";
+        const string baseClass = CssClasses.Prefix + "decimal-input";
         string layerClass = CarbonBlazorLayerMapper.ToClass(Layer);
         string validationClass = _validationMessage is null 
             ? string.Empty 

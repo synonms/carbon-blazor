@@ -80,7 +80,7 @@
     #region Header
     
     [Parameter]
-    public EventCallback OnMenuClick { get; set; } = EventCallback.Empty;
+    public EventCallback MenuClicked { get; set; } = EventCallback.Empty;
 
     [Parameter]
     [EditorRequired]
@@ -90,6 +90,16 @@
     [EditorRequired]
     public string ProductIconImagePath { get; set; } = string.Empty;
 
+    private async Task OnMenuClick()
+    {
+        _sidebar.ToggleVisibility();
+
+        if (MenuClicked.HasDelegate)
+        {
+            await MenuClicked.InvokeAsync();
+        }
+    }
+    
     private void CloseAllPanels()
     {
         CloseSwitcherPanel();
