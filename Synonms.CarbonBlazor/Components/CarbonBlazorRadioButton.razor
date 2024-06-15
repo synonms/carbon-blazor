@@ -1,38 +1,90 @@
-﻿<div class="cds--form-item">
-    <fieldset class="cds--radio-button-group cds--radio-button-group--label-right">
-        <legend class="cds--label" dir="ltr">Radio Button heading</legend>
-        <div class="some-class cds--radio-button-wrapper">
-            <input type="radio" class="cds--radio-button" id="radio-1" name="radio-button-group" value="standard">
-            <label for="radio-1" class="cds--radio-button__label">
-                <span class="cds--radio-button__appearance"></span>
-                <span class="cds--radio-button__label-text" dir="ltr">Standard Radio Button</span>
-            </label>
-        </div>
-        <div class="some-class cds--radio-button-wrapper">
-            <input type="radio" class="cds--radio-button" id="radio-2" name="radio-button-group" value="default-selected" checked="">
-            <label for="radio-2" class="cds--radio-button__label">
-                <span class="cds--radio-button__appearance"></span>
-                <span class="cds--radio-button__label-text" dir="ltr">Default Selected Radio Button</span>
-            </label>
-        </div>
-        <div class="some-class cds--radio-button-wrapper">
-            <input type="radio" class="cds--radio-button" id="radio-3" name="radio-button-group" value="blue">
-            <label for="radio-3" class="cds--radio-button__label">
-                <span class="cds--radio-button__appearance"></span>
-                <span class="cds--radio-button__label-text" dir="ltr">Standard Radio Button</span>
-            </label>
-        </div>
-        <div class="some-class cds--radio-button-wrapper">
-            <input type="radio" class="cds--radio-button" id="radio-4" disabled="" name="radio-button-group" value="disabled">
-            <label for="radio-4" class="cds--radio-button__label">
-                <span class="cds--radio-button__appearance"></span>
-                <span class="cds--radio-button__label-text" dir="ltr">Disabled Radio Button</span>
-            </label>
-        </div>
-    </fieldset>
-    <div class="cds--radio-button__validation-msg"></div>
-</div>
+﻿@using Synonms.CarbonBlazor.Enumerations
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Web
+@using Synonms.CarbonBlazor.Models
+
+<CarbonBlazorFieldSet IsDoubleColumn="@IsDoubleColumn" IsReadOnly="@IsReadOnly" IsDisabled="@IsDisabled">
+    @if (string.IsNullOrWhiteSpace(Label) is false)
+    {
+        <span class="cb-radio-button-group-label">@Label</span>
+    }
+    
+    @foreach (RadioButtonItem item in Items)
+    {
+        <CarbonBlazorStack FlexDirection="FlexDirection.Row" AlignItems="AlignItems.Center" Gap="0.5rem">
+            <input type="radio" class="cb-radio-button" id="@item.Id" name="@item.Id" @oninput="@(changeEventArgs => OnInput(changeEventArgs, item))" checked="@Value.Equals(item.Value)" value="@item.Value">
+            <label for="@item.Id" class="cb-radio-button-label">@item.Label</label>
+        </CarbonBlazorStack>
+    }
+
+    <CarbonBlazorValidationMessage @ref="@_validationMessage" FieldIdentifier="@FieldIdentifier"></CarbonBlazorValidationMessage>
+
+    @if (string.IsNullOrWhiteSpace(HelperText) is false)
+    {
+        <div class="cb-radio-button-group-helper">@HelperText</div>
+    }
+</CarbonBlazorFieldSet>
 
 @code {
-    
+    private CarbonBlazorValidationMessage? _validationMessage;
+
+    [CascadingParameter]
+    public EditContext EditContext { get; set; } = null!;
+
+    [CascadingParameter]
+    public IEnumerable<ValidationOutcome> ValidationOutcomes { get; set; } = [];
+
+    [Parameter]
+    [EditorRequired]
+    public FieldIdentifier FieldIdentifier { get; set; } = default!;
+
+    [Parameter]
+    [EditorRequired]
+    public IEnumerable<RadioButtonItem> Items { get; set; } = [];
+
+    [Parameter]
+    public string Value { get; set; } = string.Empty;
+
+    [Parameter]
+    public EventCallback<string> ValueChanged { get; set; }
+
+    [Parameter]
+    public CarbonBlazorInputSize Size { get; set; } = CarbonBlazorInputSize.Medium;
+
+    [Parameter]
+    public CarbonBlazorLayer Layer { get; set; } = CarbonBlazorLayer.Two;
+
+    [Parameter]
+    public string? Label { get; set; }
+
+    [Parameter]
+    public string? HelperText { get; set; }
+
+    [Parameter]
+    public bool IsDisabled { get; set; } = false;
+
+    [Parameter]
+    public bool IsReadOnly { get; set; } = false;
+
+    [Parameter]
+    public bool IsDoubleColumn { get; set; } = false;
+
+    private async Task OnInput(ChangeEventArgs changeEventArgs, RadioButtonItem item)
+    {
+        string isSelectedAsString = changeEventArgs.Value?.ToString() ?? string.Empty;
+
+        if (bool.TryParse(isSelectedAsString, out bool isSelectedAsBool))
+        {
+            Console.WriteLine(item.Value + " set to " + isSelectedAsBool);
+
+            if (isSelectedAsBool)
+            {
+                Value = item.Value;
+                
+                await ValueChanged.InvokeAsync(Value);
+                
+                EditContext.NotifyFieldChanged(FieldIdentifier);
+            }
+        }
+    }
 }

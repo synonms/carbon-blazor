@@ -271,6 +271,7 @@ if (isSuperExciting)
             <CarbonBlazorCheckBox Id="SomeCheckBox" Label="Checkbox label" @bind-Value="@_model.SomeBoolInputValue" FieldIdentifier="@FieldIdentifier.Create(() => _model.SomeBoolInputValue)"></CarbonBlazorCheckBox>
             <CarbonBlazorNumberInput Id="SomeNumberInput" Label="Number input label" @bind-Value="@_model.SomeIntInputValue" FieldIdentifier="@FieldIdentifier.Create(() => _model.SomeIntInputValue)" Min="0" Max="100" Step="5"></CarbonBlazorNumberInput>
             <CarbonBlazorCheckBoxGroup Label="Checkbox group" @bind-Values="@_model.SomeCheckedValues" FieldIdentifier="@FieldIdentifier.Create(() => _model.SomeCheckedValues)" Items="@([CheckBoxItem.Create("Aardvark"), CheckBoxItem.Create("Chimp"), CheckBoxItem.Create("Giraffe"), CheckBoxItem.Create("Hippo")])"></CarbonBlazorCheckBoxGroup>
+            <CarbonBlazorRadioButton Label="Radio Button" @bind-Value="@_model.SomeRadioButtonValue" FieldIdentifier="@FieldIdentifier.Create(() => _model.SomeRadioButtonValue)" Items="@([RadioButtonItem.Create("Lemon"), RadioButtonItem.Create("Lime")])"></CarbonBlazorRadioButton>
             <CarbonBlazorSelect Id="SomeSelect" Label="Select label" @bind-Value="@_model.SomeSelectValue" FieldIdentifier="@FieldIdentifier.Create(() => _model.SomeSelectValue)" Items="@([SelectItem<string>.Create("One"), SelectItem<string>.Create("Two"), SelectItem<string>.Create("Three"), SelectItem<string>.Create("Four")])"/>
             <CarbonBlazorDropDown Id="SomeDropDown" Label="Dropdown label" @bind-Values="@_model.SomeDropDownValues" FieldIdentifier="@FieldIdentifier.Create(() => _model.SomeDropDownValues)" Items="@([DropDownItem<string>.Create("One"), DropDownItem<string>.Create("Two"), DropDownItem<string>.Create("Three"), DropDownItem<string>.Create("Four")])"/>
             <CarbonBlazorDatePicker Id="SomeDatePicker" Label="Date Picker label" @bind-Value="@_model.SomeDateValue" FieldIdentifier="@FieldIdentifier.Create(() => _model.SomeDateValue)"></CarbonBlazorDatePicker>
@@ -390,6 +391,7 @@ if (isSuperExciting)
         public int SomeIntInputValue { get; set; } 
         public bool SomeBoolInputValue { get; set; }
         public string SomeSelectValue { get; set; } = string.Empty;
+        public string SomeRadioButtonValue { get; set; } = string.Empty;
         public DateOnly? SomeDateValue { get; set; } = DateOnly.FromDateTime(DateTime.Today);
         public TimeOnly? SomeTimeValue { get; set; } = TimeOnly.FromDateTime(DateTime.Now);
         public DateTime? SomeDateTimeValue { get; set; } = DateTime.Now;

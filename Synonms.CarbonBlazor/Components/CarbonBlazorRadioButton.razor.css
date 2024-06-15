@@ -1,0 +1,44 @@
+﻿.cb-radio-button-group-label {
+    color: var(--cb-text-secondary);
+    font-size: var(--cb-label-01-font-size);
+    font-weight: var(--cb-label-01-font-weight);
+    letter-spacing: var(--cb-label-01-letter-spacing);
+    line-height: var(--cb-label-01-line-height);
+    margin-bottom: 0.5rem;
+    vertical-align: baseline;
+}
+
+.cb-radio-button-label {
+    color: var(--cb-text-primary);
+    font-size: var(--cb-body-compact-01-font-size);
+    font-weight: var(--cb-body-compact-01-font-weight);
+    letter-spacing: var(--cb-body-compact-01-letter-spacing);
+    line-height: var(--cb-body-compact-01-line-height);
+}
+
+.cb-radio-button {
+    background-color: transparent;
+    border: 1px solid var(--cb-icon-primary);
+    cursor: pointer;
+    height: 1rem;
+    inline-size: 1rem;
+    overflow: hidden;
+    padding: 0;
+    white-space: nowrap;
+    width: 1rem;
+}
+.cb-radio-button:checked {
+    background-color: var(--cb-icon-primary);
+    color: var(--cb-icon-inverse);
+}
+
+.cb-radio-button-group-helper {
+    color: var(--cb-text-helper);
+    display: block;
+    font-size: var(--cb-helper-text-01-font-size);
+    font-weight: var(--cb-helper-text-01-font-weight);
+    line-height: var(--cb-helper-text-01-line-height);
+    letter-spacing: var(--cb-helper-text-01-letter-spacing);
+    margin-top: 0.25rem;
+}
+

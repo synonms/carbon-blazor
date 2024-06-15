@@ -83,8 +83,6 @@
 
         if (bool.TryParse(isSelectedAsString, out bool isSelectedAsBool))
         {
-            Console.WriteLine(item.Value + " set to " + isSelectedAsBool);
-
             if (isSelectedAsBool)
             {
                 if (_selectedValues.Contains(item.Value) is false)
