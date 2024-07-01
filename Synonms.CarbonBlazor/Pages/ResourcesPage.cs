@@ -1,5 +1,7 @@
-﻿using System.Text.Json;
+﻿using System.Security.Claims;
+using System.Text.Json;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Synonms.CarbonBlazor.Client;
 using Synonms.CarbonBlazor.Enumerations;
 using Synonms.CarbonBlazor.Infrastructure;
@@ -23,6 +25,7 @@ public abstract class ResourcesPage<TResource> : ComponentBase
         Delete
     }
 
+    protected ClaimsPrincipal? ClaimsPrincipal;
     protected List<TResource>? Resources;
     protected Pagination? Pagination;
     protected readonly List<BreadcrumbItem> Breadcrumbs;
@@ -43,6 +46,9 @@ public abstract class ResourcesPage<TResource> : ComponentBase
     [Inject] 
     public ICarbonBlazorHttpClient HttpClient { get; set; } = null!;
 
+    [Inject]
+    public AuthenticationStateProvider AuthenticationStateProvider { get; set; } = null!;
+    
     public TResource ActiveResource { get; set; } = new();
     
     protected virtual Action<HttpRequestMessage>? RequestConfiguration { get; set; }
@@ -58,6 +64,9 @@ public abstract class ResourcesPage<TResource> : ComponentBase
     
     protected override async Task OnInitializedAsync()
     {
+        AuthenticationState authenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        ClaimsPrincipal = authenticationState.User;
+        
         await RefreshResourcesAsync(0);
     }
     

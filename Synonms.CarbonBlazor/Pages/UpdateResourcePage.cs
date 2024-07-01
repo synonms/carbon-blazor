@@ -1,5 +1,7 @@
-﻿using System.Text.Json;
+﻿using System.Security.Claims;
+using System.Text.Json;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Synonms.CarbonBlazor.Client;
 using Synonms.CarbonBlazor.Enumerations;
 using Synonms.CarbonBlazor.Infrastructure;
@@ -14,6 +16,7 @@ namespace Synonms.CarbonBlazor.Pages;
 public abstract class UpdateResourcePage<TResource> : ComponentBase
     where TResource : Resource, new()
 {
+    protected ClaimsPrincipal? ClaimsPrincipal;
     protected readonly string CollectionPath;
     protected string OriginalResourceJson = string.Empty;
     protected TResource? Resource;
@@ -29,7 +32,7 @@ public abstract class UpdateResourcePage<TResource> : ComponentBase
             new BreadcrumbItem("Edit", $"/{CollectionPageUri}/{Id}/edit")
         ];
     }
-
+    
     protected virtual void OnSuccess()
     {
         NotificationBroker.Send("Resource updated", $"Resource Id '{Id}' updated successfully.", CarbonBlazorNotificationStyle.LowContrast, CarbonBlazorNotificationLevel.Success);
@@ -47,6 +50,9 @@ public abstract class UpdateResourcePage<TResource> : ComponentBase
     public ICarbonBlazorHttpClient HttpClient { get; set; } = null!;
 
     [Inject]
+    public AuthenticationStateProvider AuthenticationStateProvider { get; set; } = null!;
+
+    [Inject]
     public NavigationManager NavigationManager { get; set; } = null!;
 
     [Parameter]
@@ -60,6 +66,9 @@ public abstract class UpdateResourcePage<TResource> : ComponentBase
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
+
+        AuthenticationState authenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        ClaimsPrincipal = authenticationState.User;
 
         await RefreshResourceAsync();
     }

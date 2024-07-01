@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Synonms.CarbonBlazor.Client;
 using Synonms.CarbonBlazor.Enumerations;
 using Synonms.CarbonBlazor.Infrastructure;
@@ -11,6 +13,7 @@ namespace Synonms.CarbonBlazor.Pages;
 public abstract class ReadResourcePage<TResource> : ComponentBase
     where TResource : Resource, new()
 {
+    protected ClaimsPrincipal? ClaimsPrincipal;
     protected readonly string CollectionPath;
     protected TResource? Resource;
     protected readonly List<BreadcrumbItem> Breadcrumbs;
@@ -31,6 +34,9 @@ public abstract class ReadResourcePage<TResource> : ComponentBase
     [Inject] 
     public ICarbonBlazorHttpClient HttpClient { get; set; } = null!;
 
+    [Inject]
+    public AuthenticationStateProvider AuthenticationStateProvider { get; set; } = null!;
+
     [Parameter]
     [EditorRequired]
     public Guid Id { get; set; }
@@ -42,6 +48,9 @@ public abstract class ReadResourcePage<TResource> : ComponentBase
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
+
+        AuthenticationState authenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        ClaimsPrincipal = authenticationState.User;
 
         await RefreshResourceAsync();
     }

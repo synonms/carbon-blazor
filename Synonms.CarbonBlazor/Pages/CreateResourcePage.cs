@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Synonms.CarbonBlazor.Client;
 using Synonms.CarbonBlazor.Enumerations;
 using Synonms.CarbonBlazor.Infrastructure;
@@ -12,6 +14,7 @@ namespace Synonms.CarbonBlazor.Pages;
 public abstract class CreateResourcePage<TResource> : ComponentBase
     where TResource : Resource, new()
 {
+    protected ClaimsPrincipal? ClaimsPrincipal;
     protected readonly string CollectionPath;
     protected string OriginalResourceJson = string.Empty;
     protected TResource Resource = new();
@@ -26,7 +29,15 @@ public abstract class CreateResourcePage<TResource> : ComponentBase
             new BreadcrumbItem("Add", $"/{CollectionPageUri}/add")
         ];
     }
-
+    
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        
+        AuthenticationState authenticationState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        ClaimsPrincipal = authenticationState.User;
+    }
+    
     protected virtual string CollectionPageUri => CollectionPath;
     
     protected virtual void OnSuccess()
@@ -44,6 +55,9 @@ public abstract class CreateResourcePage<TResource> : ComponentBase
     
     [Inject] 
     public ICarbonBlazorHttpClient HttpClient { get; set; } = null!;
+
+    [Inject]
+    public AuthenticationStateProvider AuthenticationStateProvider { get; set; } = null!;
 
     [Inject]
     public NavigationManager NavigationManager { get; set; } = null!;
