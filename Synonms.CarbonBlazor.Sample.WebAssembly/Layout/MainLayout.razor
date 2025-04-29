@@ -1,0 +1,25 @@
+﻿@inherits LayoutComponentBase
+
+<PageTitle>Synonms CarbonBlazor</PageTitle>
+
+<CarbonBlazorShell ProductName="CarbonBlazor">
+    <UserPanel></UserPanel>
+    <SwitcherPanel></SwitcherPanel>
+    <SideNav>
+        <CarbonBlazorSidebarLink NavigationItem="@NavigationItem.Create(CarbonBlazorIcon.Dashboard, "Dashboard", "/")" />
+        <CarbonBlazorSidebarLink NavigationItem="@NavigationItem.Create(CarbonBlazorIcon.Apps, "Storybook", "/storybook")" />
+        <CarbonBlazorSidebarSubMenu Text="Menu Group" SubMenuItems="@_subMenuItems" />
+    </SideNav>
+    
+    <Body>@Body</Body>
+</CarbonBlazorShell>
+
+@code {
+
+    private readonly List<NavigationItem> _subMenuItems =
+    [
+        new NavigationItem("Sub-Menu Item 1", "/"),
+        new NavigationItem("Sub-Menu Item 2", "/"),
+        new NavigationItem("Sub-Menu Item 3", "/")
+    ];
+}

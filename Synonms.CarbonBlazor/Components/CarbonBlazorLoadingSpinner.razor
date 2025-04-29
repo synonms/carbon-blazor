@@ -1,1 +1,14 @@
-﻿<p>Loading...</p>
+﻿<div aria-atomic="true" aria-live="assertive" class="cb-loading-spinner @(Size == CarbonBlazorLoadingSpinnerSize.Small ? "small" : string.Empty)">
+    <svg class="cb-loading-spinner-svg" viewBox="0 0 100 100" width="@(SizeInPixels)px" height="@(SizeInPixels)px" >
+        <title>Loading</title>
+        <circle class="cb-loading-spinner-stroke" cx="50%" cy="50%" r="44"></circle>
+    </svg>
+</div>
+
+@code {
+
+    [Parameter]
+    public CarbonBlazorLoadingSpinnerSize Size { get; set; } = CarbonBlazorLoadingSpinnerSize.Large;
+
+    private int SizeInPixels => Size == CarbonBlazorLoadingSpinnerSize.Large ? 88 : 16;
+}

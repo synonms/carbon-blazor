@@ -1,8 +1,9 @@
 ﻿@using Synonms.CarbonBlazor.Enumerations
-@typeparam TResource where TResource: Synonms.RestEasy.Core.Schema.Resources.Resource
+
+@typeparam TResource where TResource : class
 
 <CarbonBlazorModal @ref="@_modal" Label="@Label" Title="@Title" Size="CarbonBlazorModalSize.Small" OnClosedCallback="@OnClosedCallback" OnShownCallback="@OnShownCallback" OnHiddenCallback="@OnHiddenCallback">
-    <CarbonBlazorText Type="CarbonBlazorTextType.Body">You are about to delete resource Id @(Resource.Id) - are you sure you want to continue?</CarbonBlazorText>
+    <CarbonBlazorText Type="CarbonBlazorTextType.Body">You are about to delete this resource - are you sure you want to continue?</CarbonBlazorText>
     <CarbonBlazorButtonSet Style="width: 100%;">
         <CarbonBlazorButton Type="CarbonBlazorButtonType.Button" Kind="CarbonBlazorButtonKind.Secondary" Display="CarbonBlazorButtonDisplay.TextOnly" Text="Cancel" Size="CarbonBlazorButtonSize.ExtraLarge" Style="width:50%;" OnClick="@CancelDeleteCallback"></CarbonBlazorButton>
         <CarbonBlazorButton Type="CarbonBlazorButtonType.Button" Kind="CarbonBlazorButtonKind.Danger" Display="CarbonBlazorButtonDisplay.TextOnly" Text="Delete" Size="CarbonBlazorButtonSize.ExtraLarge" Style="width:50%;" OnClick="@ConfirmDeleteCallback"></CarbonBlazorButton>

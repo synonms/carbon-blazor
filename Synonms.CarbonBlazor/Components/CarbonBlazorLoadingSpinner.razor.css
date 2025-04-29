@@ -1,0 +1,60 @@
+.cb-loading-spinner {
+    box-sizing: border-box;
+    padding: 0;
+    border: 0;
+    margin: 0;
+    font-family: inherit;
+    font-size: 100%;
+    vertical-align: baseline;
+    -webkit-animation-duration: 690ms;
+    animation-duration: 690ms;
+    -webkit-animation-fill-mode: forwards;
+    animation-fill-mode: forwards;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+    -webkit-animation-name: cb-rotate;
+    animation-name: cb-rotate;
+    -webkit-animation-timing-function: linear;
+    animation-timing-function: linear;
+    block-size: 5.5rem;
+    inline-size: 5.5rem;
+}
+.cb-loading-spinner.small {
+    block-size: 1rem;
+    inline-size: 1rem;
+    line-height: 1rem
+}
+
+.cb-loading-spinner-svg {
+    fill: rgba(0, 0, 0, 0);
+}
+.cb-loading-spinner.small .cb-loading-spinner-svg {
+    stroke: var(--cb-interactive,#0f62fe)
+}
+.cb-loading-spinner circle {
+    stroke-dasharray: 276.4608 276.4608;
+    stroke-linecap: butt;
+    stroke-width: 10;
+}
+.cb-loading-spinner.small circle {
+    stroke-width: 16
+}
+.cb-loading-spinner svg circle {
+    -webkit-animation-duration: 10ms;
+    animation-duration: 10ms;
+    -webkit-animation-name: cb-init-stroke;
+    animation-name: cb-init-stroke;
+    -webkit-animation-timing-function: cubic-bezier(0.5, 0, 0.1, 1);
+    animation-timing-function: cubic-bezier(0.5, 0, 0.1, 1);
+}
+
+.cb-loading-spinner-stroke {
+    stroke: var(--cb-interactive, #0f62fe);
+    stroke-dashoffset: 52.527552;
+}
+.cb-loading-spinner.small .cb-loading-spinner-stroke {
+    stroke-dashoffset: 143.759616
+}
+
+
+

@@ -103,8 +103,8 @@
     private const string ItemsTemplate = "{0}-{1} of {2} items";
     private const string FilteredItemsTemplate = " (filtered - {0} total)";
 
-    private IEnumerable<TModel> _filteredModels = Enumerable.Empty<TModel>();
-    private IEnumerable<TModel> _filteredAndPagedModels = Enumerable.Empty<TModel>();
+    private IEnumerable<TModel> _filteredModels = [];
+    private IEnumerable<TModel> _filteredAndPagedModels = [];
     
     private List<TModel> _selectedModels = [];
     private SelectionState _selectionState = SelectionState.None;

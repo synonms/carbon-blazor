@@ -2,7 +2,6 @@
 @using Synonms.CarbonBlazor.Enumerations
 @using Synonms.CarbonBlazor.Infrastructure
 @using Synonms.CarbonBlazor.Models
-@using Synonms.RestEasy.Core.Schema
 
 <CarbonBlazorStack FlexDirection="FlexDirection.Column" Gap="1rem">
     <CarbonBlazorPane Title="Typography">
@@ -264,6 +263,13 @@ if (isSuperExciting)
         </CarbonBlazorStack>
     </CarbonBlazorPane>
 
+    <CarbonBlazorPane Title="Loading Spinners">
+        <CarbonBlazorStack FlexDirection="FlexDirection.Row" Gap="2rem">
+            <CarbonBlazorLoadingSpinner Size="CarbonBlazorLoadingSpinnerSize.Large"></CarbonBlazorLoadingSpinner>
+            <CarbonBlazorLoadingSpinner Size="CarbonBlazorLoadingSpinnerSize.Small"></CarbonBlazorLoadingSpinner>
+        </CarbonBlazorStack>
+    </CarbonBlazorPane>
+    
     <CarbonBlazorPane Title="Form" Info="This is an example form with controls and stuff on it.">
         <CarbonBlazorNotificationInline @ref="@_formNotification"></CarbonBlazorNotificationInline>
         <CarbonBlazorForm TModel="StoryBookModel" Model="@_model" ValidationFunc="@ValidateForm" ValidSubmitCallback="@(_ => _formNotification.Notify("Thingy Saved", "The thingy has been saved successfully.", CarbonBlazorNotificationStyle.LowContrast, CarbonBlazorNotificationLevel.Success))">
@@ -407,15 +413,11 @@ if (isSuperExciting)
     private readonly StoryBookModel _model = new() { SomeIntInputValue = 10 };
     private readonly List<StoryBookModel> _models =
     [
-        new StoryBookModel("Abacus", 1, true, "One", [], []),
-        new StoryBookModel("Berries", 2, false, "Two", [], []),
-        new StoryBookModel("Cherries", 3, true, "Three", [], []),
-        new StoryBookModel("Doofus", 4, false, "Four", [], []),
+        new("Abacus", 1, true, "One", [], []),
+        new("Berries", 2, false, "Two", [], []),
+        new("Cherries", 3, true, "Three", [], []),
+        new("Doofus", 4, false, "Four", [], []),
     ];
-    private readonly Pagination _pagination = new(0, 4, 8, Link.EmptyLink(), Link.EmptyLink())
-    {
-        Next = Link.EmptyLink()
-    };
 
     private IEnumerable<ValidationOutcome> ValidateForm(StoryBookModel model)
     {
