@@ -1,7 +1,4 @@
-﻿@using Microsoft.AspNetCore.Components.Web
-@using Synonms.CarbonBlazor.Enumerations
-@using Synonms.CarbonBlazor.Models
-@typeparam TModel where TModel : notnull
+﻿@typeparam TModel where TModel : notnull
 
 <div class="cb-data-table-wrapper @CarbonBlazorLayerMapper.ToClass(Layer) @(ShouldFillPane ? "fill-pane" : string.Empty)">
     @if (string.IsNullOrWhiteSpace(Title) is false || string.IsNullOrWhiteSpace(Description) is false)
@@ -34,7 +31,7 @@
                 <CarbonBlazorButtonSet JustifyContent="JustifyContent.End" Style="width: 100%">
                     @if (IsFilterEnabled)
                     {
-                        <CarbonBlazorSearch SearchTextChangedCallback="@OnSearchTextChanged" Size="@GetSearchSize()"></CarbonBlazorSearch>
+                        <CarbonBlazorSearch SearchTextChangedCallback="@OnSearchTextChanged" Size="@GetSearchSize()" IsCollapsedOnClear="true"></CarbonBlazorSearch>
                     }
                     @if (ToolbarButtons is not null)
                     {
@@ -143,17 +140,17 @@
 
     [Parameter]
     [EditorRequired]
-    public RenderFragment HeaderRowTemplate { get; set; } = null!;
+    public required RenderFragment HeaderRowTemplate { get; set; }
 
     [Parameter]
     [EditorRequired]
-    public RenderFragment<TModel> DataRowTemplate { get; set; } = null!;
+    public required RenderFragment<TModel> DataRowTemplate { get; set; }
 
     [Parameter]
     public CarbonBlazorDataTableRowSize RowSize { get; set; } = CarbonBlazorDataTableRowSize.Medium;
 
     [Parameter]
-    public bool ShouldFillPane { get; set; } = false;
+    public bool ShouldFillPane { get; set; }
     
     [Parameter]
     public RenderFragment? ToolbarButtons { get; set; }
@@ -165,13 +162,13 @@
     public Func<int, Task<IEnumerable<TModel>>> RefreshModelsFunc { get; set; } = _ => Task.FromResult(Enumerable.Empty<TModel>());
 
     [Parameter]
-    public bool IsReadOnly { get; set; } = false;
+    public bool IsReadOnly { get; set; }
 
     [Parameter]
     public bool IsFilterEnabled { get; set; } = true;
 
     [Parameter]
-    public bool IsSelectionEnabled { get; set; } = false;
+    public bool IsSelectionEnabled { get; set; }
 
     [Parameter]
     public Func<TModel, TModel, bool> IsSelectedPredicate { get; set; } = (m1, m2) => m1.Equals(m2); 
@@ -315,9 +312,6 @@
     {
         CarbonBlazorDataTableRowSize.ExtraSmall => CarbonBlazorInputSize.Small,
         CarbonBlazorDataTableRowSize.Small => CarbonBlazorInputSize.Small,
-        CarbonBlazorDataTableRowSize.Medium => CarbonBlazorInputSize.Large,
-        CarbonBlazorDataTableRowSize.Large => CarbonBlazorInputSize.Large,
-        CarbonBlazorDataTableRowSize.ExtraLarge => CarbonBlazorInputSize.Large,
         _ => CarbonBlazorInputSize.Large
     };
 

@@ -1,10 +1,4 @@
-﻿@using Synonms.CarbonBlazor.Enumerations
-@using Microsoft.AspNetCore.Components.Forms
-@using Microsoft.AspNetCore.Components.Web
-@using Synonms.CarbonBlazor.Css
-@using Synonms.CarbonBlazor.Models
-
-@typeparam TValue where TValue : notnull
+﻿@typeparam TValue where TValue : notnull
 
 <CarbonBlazorFieldSet IsDoubleColumn="@IsDoubleColumn" IsInline="@IsInline" IsReadOnly="@IsReadOnly" IsDisabled="@IsDisabled">
     @if (string.IsNullOrWhiteSpace(Label) is false)
@@ -18,11 +12,11 @@
             <div class="cb-select-button">
                 @if (_isExpanded)
                 {
-                    @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.ChevronUp, 16))
+                    @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.ChevronUp))
                 }
                 else
                 {
-                    @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.ChevronDown, 16))
+                    @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.ChevronDown))
                 }
             </div>
         </div>
@@ -47,7 +41,7 @@
 
 @code {
     private CarbonBlazorValidationMessage? _validationMessage;
-    private bool _isExpanded = false;
+    private bool _isExpanded;
 
     [CascadingParameter]
     public EditContext? EditContext { get; set; }
@@ -57,11 +51,11 @@
 
     [Parameter]
     [EditorRequired]
-    public FieldIdentifier FieldIdentifier { get; set; } = default!;
+    public FieldIdentifier FieldIdentifier { get; set; }
 
     [Parameter]
     [EditorRequired]
-    public TValue Value { get; set; } = default!;
+    public required TValue Value { get; set; }
 
     [Parameter]
     public EventCallback<TValue> ValueChanged { get; set; }
@@ -82,16 +76,16 @@
     public string? HelperText { get; set; }
 
     [Parameter]
-    public bool IsDisabled { get; set; } = false;
+    public bool IsDisabled { get; set; }
 
     [Parameter]
-    public bool IsReadOnly { get; set; } = false;
+    public bool IsReadOnly { get; set; }
 
     [Parameter]
-    public bool IsDoubleColumn { get; set; } = false;
+    public bool IsDoubleColumn { get; set; }
 
     [Parameter]
-    public bool IsInline { get; set; } = false;
+    public bool IsInline { get; set; }
 
     [Parameter]
     [EditorRequired]

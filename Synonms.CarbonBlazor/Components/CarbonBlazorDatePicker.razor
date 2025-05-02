@@ -1,10 +1,4 @@
-﻿@using Microsoft.AspNetCore.Components.Forms
-@using Microsoft.AspNetCore.Components.Web <!-- Required for dynamic attributes with 'at' prefix -->
-@using Synonms.CarbonBlazor.Css
-@using Synonms.CarbonBlazor.Enumerations
-@using Synonms.CarbonBlazor.Models
-
-<CarbonBlazorFieldSet IsDoubleColumn="@IsDoubleColumn" IsReadOnly="@IsReadOnly" IsDisabled="@IsDisabled">
+﻿<CarbonBlazorFieldSet IsDoubleColumn="@IsDoubleColumn" IsReadOnly="@IsReadOnly" IsDisabled="@IsDisabled">
     @if (string.IsNullOrWhiteSpace(Label) is false)
     {
         <label for="@Id" class="cb-date-picker-label">@Label</label>
@@ -26,7 +20,7 @@
             }
         </svg>
         <button class="cb-date-picker-button" type="button" onclick="@(() => ToggleCalendar())" disabled="@IsDisabled">
-            @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.Calendar, 16))
+            @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.Calendar))
         </button>
 
         <div class="cb-date-picker-calendar @CarbonBlazorLayerMapper.ToClass(Layer) @(_isExpanded ? "" : "collapsed")">
@@ -75,20 +69,20 @@
 
 @code {
     private CarbonBlazorValidationMessage? _validationMessage;
-    private bool _isExpanded = false;
+    private bool _isExpanded;
     private string _valueAsString = "";
     private DateOnly _firstDayOfDisplayedMonth = new(DateTime.Today.Year, DateTime.Today.Month, 1);
     List<DateOnly> _sundaysToDisplay = [];
 
     [CascadingParameter]
-    public EditContext EditContext { get; set; } = null!;
+    public EditContext? EditContext { get; set; }
     
     [CascadingParameter]
     public IEnumerable<ValidationOutcome> ValidationOutcomes { get; set; } = [];
 
     [Parameter]
     [EditorRequired]
-    public FieldIdentifier FieldIdentifier { get; set; } = default!;
+    public FieldIdentifier FieldIdentifier { get; set; }
     
     [Parameter]
     [EditorRequired]
@@ -113,13 +107,13 @@
     public string? HelperText { get; set; }
     
     [Parameter]
-    public bool IsDisabled { get; set; } = false;
+    public bool IsDisabled { get; set; }
 
     [Parameter]
-    public bool IsReadOnly { get; set; } = false;
+    public bool IsReadOnly { get; set; }
 
     [Parameter]
-    public bool IsDoubleColumn { get; set; } = false;
+    public bool IsDoubleColumn { get; set; }
 
     protected override void OnInitialized()
     {
@@ -163,7 +157,7 @@
 
         await ValueChanged.InvokeAsync(Value);
 
-        EditContext.NotifyFieldChanged(FieldIdentifier);
+        EditContext?.NotifyFieldChanged(FieldIdentifier);
     }
 
     private void ToggleCalendar()
@@ -230,13 +224,6 @@
         }
 
         _sundaysToDisplay = sundaysToDisplay;
-    }
-
-    private async Task ClearDate()
-    {
-        Value = null;
-
-        await ValueUpdated();
     }
 
     private async Task SelectDate(DateOnly date)

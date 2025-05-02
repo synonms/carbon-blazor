@@ -1,9 +1,4 @@
 ﻿@using System.Globalization
-@using Microsoft.AspNetCore.Components.Forms
-@using Microsoft.AspNetCore.Components.Web <!-- Required for dynamic attributes with 'at' prefix -->
-@using Synonms.CarbonBlazor.Css
-@using Synonms.CarbonBlazor.Enumerations
-@using Synonms.CarbonBlazor.Models
 
 <CarbonBlazorFieldSet IsDoubleColumn="@IsDoubleColumn" IsReadOnly="@IsReadOnly" IsDisabled="@IsDisabled">
     @if (string.IsNullOrWhiteSpace(Label) is false)
@@ -27,10 +22,10 @@
             }
         </svg>
         <button class="cb-decimal-input-button decrement" type="button" onclick="@(() => Decrement())" disabled="@IsDisabled">
-            @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.Subtract, 16))
+            @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.Subtract))
         </button>
         <button class="cb-decimal-input-button increment" type="button" onclick="@(() => Increment())" disabled="@IsDisabled">
-            @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.Add, 16))
+            @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.Add))
         </button>
     </div>
 
@@ -54,7 +49,7 @@
 
     [Parameter]
     [EditorRequired]
-    public FieldIdentifier FieldIdentifier { get; set; } = default!;
+    public FieldIdentifier FieldIdentifier { get; set; }
     
     [Parameter]
     [EditorRequired]
@@ -79,7 +74,7 @@
     public string? HelperText { get; set; }
     
     [Parameter]
-    public decimal Min { get; set; } = 0.0m;
+    public decimal Min { get; set; }
 
     [Parameter]
     public decimal Max { get; set; } = decimal.MaxValue;
@@ -88,13 +83,13 @@
     public decimal Step { get; set; } = 1.0m;
 
     [Parameter]
-    public bool IsDisabled { get; set; } = false;
+    public bool IsDisabled { get; set; }
 
     [Parameter]
-    public bool IsReadOnly { get; set; } = false;
+    public bool IsReadOnly { get; set; }
 
     [Parameter]
-    public bool IsDoubleColumn { get; set; } = false;
+    public bool IsDoubleColumn { get; set; }
 
     protected override void OnParametersSet()
     {

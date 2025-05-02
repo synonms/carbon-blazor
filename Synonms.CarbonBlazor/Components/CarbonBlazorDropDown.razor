@@ -1,7 +1,4 @@
-﻿@using Microsoft.AspNetCore.Components.Forms
-@using Microsoft.AspNetCore.Components.Web
-
-@typeparam TValue where TValue : notnull
+﻿@typeparam TValue where TValue : notnull
 
 <CarbonBlazorFieldSet IsDoubleColumn="@IsDoubleColumn" IsReadOnly="@IsReadOnly" IsDisabled="@IsDisabled">
     @if (string.IsNullOrWhiteSpace(Label) is false)
@@ -23,11 +20,11 @@
             <div class="cb-drop-down-button">
                 @if (_isExpanded)
                 {
-                    @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.ChevronUp, 16))
+                    @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.ChevronUp))
                 }
                 else
                 {
-                    @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.ChevronDown, 16))
+                    @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.ChevronDown))
                 }
             </div>
         </div>
@@ -54,22 +51,22 @@
 
 @code {
     private CarbonBlazorValidationMessage? _validationMessage;
-    private bool _isExpanded = false;
+    private bool _isExpanded;
     private List<TValue> _values = [];
 
     [CascadingParameter]
-    public EditContext EditContext { get; set; } = null!;
+    public EditContext? EditContext { get; set; }
     
     [CascadingParameter]
     public IEnumerable<ValidationOutcome> ValidationOutcomes { get; set; } = [];
 
     [Parameter]
     [EditorRequired]
-    public FieldIdentifier FieldIdentifier { get; set; } = default!;
+    public FieldIdentifier FieldIdentifier { get; set; }
 
     [Parameter]
     [EditorRequired]
-    public IEnumerable<TValue> Values { get; set; } = default!;
+    public required IEnumerable<TValue> Values { get; set; }
 
     [Parameter]
     public EventCallback<IEnumerable<TValue>> ValuesChanged { get; set; }
@@ -93,13 +90,13 @@
     public string? HelperText { get; set; }
 
     [Parameter]
-    public bool IsDisabled { get; set; } = false;
+    public bool IsDisabled { get; set; }
+
+    [Parameter] 
+    public bool IsReadOnly { get; set; }
 
     [Parameter]
-    public bool IsReadOnly { get; set; } = false;
-
-    [Parameter]
-    public bool IsDoubleColumn { get; set; } = false;
+    public bool IsDoubleColumn { get; set; }
 
     [Parameter]
     [EditorRequired]
@@ -148,7 +145,7 @@
         Values = _values;
         await ValuesChanged.InvokeAsync(Values);
         
-        EditContext.NotifyFieldChanged(FieldIdentifier);
+        EditContext?.NotifyFieldChanged(FieldIdentifier);
     }
 
     private async Task ClearSelected()
@@ -158,7 +155,7 @@
         Values = _values;
         await ValuesChanged.InvokeAsync(Values);
         
-        EditContext.NotifyFieldChanged(FieldIdentifier);
+        EditContext?.NotifyFieldChanged(FieldIdentifier);
 
         _isExpanded = !_isExpanded;
     }
@@ -183,7 +180,7 @@
             
             await ValuesChanged.InvokeAsync(Values);
         
-            EditContext.NotifyFieldChanged(FieldIdentifier);
+            EditContext?.NotifyFieldChanged(FieldIdentifier);
         }
     }
 }

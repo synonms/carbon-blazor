@@ -1,7 +1,4 @@
-﻿@using Synonms.CarbonBlazor.Infrastructure
-@using Synonms.CarbonBlazor.Models
-
-<div class="cb-notification-toast-queue">
+﻿<div class="cb-notification-toast-queue">
     @foreach (Notification notification in NotificationBroker.Notifications)
     {
         <CarbonBlazorNotificationToast Notification="@notification"></CarbonBlazorNotificationToast>

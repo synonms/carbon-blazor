@@ -1,7 +1,4 @@
-﻿@using Microsoft.AspNetCore.Components.Forms
-@using Synonms.CarbonBlazor.Models
-
-@foreach (ValidationOutcome validationOutcome in _filteredValidationOutcomes)
+﻿@foreach (ValidationOutcome validationOutcome in _filteredValidationOutcomes)
 {
     <div class="cb-validation-message @validationOutcome.ToCssClass()">@validationOutcome.Message</div>
 }
@@ -14,7 +11,7 @@
 
     [Parameter]
     [EditorRequired]
-    public FieldIdentifier FieldIdentifier { get; set; } = default!;
+    public FieldIdentifier FieldIdentifier { get; set; }
 
     public ValidationOutcome.ValidationState ValidationState => _filteredValidationOutcomes.Any(x => x.State == ValidationOutcome.ValidationState.Error)
         ? ValidationOutcome.ValidationState.Error

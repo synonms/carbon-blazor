@@ -1,9 +1,4 @@
-﻿@using Microsoft.AspNetCore.Components.Forms
-@using Microsoft.AspNetCore.Components.Web <!-- Required for dynamic attributes with 'at' prefix -->
-@using Synonms.CarbonBlazor.Enumerations
-@using Synonms.CarbonBlazor.Models
-
-<CarbonBlazorFieldSet IsDoubleColumn="@IsDoubleColumn" IsReadOnly="@IsReadOnly" IsDisabled="@IsDisabled">
+﻿<CarbonBlazorFieldSet IsDoubleColumn="@IsDoubleColumn" IsReadOnly="@IsReadOnly" IsDisabled="@IsDisabled">
     @if (string.IsNullOrWhiteSpace(Label) is false)
     {
         <label for="@Id" class="cb-date-time-picker-label">@Label</label>
@@ -18,7 +13,7 @@
         }
     </div>
 
-    <CarbonBlazorValidationMessage @ref="@_validationMessage" FieldIdentifier="@FieldIdentifier"></CarbonBlazorValidationMessage>
+    <CarbonBlazorValidationMessage FieldIdentifier="@FieldIdentifier"></CarbonBlazorValidationMessage>
 
     @if (string.IsNullOrWhiteSpace(HelperText) is false)
     {
@@ -27,19 +22,18 @@
 </CarbonBlazorFieldSet>
 
 @code {
-    private CarbonBlazorValidationMessage? _validationMessage;
     private DateOnly? _date;
     private TimeOnly? _time;
 
     [CascadingParameter]
-    public EditContext EditContext { get; set; } = null!;
+    public EditContext? EditContext { get; set; }
     
     [CascadingParameter]
     public IEnumerable<ValidationOutcome> ValidationOutcomes { get; set; } = [];
 
     [Parameter]
     [EditorRequired]
-    public FieldIdentifier FieldIdentifier { get; set; } = default!;
+    public FieldIdentifier FieldIdentifier { get; set; }
     
     [Parameter]
     [EditorRequired]
@@ -64,20 +58,18 @@
     public string? HelperText { get; set; }
     
     [Parameter]
-    public bool IsDisabled { get; set; } = false;
+    public bool IsDisabled { get; set; }
 
     [Parameter]
-    public bool IsReadOnly { get; set; } = false;
+    public bool IsReadOnly { get; set; }
     
     [Parameter]
-    public bool IsDoubleColumn { get; set; } = false;
+    public bool IsDoubleColumn { get; set; }
 
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
         
-        Console.WriteLine("OnParametersSet");
-
         _date = Value is null || DateOnly.FromDateTime(Value.Value) == DateOnly.MinValue ? null : DateOnly.FromDateTime(Value.Value);
         _time = Value is null ? null : TimeOnly.FromDateTime(Value.Value);
     }
@@ -98,8 +90,6 @@
     
     private async Task ValueUpdated()
     {
-        Console.WriteLine("ValueUpdated");
-        
         if (_date is not null)
         {
             if (_time is not null)
@@ -125,6 +115,6 @@
 
         await ValueChanged.InvokeAsync(Value);
 
-        EditContext.NotifyFieldChanged(FieldIdentifier);
+        EditContext?.NotifyFieldChanged(FieldIdentifier);
     }
 }

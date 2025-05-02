@@ -1,18 +1,11 @@
-﻿@using Microsoft.AspNetCore.Components.Web 
-@using Synonms.CarbonBlazor.Css
-@using Synonms.CarbonBlazor.Enumerations
-
-<div class="cb-search-wrapper @CarbonBlazorInputSizeMapper.ToClass(Size) @(IsExpanded ? "expanded" : "collapsed")">
-    <input class="@GetClass()" type="text" value="@SearchText" @onchange="@((ChangeEventArgs args) => OnSearchTextChanged(args.Value?.ToString() ?? string.Empty))" placeholder="Search" disabled="@IsDisabled"/>
+﻿<div class="@GetWrapperClass()">
     <button class="cb-search-button search" type="button" onclick="@(() => OnSearchClicked())" disabled="@IsDisabled">
-        @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.Search, 16))
+        @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.Search))
     </button>
-    @if (IsExpanded)
-    {
-        <button class="cb-search-button cancel" type="button" onclick="@(() => OnClearClicked())" disabled="@IsDisabled">
-            @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.Cancel, 16))
-        </button>
-    }
+    <input class="@GetInputClass()" type="text" value="@SearchText" @onchange="@(args => OnSearchTextChanged(args.Value?.ToString() ?? string.Empty))" placeholder="Search" disabled="@IsDisabled"/>
+    <button class="cb-search-button cancel" type="button" onclick="@(() => OnClearClicked())" disabled="@IsDisabled">
+        @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.Cancel))
+    </button>
 </div>
 
 @code {
@@ -24,10 +17,13 @@
     public EventCallback<string> SearchTextChangedCallback { get; set; }
     
     [Parameter]
-    public bool IsDisabled { get; set; } = false;
+    public bool IsDisabled { get; set; }
 
     [Parameter]
-    public bool IsExpanded { get; set; } = false;
+    public bool IsExpanded { get; set; }
+    
+    [Parameter]
+    public bool IsCollapsedOnClear { get; set; }
 
     [Parameter]
     public CarbonBlazorInputSize Size { get; set; } = CarbonBlazorInputSize.Medium;
@@ -48,8 +44,11 @@
     private void OnClearClicked()
     {
         OnSearchTextChanged(string.Empty);
-        
-        IsExpanded = false;
+
+        if (IsCollapsedOnClear)
+        {
+            IsExpanded = false;
+        }
     }
 
     private void OnSearchClicked()
@@ -57,19 +56,20 @@
         IsExpanded = true;
     }
 
-    private CarbonBlazorButtonSize GetButtonSize() => Size switch
+    private string GetWrapperClass()
     {
-        CarbonBlazorInputSize.Small => CarbonBlazorButtonSize.Small,
-        CarbonBlazorInputSize.Medium => CarbonBlazorButtonSize.Medium,
-        CarbonBlazorInputSize.Large => CarbonBlazorButtonSize.LargeProductive,
-        _ => CarbonBlazorButtonSize.Medium
-    };
-
-    private string GetClass()
+        const string baseClass = CssClasses.Prefix + "search-wrapper";
+        string sizeClass = CarbonBlazorInputSizeMapper.ToClass(Size);
+        string expandedClass = IsExpanded ? "expanded" : "collapsed";
+        
+        return CssClasses.Concatenate(baseClass, sizeClass, expandedClass);
+    }
+    
+    private string GetInputClass()
     {
         const string baseClass = CssClasses.Prefix + "search-input";
         string layerClass = CarbonBlazorLayerMapper.ToClass(Layer);
-
+        
         return CssClasses.Concatenate(baseClass, layerClass);
     }
 }

@@ -1,9 +1,4 @@
-﻿@using Synonms.CarbonBlazor.Enumerations
-@using Microsoft.AspNetCore.Components.Forms
-@using Microsoft.AspNetCore.Components.Web
-@using Synonms.CarbonBlazor.Models
-
-<CarbonBlazorFieldSet IsDoubleColumn="@IsDoubleColumn" IsReadOnly="@IsReadOnly" IsDisabled="@IsDisabled">
+﻿<CarbonBlazorFieldSet IsDoubleColumn="@IsDoubleColumn" IsReadOnly="@IsReadOnly" IsDisabled="@IsDisabled">
     @if (string.IsNullOrWhiteSpace(Label) is false)
     {
         <span class="cb-radio-button-group-label">@Label</span>
@@ -17,7 +12,7 @@
         </CarbonBlazorStack>
     }
 
-    <CarbonBlazorValidationMessage @ref="@_validationMessage" FieldIdentifier="@FieldIdentifier"></CarbonBlazorValidationMessage>
+    <CarbonBlazorValidationMessage FieldIdentifier="@FieldIdentifier"></CarbonBlazorValidationMessage>
 
     @if (string.IsNullOrWhiteSpace(HelperText) is false)
     {
@@ -26,17 +21,15 @@
 </CarbonBlazorFieldSet>
 
 @code {
-    private CarbonBlazorValidationMessage? _validationMessage;
-
     [CascadingParameter]
-    public EditContext EditContext { get; set; } = null!;
+    public EditContext? EditContext { get; set; }
 
     [CascadingParameter]
     public IEnumerable<ValidationOutcome> ValidationOutcomes { get; set; } = [];
 
     [Parameter]
     [EditorRequired]
-    public FieldIdentifier FieldIdentifier { get; set; } = default!;
+    public FieldIdentifier FieldIdentifier { get; set; }
 
     [Parameter]
     [EditorRequired]
@@ -61,30 +54,25 @@
     public string? HelperText { get; set; }
 
     [Parameter]
-    public bool IsDisabled { get; set; } = false;
+    public bool IsDisabled { get; set; }
 
     [Parameter]
-    public bool IsReadOnly { get; set; } = false;
+    public bool IsReadOnly { get; set; }
 
     [Parameter]
-    public bool IsDoubleColumn { get; set; } = false;
+    public bool IsDoubleColumn { get; set; }
 
-    private async Task OnInput(ChangeEventArgs changeEventArgs, RadioButtonItem item)
+    private async Task OnInput(ChangeEventArgs changeEventArgs, RadioButtonItem _)
     {
-        string isSelectedAsString = changeEventArgs.Value?.ToString() ?? string.Empty;
+        string selectedValueAsString = changeEventArgs.Value?.ToString() ?? string.Empty;
 
-        if (bool.TryParse(isSelectedAsString, out bool isSelectedAsBool))
+        if (selectedValueAsString != Value)
         {
-            Console.WriteLine(item.Value + " set to " + isSelectedAsBool);
+            Value = selectedValueAsString;
 
-            if (isSelectedAsBool)
-            {
-                Value = item.Value;
-                
-                await ValueChanged.InvokeAsync(Value);
-                
-                EditContext.NotifyFieldChanged(FieldIdentifier);
-            }
+            await ValueChanged.InvokeAsync(Value);
+            
+            EditContext?.NotifyFieldChanged(FieldIdentifier);
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿@using Synonms.CarbonBlazor.Enumerations
-
-@typeparam TResource where TResource : class
+﻿@typeparam TResource where TResource : class
 
 <CarbonBlazorModal @ref="@_modal" Label="@Label" Title="@Title" Size="CarbonBlazorModalSize.Small" OnClosedCallback="@OnClosedCallback" OnShownCallback="@OnShownCallback" OnHiddenCallback="@OnHiddenCallback">
     <CarbonBlazorText Type="CarbonBlazorTextType.Body">You are about to delete this resource - are you sure you want to continue?</CarbonBlazorText>

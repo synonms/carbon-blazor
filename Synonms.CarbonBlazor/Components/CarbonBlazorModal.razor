@@ -1,7 +1,4 @@
-﻿@using Synonms.CarbonBlazor.Css
-@using Synonms.CarbonBlazor.Enumerations
-
-@if (_isVisible)
+﻿@if (_isVisible)
 {
     <div class="cb-modal">
         <div class="@GetClass()">
@@ -13,11 +10,11 @@
                     }
                     @if (string.IsNullOrWhiteSpace(Title) is false)
                     {
-                        <span class="cb-modal-header">@Label</span>
+                        <span class="cb-modal-header">@Title</span>
                     }
                 </div>
                 <button class="cb-modal-close-button" type="button" onclick="@(() => Close())">
-                    @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.Cancel, 16))
+                    @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.Cancel))
                 </button>
             </div>
             @ChildContent
@@ -26,7 +23,7 @@
 }
 
 @code {
-    private bool _isVisible = false;
+    private bool _isVisible;
 
     [Parameter]
     [EditorRequired]

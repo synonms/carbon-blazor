@@ -1,8 +1,4 @@
-﻿@using Microsoft.AspNetCore.Components.Forms
-@using Synonms.CarbonBlazor.Enumerations
-@using Synonms.CarbonBlazor.Models
-
-@typeparam TModel
+﻿@typeparam TModel
 
 <EditForm class="cb-form" style="width: 100%;display: grid;grid-auto-flow: row;row-gap: 2rem;" EditContext="@_editContext" OnValidSubmit="@OnValidSubmit" FormName="@FormName">
     <CascadingValue Value="@ValidationOutcomes">
@@ -66,7 +62,6 @@
 
     private EditContext _editContext = null!;
     private ValidationMessageStore _validationMessageStore = null!;
-    private List<ValidationOutcome> _validationOutcomes = [];
 
     protected override void OnInitialized()
     {
@@ -79,18 +74,13 @@
 
     private void OnValidationRequested(object? o, ValidationRequestedEventArgs? args)
     {
-        Console.WriteLine("Form: OnValidationRequested");
-        
         _validationMessageStore.Clear();
         
         ValidationOutcomes = ValidationFunc?.Invoke(Model).ToList() ?? [];
 
-        Console.WriteLine(ValidationOutcomes.Count() + " outcomes");
-
         foreach (ValidationOutcome validationOutcome in ValidationOutcomes.Where(x => x.State is ValidationOutcome.ValidationState.Error))
         {
             _validationMessageStore.Add(validationOutcome.FieldIdentifier, validationOutcome.Message);
-            Console.WriteLine(validationOutcome.FieldIdentifier.FieldName + ": " + validationOutcome.Message);
         }
 
         _editContext.NotifyValidationStateChanged();

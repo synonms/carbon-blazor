@@ -1,15 +1,10 @@
-﻿@using Synonms.CarbonBlazor.Enumerations
-@using Microsoft.AspNetCore.Components.Forms
-@using Microsoft.AspNetCore.Components.Web
-@using Synonms.CarbonBlazor.Models
-
-<CarbonBlazorFieldSet IsDoubleColumn="@IsDoubleColumn" IsReadOnly="@IsReadOnly" IsDisabled="@IsDisabled">
+﻿<CarbonBlazorFieldSet IsDoubleColumn="@IsDoubleColumn" IsReadOnly="@IsReadOnly" IsDisabled="@IsDisabled">
     <CarbonBlazorStack FlexDirection="FlexDirection.Row" AlignItems="AlignItems.Center" Gap="0.5rem">
         <input type="checkbox" class="cb-check-box" id="@Id" name="@Id" @oninput="@OnValueChanged" checked="@Value">
         <label for="@Id" class="cb-check-box-label">@Label</label>
     </CarbonBlazorStack>
 
-    <CarbonBlazorValidationMessage @ref="@_validationMessage" FieldIdentifier="@FieldIdentifier"></CarbonBlazorValidationMessage>
+    <CarbonBlazorValidationMessage FieldIdentifier="@FieldIdentifier"></CarbonBlazorValidationMessage>
 
     @if (string.IsNullOrWhiteSpace(HelperText) is false)
     {
@@ -18,17 +13,15 @@
 </CarbonBlazorFieldSet>
 
 @code {
-    private CarbonBlazorValidationMessage? _validationMessage;
-
     [CascadingParameter]
-    public EditContext EditContext { get; set; } = null!;
+    public EditContext? EditContext { get; set; }
 
     [CascadingParameter]
     public IEnumerable<ValidationOutcome> ValidationOutcomes { get; set; } = [];
 
     [Parameter]
     [EditorRequired]
-    public FieldIdentifier FieldIdentifier { get; set; } = default!;
+    public FieldIdentifier FieldIdentifier { get; set; }
 
     [Parameter]
     public bool Value { get; set; }
@@ -52,13 +45,13 @@
     public string? HelperText { get; set; }
 
     [Parameter]
-    public bool IsDisabled { get; set; } = false;
+    public bool IsDisabled { get; set; }
 
     [Parameter]
-    public bool IsReadOnly { get; set; } = false;
+    public bool IsReadOnly { get; set; }
 
     [Parameter]
-    public bool IsDoubleColumn { get; set; } = false;
+    public bool IsDoubleColumn { get; set; }
 
     private async Task OnValueChanged(ChangeEventArgs changeEventArgs)
     {
@@ -70,7 +63,7 @@
 
             await ValueChanged.InvokeAsync(Value);
             
-            EditContext.NotifyFieldChanged(FieldIdentifier);
+            EditContext?.NotifyFieldChanged(FieldIdentifier);
         }
     }
 }

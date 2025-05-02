@@ -1,17 +1,15 @@
-﻿@using Synonms.CarbonBlazor.Enumerations
-
-@if (_isVisible)
+﻿@if (_isVisible)
 {
     <div class="cb-tag-wrapper @CarbonBlazorTagTypeMapper.ToClass(Type) @CarbonBlazorInputSizeMapper.ToClass(Size) @CarbonBlazorTagColourMapper.ToClass(Colour) @(Icon == CarbonBlazorIcon.None ? string.Empty : "decorated")">
         @if (Icon != CarbonBlazorIcon.None)
         {
-            @((MarkupString)CarbonBlazorIconMapper.ToSvg(Icon, 16))
+            @((MarkupString)CarbonBlazorIconMapper.ToSvg(Icon))
         }
         <span class="cb-text label-01">@Text</span>
         @if (Type == CarbonBlazorTagType.Dismissible)
         {
             <button class="cb-tag-close-button" type="button" onclick="@(() => Dismiss())">
-                @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.Cancel, 16))
+                @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.Cancel))
             </button>
         }
     </div>

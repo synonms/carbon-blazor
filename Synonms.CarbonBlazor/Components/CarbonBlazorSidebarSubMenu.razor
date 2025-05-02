@@ -1,7 +1,4 @@
-﻿@using Synonms.CarbonBlazor.Enumerations
-@using Synonms.CarbonBlazor.Models
-
-<ul class="cb-sidebar-submenu @(_isExpanded ? string.Empty : "collapsed")">
+﻿<ul class="cb-sidebar-submenu @(_isExpanded ? string.Empty : "collapsed")">
     <li class="cb-sidebar-submenu" onclick="@(() => Toggle())">
         @if (Icon is not null)
         {
@@ -10,11 +7,11 @@
         <span style="flex: 1">@Text</span>
         @if (_isExpanded)
         {
-            @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.ChevronUp, 16))
+            @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.ChevronUp))
         }
         else
         {
-            @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.ChevronDown, 16))
+            @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.ChevronDown))
         }
     </li>
     
@@ -27,7 +24,7 @@
 </ul>
 
 @code {
-    private bool _isExpanded = false;
+    private bool _isExpanded;
     
     [Parameter]
     public CarbonBlazorIcon? Icon { get; set; }
@@ -38,7 +35,7 @@
 
     [Parameter]
     [EditorRequired]
-    public IEnumerable<NavigationItem> SubMenuItems { get; set; } = Enumerable.Empty<NavigationItem>();
+    public IEnumerable<NavigationItem> SubMenuItems { get; set; } = [];
 
     private void Toggle()
     {

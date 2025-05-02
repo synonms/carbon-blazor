@@ -13,7 +13,7 @@ public class CarbonBlazorText : ComponentBase
     public WhiteSpace WhiteSpace { get; set; } = WhiteSpace.Normal;
     
     [Parameter]
-    public bool IsExpressive { get; set; } = false;
+    public bool IsExpressive { get; set; }
 
     [Parameter]
     public string Class { get; set; } = string.Empty;
