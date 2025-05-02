@@ -1,0 +1,15 @@
+.cb-accordion {
+    border: 0;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: 100%;
+    inline-size: 100%;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    vertical-align: baseline;
+}
+
+ol, ul {
+    list-style: none;
+}

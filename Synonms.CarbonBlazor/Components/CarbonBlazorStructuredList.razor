@@ -1,6 +1,4 @@
-﻿@using Synonms.CarbonBlazor.Enumerations
-
-<table class="cb-structured-list @(Layer is not null ? CarbonBlazorLayerMapper.ToClass(Layer.Value) : string.Empty) @CarbonBlazorStructuredListRowSizeMapper.ToClass(RowSize)">
+﻿<table class="cb-structured-list @(Layer is not null ? CarbonBlazorLayerMapper.ToClass(Layer.Value) : string.Empty) @CarbonBlazorStructuredListRowSizeMapper.ToClass(RowSize)">
     <thead>
     <tr>
         <CascadingValue Value="@Layer">

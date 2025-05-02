@@ -1,0 +1,9 @@
+<ul class="cb-accordion">
+    @Items
+</ul>
+
+@code {
+    [Parameter]
+    [EditorRequired]
+    public required RenderFragment Items { get; set; }
+}

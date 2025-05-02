@@ -1,9 +1,26 @@
 ﻿@using Microsoft.AspNetCore.Components.Forms
-@using Synonms.CarbonBlazor.Enumerations
-@using Synonms.CarbonBlazor.Infrastructure
-@using Synonms.CarbonBlazor.Models
 
 <CarbonBlazorStack FlexDirection="FlexDirection.Column" Gap="1rem">
+    <CarbonBlazorPane Title="Accordion">
+        <CarbonBlazorAccordion>
+            <Items>
+                <CarbonBlazorAccordionItem Title="Section 1 title">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                </CarbonBlazorAccordionItem>
+                <CarbonBlazorAccordionItem Title="Section 2 title">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                </CarbonBlazorAccordionItem>
+                <CarbonBlazorAccordionItem Title="Section 3 title">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                </CarbonBlazorAccordionItem>
+            </Items>
+        </CarbonBlazorAccordion>
+    </CarbonBlazorPane>
+    
+    <CarbonBlazorPane Title="Breadcrumb">
+        <CarbonBlazorBreadcrumb Items="@_breadcrumbs"></CarbonBlazorBreadcrumb>
+    </CarbonBlazorPane>
+    
     <CarbonBlazorPane Title="Typography">
         <CarbonBlazorText Type="CarbonBlazorTextType.Code">Code01</CarbonBlazorText>
         <CarbonBlazorText Type="CarbonBlazorTextType.Code" IsExpressive="true">Code02</CarbonBlazorText>
@@ -47,34 +64,34 @@
 
         <CarbonBlazorText Type="CarbonBlazorTextType.Heading">Productive Content</CarbonBlazorText>
         <CarbonBlazorText Type="CarbonBlazorTextType.Body" WhiteSpace="WhiteSpace.PreWrap">
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
         </CarbonBlazorText>
 
         <CarbonBlazorText Type="CarbonBlazorTextType.HeadingCompact">Productive Content (Compact)</CarbonBlazorText>
         <CarbonBlazorText Type="CarbonBlazorTextType.BodyCompact" WhiteSpace="WhiteSpace.PreWrap">
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
         </CarbonBlazorText>
 
         <CarbonBlazorText Type="CarbonBlazorTextType.Heading" IsExpressive="true">Expressive Content</CarbonBlazorText>
         <CarbonBlazorText Type="CarbonBlazorTextType.Body" IsExpressive="true" WhiteSpace="WhiteSpace.PreWrap">
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
         </CarbonBlazorText>
 
         <CarbonBlazorText Type="CarbonBlazorTextType.HeadingCompact" IsExpressive="true">Expressive Content (Compact)</CarbonBlazorText>
         <CarbonBlazorText Type="CarbonBlazorTextType.BodyCompact" IsExpressive="true" WhiteSpace="WhiteSpace.PreWrap">
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
         </CarbonBlazorText>
 
         <CarbonBlazorText Type="CarbonBlazorTextType.HeadingCompact">Ordered List (Productive)</CarbonBlazorText>
@@ -137,7 +154,7 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
         <CarbonBlazorText>
             Here is some text that has a <CarbonBlazorCodeSnippet>CodeSnippet</CarbonBlazorCodeSnippet> in it.
         </CarbonBlazorText>
-        
+
         <CarbonBlazorCodeSnippet Type="CarbonBlazorCodeSnippetType.SingleLine">CodeSnippet singleLine = new();</CarbonBlazorCodeSnippet>
 
         <CarbonBlazorCodeSnippet Type="CarbonBlazorCodeSnippetType.MultiLine">
@@ -150,7 +167,7 @@ if (isSuperExciting)
     multiLine.AddAnotherLine();
 }
         </CarbonBlazorCodeSnippet>
-        
+
     </CarbonBlazorPane>
 
     <CarbonBlazorPane Title="Tags">
@@ -203,7 +220,7 @@ if (isSuperExciting)
             <CarbonBlazorTag Type="CarbonBlazorTagType.ReadOnly" Text="Read-only" Colour="CarbonBlazorTagColour.White"></CarbonBlazorTag>
         </CarbonBlazorStack>
     </CarbonBlazorPane>
-    
+
     <CarbonBlazorPane Title="Buttons">
         <CarbonBlazorStack FlexDirection="FlexDirection.Column" Gap="1rem;">
             <CarbonBlazorText Type="CarbonBlazorTextType.HeadingCompact">Text Only</CarbonBlazorText>
@@ -269,17 +286,17 @@ if (isSuperExciting)
             <CarbonBlazorLoadingSpinner Size="CarbonBlazorLoadingSpinnerSize.Small"></CarbonBlazorLoadingSpinner>
         </CarbonBlazorStack>
     </CarbonBlazorPane>
-    
+
     <CarbonBlazorPane Title="Form" Info="This is an example form with controls and stuff on it.">
         <CarbonBlazorNotificationInline @ref="@_formNotification"></CarbonBlazorNotificationInline>
         <CarbonBlazorForm TModel="StoryBookModel" Model="@_model" ValidationFunc="@ValidateForm" ValidSubmitCallback="@(_ => _formNotification.Notify("Thingy Saved", "The thingy has been saved successfully.", CarbonBlazorNotificationStyle.LowContrast, CarbonBlazorNotificationLevel.Success))">
             <CarbonBlazorTextInput Id="SomeTextInput" Label="Text input label" HelperText="Optional help text" FieldIdentifier="@FieldIdentifier.Create(() => _model.SomeTextInputValue)" @bind-Value="@_model.SomeTextInputValue"></CarbonBlazorTextInput>
             <CarbonBlazorCheckBox Id="SomeCheckBox" Label="Checkbox label" @bind-Value="@_model.SomeBoolInputValue" FieldIdentifier="@FieldIdentifier.Create(() => _model.SomeBoolInputValue)"></CarbonBlazorCheckBox>
             <CarbonBlazorNumberInput Id="SomeNumberInput" Label="Number input label" @bind-Value="@_model.SomeIntInputValue" FieldIdentifier="@FieldIdentifier.Create(() => _model.SomeIntInputValue)" Min="0" Max="100" Step="5"></CarbonBlazorNumberInput>
-            <CarbonBlazorCheckBoxGroup Label="Checkbox group" @bind-Values="@_model.SomeCheckedValues" FieldIdentifier="@FieldIdentifier.Create(() => _model.SomeCheckedValues)" Items="@([CheckBoxItem.Create("Aardvark"), CheckBoxItem.Create("Chimp"), CheckBoxItem.Create("Giraffe"), CheckBoxItem.Create("Hippo")])"></CarbonBlazorCheckBoxGroup>
-            <CarbonBlazorRadioButton Label="Radio Button" @bind-Value="@_model.SomeRadioButtonValue" FieldIdentifier="@FieldIdentifier.Create(() => _model.SomeRadioButtonValue)" Items="@([RadioButtonItem.Create("Lemon"), RadioButtonItem.Create("Lime")])"></CarbonBlazorRadioButton>
-            <CarbonBlazorSelect Id="SomeSelect" Label="Select label" @bind-Value="@_model.SomeSelectValue" FieldIdentifier="@FieldIdentifier.Create(() => _model.SomeSelectValue)" Items="@([SelectItem<string>.Create("One"), SelectItem<string>.Create("Two"), SelectItem<string>.Create("Three"), SelectItem<string>.Create("Four")])"/>
-            <CarbonBlazorDropDown Id="SomeDropDown" Label="Dropdown label" @bind-Values="@_model.SomeDropDownValues" FieldIdentifier="@FieldIdentifier.Create(() => _model.SomeDropDownValues)" Items="@([DropDownItem<string>.Create("One"), DropDownItem<string>.Create("Two"), DropDownItem<string>.Create("Three"), DropDownItem<string>.Create("Four")])"/>
+            <CarbonBlazorCheckBoxGroup Label="Checkbox group" @bind-Values="@_model.SomeCheckedValues" FieldIdentifier="@FieldIdentifier.Create(() => _model.SomeCheckedValues)" Items="@( [CheckBoxItem.Create("Aardvark"), CheckBoxItem.Create("Chimp"), CheckBoxItem.Create("Giraffe"), CheckBoxItem.Create("Hippo")])"></CarbonBlazorCheckBoxGroup>
+            <CarbonBlazorRadioButton Label="Radio Button" @bind-Value="@_model.SomeRadioButtonValue" FieldIdentifier="@FieldIdentifier.Create(() => _model.SomeRadioButtonValue)" Items="@( [RadioButtonItem.Create("Lemon"), RadioButtonItem.Create("Lime")])"></CarbonBlazorRadioButton>
+            <CarbonBlazorSelect Id="SomeSelect" Label="Select label" @bind-Value="@_model.SomeSelectValue" FieldIdentifier="@FieldIdentifier.Create(() => _model.SomeSelectValue)" Items="@( [SelectItem<string>.Create("One"), SelectItem<string>.Create("Two"), SelectItem<string>.Create("Three"), SelectItem<string>.Create("Four")])"/>
+            <CarbonBlazorDropDown Id="SomeDropDown" Label="Dropdown label" @bind-Values="@_model.SomeDropDownValues" FieldIdentifier="@FieldIdentifier.Create(() => _model.SomeDropDownValues)" Items="@( [DropDownItem<string>.Create("One"), DropDownItem<string>.Create("Two"), DropDownItem<string>.Create("Three"), DropDownItem<string>.Create("Four")])"/>
             <CarbonBlazorDatePicker Id="SomeDatePicker" Label="Date Picker label" @bind-Value="@_model.SomeDateValue" FieldIdentifier="@FieldIdentifier.Create(() => _model.SomeDateValue)"></CarbonBlazorDatePicker>
             <CarbonBlazorTimePicker Id="SomeTimePicker" Label="Time Picker label" @bind-Value="@_model.SomeTimeValue" FieldIdentifier="@FieldIdentifier.Create(() => _model.SomeTimeValue)"></CarbonBlazorTimePicker>
             <CarbonBlazorDateTimePicker Id="SomeDateTimePicker" Label="DateTime Picker label" @bind-Value="@_model.SomeDateTimeValue" FieldIdentifier="@FieldIdentifier.Create(() => _model.SomeDateTimeValue)"></CarbonBlazorDateTimePicker>
@@ -417,6 +434,12 @@ if (isSuperExciting)
         new("Berries", 2, false, "Two", [], []),
         new("Cherries", 3, true, "Three", [], []),
         new("Doofus", 4, false, "Four", [], []),
+    ];
+    private readonly List<BreadcrumbItem> _breadcrumbs =
+    [
+        new("Breadcrumb 1", "/"),
+        new("Breadcrumb 2", "/#"),
+        new("Breadcrumb 3", "/storybook")
     ];
 
     private IEnumerable<ValidationOutcome> ValidateForm(StoryBookModel model)

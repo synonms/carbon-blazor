@@ -1,0 +1,38 @@
+<li class="cb-accordion-item @(_isExpanded ? "expanded" : string.Empty)">
+    <div aria-expanded="@_isExpanded" class="cb-accordion-heading @CarbonBlazorInputSizeMapper.ToClass(Size)" onclick="@(() => OnClicked())">
+        <span class="cb-accordion-title" dir="ltr">@Title</span>
+        <div class="cb-accordion-arrow">
+            @if (_isExpanded)
+            {
+                @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.ChevronUp, 16))
+            }
+            else
+            {
+                @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.ChevronDown, 16))
+            }
+        </div>
+    </div>
+    <div class="cb-accordion-panel">
+        @ChildContent
+    </div>
+</li>
+
+@code {
+    private bool _isExpanded;
+    
+    [Parameter] 
+    [EditorRequired] 
+    public string Title { get; set; } = string.Empty;
+    
+    [Parameter]
+    [EditorRequired]
+    public RenderFragment ChildContent { get; set; } = null!;
+    
+    [Parameter]
+    public CarbonBlazorInputSize Size { get; set; } = CarbonBlazorInputSize.Medium;
+
+    private void OnClicked()
+    {
+        _isExpanded = !_isExpanded;
+    }
+}

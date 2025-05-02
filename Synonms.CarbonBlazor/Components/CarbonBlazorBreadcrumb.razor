@@ -1,0 +1,14 @@
+<ol class="cb-breadcrumb">
+    @foreach (BreadcrumbItem item in Items)
+    {
+        <li class="cb-breadcrumb-item">
+            <a href="@item.Path" class="cb-breadcrumb-item-link">@item.Text</a>
+        </li>
+    }
+</ol>
+
+@code {
+    [Parameter]
+    [EditorRequired]
+    public required IEnumerable<BreadcrumbItem> Items { get; set; }
+}
