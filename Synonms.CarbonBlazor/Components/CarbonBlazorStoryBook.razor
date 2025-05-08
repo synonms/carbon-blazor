@@ -100,7 +100,8 @@ if (isSuperExciting)
     </CarbonBlazorPane>
     
     <CarbonBlazorPane Title="Contained List">
-        TODO
+        <CarbonBlazorContainedList Groups="_onPageContainedListGroups" Type="CarbonBlazorContainedListType.OnPage"></CarbonBlazorContainedList>
+        <CarbonBlazorContainedList Groups="_disclosedContainedListGroups" Type="CarbonBlazorContainedListType.Disclosed" Layer="CarbonBlazorLayer.Two"></CarbonBlazorContainedList>
     </CarbonBlazorPane>
 
     <CarbonBlazorPane Title="Content Switcher">
@@ -534,7 +535,17 @@ if (isSuperExciting)
         new("Breadcrumb 2", "/#"),
         new("Breadcrumb 3", "/storybook")
     ];
-
+    private List<ContainedListGroup> _onPageContainedListGroups =
+    [
+        new("On-page list 1", [new ContainedListItem("List Item 1"), new ContainedListItem("List Item 2")]),
+        new("On-page list 2", [new ContainedListItem("List Item 1") { Icon = CarbonBlazorIcon.Building }, new ContainedListItem("List Item 2") { Icon = CarbonBlazorIcon.Enterprise }])
+    ];
+    private List<ContainedListGroup> _disclosedContainedListGroups =
+    [
+        new("Disclosed list 1", [new ContainedListItem("List Item 1"), new ContainedListItem("List Item 2")]),
+        new("Disclosed list 2", [new ContainedListItem("List Item 1") { Icon = CarbonBlazorIcon.Building }, new ContainedListItem("List Item 2") { Icon = CarbonBlazorIcon.Enterprise }])
+    ];
+    
     private IEnumerable<ValidationOutcome> ValidateForm(StoryBookModel model)
     {
         List<ValidationOutcome> validationOutcomes = [];

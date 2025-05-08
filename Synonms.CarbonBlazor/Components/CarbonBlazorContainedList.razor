@@ -1,0 +1,47 @@
+<div class="cb-contained-list">
+    @if (Groups.Count > 0)
+    {
+        for (int groupIndex = 0; groupIndex < Groups.Count; groupIndex++)
+        {
+            <div class="cb-contained-list-group">
+                <div id="contained-list-@(groupIndex)-header" class="@GetHeaderWrapperClass()">
+                    <span class="cb-contained-list-header-label">@Groups[groupIndex].Text</span>
+                </div>
+                <ul role="list" aria-labelledby="contained-list-@(groupIndex)-header">
+                    @foreach (ContainedListItem item in Groups[groupIndex].Items)
+                    {
+                        <li class="cb-contained-list-item">
+                            <div class="cb-contained-list-item-content">
+                                @if (item.Icon is not null)
+                                {
+                                    @((MarkupString)CarbonBlazorIconMapper.ToSvg(item.Icon.Value))
+                                }
+                                <div>@item.Text</div>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public required List<ContainedListGroup> Groups { get; set; }
+    
+    [Parameter]
+    public CarbonBlazorContainedListType Type { get; set; }
+    
+    [Parameter]
+    public CarbonBlazorLayer? Layer { get; set; }
+
+    private string GetHeaderWrapperClass()
+    {
+        const string baseClass = CssClasses.Prefix + "contained-list-header-wrapper";
+        string typeClass = Type == CarbonBlazorContainedListType.Disclosed ? "disclosed" : string.Empty;
+        string layerClass = Layer is not null ? CarbonBlazorLayerMapper.ToClass(Layer.Value) : string.Empty;
+
+        return CssClasses.Concatenate(baseClass, typeClass, layerClass);
+    }
+}

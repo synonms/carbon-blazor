@@ -1,11 +1,11 @@
-<div class="cds--tabs cds--tabs--contained">
+<div class="cb-tabs @(CarbonBlazorTabsTypeMapper.ToClass(Type))">
     <button aria-hidden="true" tabindex="-1" aria-label="Scroll left" class="cds--tab--overflow-nav-button cds--tab--overflow-nav-button--previous cds--tab--overflow-nav-button--hidden" type="button">
         <svg focusable="false" preserveAspectRatio="xMidYMid meet" fill="currentColor" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
             <path d="M5 8L10 3 10.7 3.7 6.4 8 10.7 12.3 10 13z"></path>
         </svg>
     </button>
     
-    <div role="tablist" class="cds--tab--list">
+    <div role="tablist" class="cb-tab-list">
         <button aria-controls="ccs-:r3:-tabpanel-0" aria-selected="true" id="ccs-:r3:-tab-0" role="tab" class="cds--tabs__nav-item cds--tabs__nav-link cds--tabs__nav-item--selected" tabindex="0" type="button">
             <div class="cds--tabs__nav-item-label-wrapper">
                 <span class="cds--tabs__nav-item-label" dir="ltr">Dashboard</span>
@@ -70,5 +70,6 @@
 </div>
 
 @code {
-    
+    [Parameter] 
+    public CarbonBlazorTabsType Type { get; set; } = CarbonBlazorTabsType.Default;
 }
