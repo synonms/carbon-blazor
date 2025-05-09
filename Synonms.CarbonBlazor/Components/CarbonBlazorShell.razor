@@ -1,5 +1,5 @@
 ﻿<div class="cb-shell @CarbonBlazorThemeMapper.ToCssClass(Theme)">
-    <header class="cb-header">
+    <header class="@GetHeaderClass()">
         <CarbonBlazorStack FlexDirection="FlexDirection.Row" JustifyContent="JustifyContent.Start" AlignItems="AlignItems.Center" Gap="1rem">
             <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.IconOnly" Size="CarbonBlazorButtonSize.LargeExpressive" Icon="CarbonBlazorIcon.Menu" OnClick="@OnMenuClick"></CarbonBlazorButton>
             @if (string.IsNullOrWhiteSpace(ProductIconImagePath) is false)
@@ -50,7 +50,7 @@
         </CarbonBlazorHeaderActionPanel>
     }
 
-    <CarbonBlazorSidebar @ref="@_sidebar">
+    <CarbonBlazorSidebar @ref="@_sidebar" ThemeOverride="@SidebarThemeOverride">
         @SideNav
     </CarbonBlazorSidebar>
     <main class="cb-main">
@@ -104,6 +104,14 @@
         CloseSwitcherPanel();
         CloseThemePanel();
         CloseUserPanel();
+    }
+
+    private string GetHeaderClass()
+    {
+        string baseClass = CssClasses.Prefix + "header";
+        string themeClass = HeaderThemeOverride is null ? string.Empty : CarbonBlazorThemeMapper.ToCssClass(HeaderThemeOverride.Value);
+
+        return CssClasses.Concatenate(baseClass, themeClass);
     }
     
     #endregion
@@ -193,6 +201,12 @@
 
     [Parameter]
     public CarbonBlazorTheme Theme { get; set; } = CarbonBlazorTheme.White;
+
+    [Parameter]
+    public CarbonBlazorTheme? HeaderThemeOverride { get; set; }
+
+    [Parameter]
+    public CarbonBlazorTheme? SidebarThemeOverride { get; set; }
 
     [Parameter] 
     public bool IsThemeEnabled { get; set; } = true;

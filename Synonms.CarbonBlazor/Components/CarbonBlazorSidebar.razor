@@ -1,4 +1,4 @@
-﻿<nav class="cb-sidebar @(_isExpanded ? "" : "collapsed")">
+﻿<nav class="@GetSidebarClass()">
     <ul>
         @ChildContent
     </ul>
@@ -9,9 +9,21 @@
     
     [Parameter]
     public RenderFragment ChildContent { get; set; } = null!;
+    
+    [Parameter]
+    public CarbonBlazorTheme? ThemeOverride { get; set; }
 
     public void ToggleVisibility()
     {
         _isExpanded = !_isExpanded;
+    }
+
+    private string GetSidebarClass()
+    {
+        string baseClass = CssClasses.Prefix + "sidebar";
+        string expandedClass = _isExpanded ? string.Empty : "collapsed";
+        string themeClass = ThemeOverride is null ? string.Empty : CarbonBlazorThemeMapper.ToCssClass(ThemeOverride.Value);
+
+        return CssClasses.Concatenate(baseClass, expandedClass, themeClass);
     }
 }

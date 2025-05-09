@@ -377,7 +377,7 @@
     --cb-warm-gray-10: #f7f3f2;
 }
 
-.cb-theme-white * {
+.cb-theme-white, .cb-theme-white * :not(:where(.cb-theme-gray-10 *, .cb-theme-gray-90 *, .cb-theme-gray-100 *)) {
     --cb-ai-aura-end: rgba(255, 255, 255, 0);
     --cb-ai-aura-hover-background: #edf5ff;
     --cb-ai-aura-hover-end: rgba(255, 255, 255, 0);
@@ -605,7 +605,7 @@
     --cb-tag-hover-warm-gray: #d8d0cf
 }
 
-.cb-theme-gray-10 * {
+.cb-theme-gray-10, .cb-theme-gray-10 * :not(:where(.cb-theme-white *, .cb-theme-gray-90 *, .cb-theme-gray-100 *)) {
     --cb-ai-aura-end: rgba(255, 255, 255, 0);
     --cb-ai-aura-hover-background: #edf5ff;
     --cb-ai-aura-hover-end: rgba(255, 255, 255, 0);
@@ -825,7 +825,7 @@
     --cb-tag-hover-warm-gray: #d8d0cf
 }
 
-.cb-theme-gray-90 * {
+.cb-theme-gray-90, .cb-theme-gray-90 * :not(:where(.cb-theme-white *, .cb-theme-gray-10 *, .cb-theme-gray-100 *)) {
     --cb-ai-aura-end: rgba(0, 0, 0, 0);
     --cb-ai-aura-hover-background: #474747;
     --cb-ai-aura-hover-end: rgba(0, 0, 0, 0);
@@ -1044,7 +1044,7 @@
     --cb-tag-hover-warm-gray: #696363
 }
 
-.cb-theme-gray-100 * {
+.cb-theme-gray-100, .cb-theme-gray-100 * :not(:where(.cb-theme-white *, .cb-theme-gray-10 *, .cb-theme-gray-90 *)) {
     --cb-ai-aura-end: rgba(0, 0, 0, 0);
     --cb-ai-aura-hover-background: #333333;
     --cb-ai-aura-hover-end: rgba(0, 0, 0, 0);
