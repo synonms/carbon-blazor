@@ -27,28 +27,28 @@
                 <CarbonBlazorButton @ref="@_switcherButton" Kind="CarbonBlazorButtonKind.Ghost" Size="CarbonBlazorButtonSize.LargeExpressive" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.Switcher" OnClick="@SwitcherClicked"></CarbonBlazorButton>
             }
         </CarbonBlazorStack>
+
+        @if (UserPanel is not null)
+        {
+            <CarbonBlazorHeaderActionPanel @ref="@_userPanel">
+                @UserPanel
+            </CarbonBlazorHeaderActionPanel>
+        }
+
+        <CarbonBlazorHeaderActionPanel @ref="@_themePanel">
+            <CarbonBlazorHeaderActionLink NavigationItem="@(NavigationItem.Create("White", ""))" OnClick="@(() => ChangeTheme(CarbonBlazorTheme.White))"></CarbonBlazorHeaderActionLink>
+            <CarbonBlazorHeaderActionLink NavigationItem="@(NavigationItem.Create("Grey 10", ""))" OnClick="@(() => ChangeTheme(CarbonBlazorTheme.Gray10))"></CarbonBlazorHeaderActionLink>
+            <CarbonBlazorHeaderActionLink NavigationItem="@(NavigationItem.Create("Grey 90", ""))" OnClick="@(() => ChangeTheme(CarbonBlazorTheme.Gray90))"></CarbonBlazorHeaderActionLink>
+            <CarbonBlazorHeaderActionLink NavigationItem="@(NavigationItem.Create("Grey 100", ""))" OnClick="@(() => ChangeTheme(CarbonBlazorTheme.Gray100))"></CarbonBlazorHeaderActionLink>
+        </CarbonBlazorHeaderActionPanel>
+
+        @if (SwitcherPanel is not null)
+        {
+            <CarbonBlazorHeaderActionPanel @ref="@_switcherPanel">
+                @SwitcherPanel
+            </CarbonBlazorHeaderActionPanel>
+        }
     </header>
-
-    @if (UserPanel is not null)
-    {
-        <CarbonBlazorHeaderActionPanel @ref="@_userPanel">
-            @UserPanel
-        </CarbonBlazorHeaderActionPanel>
-    }
-
-    <CarbonBlazorHeaderActionPanel @ref="@_themePanel">
-        <CarbonBlazorHeaderActionLink NavigationItem="@(NavigationItem.Create("White", ""))" OnClick="@(() => ChangeTheme(CarbonBlazorTheme.White))"></CarbonBlazorHeaderActionLink>
-        <CarbonBlazorHeaderActionLink NavigationItem="@(NavigationItem.Create("Grey 10", ""))" OnClick="@(() => ChangeTheme(CarbonBlazorTheme.Gray10))"></CarbonBlazorHeaderActionLink>
-        <CarbonBlazorHeaderActionLink NavigationItem="@(NavigationItem.Create("Grey 90", ""))" OnClick="@(() => ChangeTheme(CarbonBlazorTheme.Gray90))"></CarbonBlazorHeaderActionLink>
-        <CarbonBlazorHeaderActionLink NavigationItem="@(NavigationItem.Create("Grey 100", ""))" OnClick="@(() => ChangeTheme(CarbonBlazorTheme.Gray100))"></CarbonBlazorHeaderActionLink>
-    </CarbonBlazorHeaderActionPanel>
-
-    @if (SwitcherPanel is not null)
-    {
-        <CarbonBlazorHeaderActionPanel @ref="@_switcherPanel">
-            @SwitcherPanel
-        </CarbonBlazorHeaderActionPanel>
-    }
 
     <CarbonBlazorSidebar @ref="@_sidebar" ThemeOverride="@SidebarThemeOverride">
         @SideNav

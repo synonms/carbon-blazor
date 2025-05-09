@@ -3,8 +3,13 @@
 <PageTitle>Synonms CarbonBlazor</PageTitle>
 
 <CarbonBlazorShell ProductName="CarbonBlazor" HeaderThemeOverride="CarbonBlazorTheme.Gray100" SidebarThemeOverride="CarbonBlazorTheme.White">
-    <UserPanel></UserPanel>
-    <SwitcherPanel></SwitcherPanel>
+    <UserPanel>
+        <CarbonBlazorHeaderActionLink NavigationItem="@NavigationItem.Create("Login", "/")"></CarbonBlazorHeaderActionLink>
+    </UserPanel>
+    <SwitcherPanel>
+        <CarbonBlazorHeaderActionLink NavigationItem="@NavigationItem.Create("App 1", "/")"></CarbonBlazorHeaderActionLink>
+        <CarbonBlazorHeaderActionLink NavigationItem="@NavigationItem.Create("App 2", "/")"></CarbonBlazorHeaderActionLink>
+    </SwitcherPanel>
     <SideNav>
         <CarbonBlazorSidebarLink NavigationItem="@NavigationItem.Create(CarbonBlazorIcon.Dashboard, "Dashboard", "/")" />
         <CarbonBlazorSidebarLink NavigationItem="@NavigationItem.Create(CarbonBlazorIcon.Apps, "Storybook", "/storybook")" />
