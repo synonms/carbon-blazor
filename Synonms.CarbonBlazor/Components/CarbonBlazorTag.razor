@@ -5,7 +5,7 @@
         {
             @((MarkupString)CarbonBlazorIconMapper.ToSvg(Icon))
         }
-        <span class="cb-text label-01">@Text</span>
+        <span class="cb-tag-text">@Text</span>
         @if (Type == CarbonBlazorTagType.Dismissible)
         {
             <button class="cb-tag-close-button" type="button" onclick="@(() => Dismiss())">
@@ -35,7 +35,7 @@
     public CarbonBlazorTagColour Colour { get; set; } = CarbonBlazorTagColour.Blue;
 
     [Parameter]
-    public EventCallback OnDismissedCallback { get; set; } = EventCallback.Empty;
+    public EventCallback DismissedCallback { get; set; } = EventCallback.Empty;
 
     public void Show()
     {
@@ -51,9 +51,9 @@
     {
         Hide();
 
-        if (OnDismissedCallback.HasDelegate)
+        if (DismissedCallback.HasDelegate)
         {
-            await OnDismissedCallback.InvokeAsync();
+            await DismissedCallback.InvokeAsync();
         }
     }
 }

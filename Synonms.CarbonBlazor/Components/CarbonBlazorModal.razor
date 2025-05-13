@@ -39,13 +39,13 @@
     public string Title { get; set; } = string.Empty;
 
     [Parameter]
-    public EventCallback OnClosedCallback { get; set; } = EventCallback.Empty;
+    public EventCallback ClosedCallback { get; set; } = EventCallback.Empty;
 
     [Parameter]
-    public EventCallback OnShownCallback { get; set; } = EventCallback.Empty;
+    public EventCallback ShownCallback { get; set; } = EventCallback.Empty;
 
     [Parameter]
-    public EventCallback OnHiddenCallback { get; set; } = EventCallback.Empty;
+    public EventCallback HiddenCallback { get; set; } = EventCallback.Empty;
 
     public async Task Show()
     {
@@ -56,9 +56,9 @@
         
         _isVisible = true;
 
-        if (OnShownCallback.HasDelegate)
+        if (ShownCallback.HasDelegate)
         {
-            await OnShownCallback.InvokeAsync();
+            await ShownCallback.InvokeAsync();
         }
     }
 
@@ -71,9 +71,9 @@
         
         _isVisible = false;
 
-        if (OnHiddenCallback.HasDelegate)
+        if (HiddenCallback.HasDelegate)
         {
-            await OnHiddenCallback.InvokeAsync();
+            await HiddenCallback.InvokeAsync();
         }
     }
 
@@ -89,9 +89,9 @@
     {
         await Hide();
 
-        if (OnClosedCallback.HasDelegate)
+        if (ClosedCallback.HasDelegate)
         {
-            await OnClosedCallback.InvokeAsync();
+            await ClosedCallback.InvokeAsync();
         }
     }
 }

@@ -1,10 +1,10 @@
 ﻿@typeparam TResource where TResource : class
 
-<CarbonBlazorModal @ref="@_modal" Label="@Label" Title="@Title" Size="CarbonBlazorModalSize.Small" OnClosedCallback="@OnClosedCallback" OnShownCallback="@OnShownCallback" OnHiddenCallback="@OnHiddenCallback">
+<CarbonBlazorModal @ref="@_modal" Label="@Label" Title="@Title" Size="CarbonBlazorModalSize.Small" ClosedCallback="@ClosedCallback" ShownCallback="@ShownCallback" HiddenCallback="@HiddenCallback">
     <CarbonBlazorText Type="CarbonBlazorTextType.Body">You are about to delete this resource - are you sure you want to continue?</CarbonBlazorText>
     <CarbonBlazorButtonSet Style="width: 100%;">
-        <CarbonBlazorButton Type="CarbonBlazorButtonType.Button" Kind="CarbonBlazorButtonKind.Secondary" Display="CarbonBlazorButtonDisplay.TextOnly" Text="Cancel" Size="CarbonBlazorButtonSize.ExtraLarge" Style="width:50%;" OnClick="@CancelDeleteCallback"></CarbonBlazorButton>
-        <CarbonBlazorButton Type="CarbonBlazorButtonType.Button" Kind="CarbonBlazorButtonKind.Danger" Display="CarbonBlazorButtonDisplay.TextOnly" Text="Delete" Size="CarbonBlazorButtonSize.ExtraLarge" Style="width:50%;" OnClick="@ConfirmDeleteCallback"></CarbonBlazorButton>
+        <CarbonBlazorButton Type="CarbonBlazorButtonType.Button" Kind="CarbonBlazorButtonKind.Secondary" Display="CarbonBlazorButtonDisplay.TextOnly" Text="Cancel" Size="CarbonBlazorButtonSize.ExtraLarge" Style="width:50%;" ClickedCallback="@OnDeleteCancelled"></CarbonBlazorButton>
+        <CarbonBlazorButton Type="CarbonBlazorButtonType.Button" Kind="CarbonBlazorButtonKind.Danger" Display="CarbonBlazorButtonDisplay.TextOnly" Text="Delete" Size="CarbonBlazorButtonSize.ExtraLarge" Style="width:50%;" ClickedCallback="@OnDeleteConfirmed"></CarbonBlazorButton>
     </CarbonBlazorButtonSet>
 </CarbonBlazorModal>
 
@@ -23,28 +23,46 @@
 
     [Parameter]
     [EditorRequired]
-    public EventCallback CancelDeleteCallback { get; set; }
+    public EventCallback DeleteCancelledCallback { get; set; }
     
     [Parameter]
     [EditorRequired]
-    public EventCallback ConfirmDeleteCallback { get; set; }
+    public EventCallback DeleteConfirmedCallback { get; set; }
 
     [Parameter]
-    public EventCallback OnClosedCallback { get; set; } = EventCallback.Empty;
+    public EventCallback ClosedCallback { get; set; } = EventCallback.Empty;
 
     [Parameter]
-    public EventCallback OnShownCallback { get; set; } = EventCallback.Empty;
+    public EventCallback ShownCallback { get; set; } = EventCallback.Empty;
 
     [Parameter]
-    public EventCallback OnHiddenCallback { get; set; } = EventCallback.Empty;
+    public EventCallback HiddenCallback { get; set; } = EventCallback.Empty;
 
     public async Task Show()
     {
         await _modal.Show();
+
+        await ShownCallback.InvokeAsync();
     }
 
     public async Task Hide()
     {
         await _modal.Hide();
+        
+        await HiddenCallback.InvokeAsync();
+    }
+
+    private async Task OnDeleteCancelled()
+    {
+        await _modal.Hide();
+
+        await DeleteCancelledCallback.InvokeAsync();
+    }
+
+    private async Task OnDeleteConfirmed()
+    {
+        await _modal.Hide();
+
+        await DeleteConfirmedCallback.InvokeAsync();
     }
 }

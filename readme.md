@@ -128,7 +128,7 @@ Data tables are used to organize and display data efficiently. The data table co
 <CarbonBlazorDataTable @ref="@_dataTable" TModel="PermissionResource" Title="Permissions" Models="@Resources" TotalSize="@Resources.Count" Offset="0" PageLimit="20" 
                            PaginationMode="CarbonBlazorPaginationMode.Client" FilterModelsFunc="@FilterModels">
     <ToolbarButtons>
-        <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.TextAndIcon" Icon="CarbonBlazorIcon.Add" Text="Add Permission" OnClick="@(() => BeginOperation(Mode.Create, new PermissionResource()))"></CarbonBlazorButton>
+        <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.TextAndIcon" Icon="CarbonBlazorIcon.Add" Text="Add Permission" ClickedCallback="@(() => BeginOperation(Mode.Create, new PermissionResource()))"></CarbonBlazorButton>
     </ToolbarButtons>
     <HeaderRowTemplate>
         <CarbonBlazorDataTableHeaderCell>Id</CarbonBlazorDataTableHeaderCell>
@@ -140,9 +140,9 @@ Data tables are used to organize and display data efficiently. The data table co
         <CarbonBlazorDataTableDataCell>@context.Name</CarbonBlazorDataTableDataCell>
         <CarbonBlazorDataTableDataCell>
             <CarbonBlazorButtonSet>
-                <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Input" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.View" OnClick="@(() => BeginOperation(Mode.Read, context))"></CarbonBlazorButton>
-                <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Input" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.Edit" OnClick="@(() => BeginOperation(Mode.Update, context))"></CarbonBlazorButton>
-                <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Input" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.TrashCan" OnClick="@(() => BeginOperation(Mode.Delete, context))"></CarbonBlazorButton>
+                <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Input" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.View" ClickedCallback="@(() => BeginOperation(Mode.Read, context))"></CarbonBlazorButton>
+                <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Input" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.Edit" ClickedCallback="@(() => BeginOperation(Mode.Update, context))"></CarbonBlazorButton>
+                <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Input" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.TrashCan" ClickedCallback="@(() => BeginOperation(Mode.Delete, context))"></CarbonBlazorButton>
             </CarbonBlazorButtonSet>
         </CarbonBlazorDataTableDataCell>
     </DataRowTemplate>
@@ -238,8 +238,8 @@ Modals focus the user’s attention exclusively on one task or piece of informat
 <CarbonBlazorModal @ref="@_createModal" Label="Permissions" Title="Add a permission" Size="CarbonBlazorModalSize.Large">
     <CarbonBlazorText Type="CarbonBlazorTextType.Body01">You are about to delete resource Id @(Resource.Id) - are you sure you want to continue?</CarbonBlazorText>
     <CarbonBlazorButtonSet>
-        <CarbonBlazorButton Type="CarbonBlazorButtonType.Button" Kind="CarbonBlazorButtonKind.Secondary" Display="CarbonBlazorButtonDisplay.TextOnly" Text="Cancel" Size="CarbonBlazorButtonSize.ExtraLarge" Style="width:50%;" OnClick="@CancelDeleteCallback"></CarbonBlazorButton>
-        <CarbonBlazorButton Type="CarbonBlazorButtonType.Button" Kind="CarbonBlazorButtonKind.Danger" Display="CarbonBlazorButtonDisplay.TextOnly" Text="Delete" Size="CarbonBlazorButtonSize.ExtraLarge" Style="width:50%;" OnClick="@ConfirmDeleteCallback"></CarbonBlazorButton>
+        <CarbonBlazorButton Type="CarbonBlazorButtonType.Button" Kind="CarbonBlazorButtonKind.Secondary" Display="CarbonBlazorButtonDisplay.TextOnly" Text="Cancel" Size="CarbonBlazorButtonSize.ExtraLarge" Style="width:50%;" ClickedCallback="@CancelDeleteCallback"></CarbonBlazorButton>
+        <CarbonBlazorButton Type="CarbonBlazorButtonType.Button" Kind="CarbonBlazorButtonKind.Danger" Display="CarbonBlazorButtonDisplay.TextOnly" Text="Delete" Size="CarbonBlazorButtonSize.ExtraLarge" Style="width:50%;" ClickedCallback="@ConfirmDeleteCallback"></CarbonBlazorButton>
     </CarbonBlazorButtonSet>
 </CarbonBlazorModal>
 ```

@@ -6,10 +6,10 @@
     </CascadingValue>
 
     <CarbonBlazorButtonSet Style="margin-top: 3rem;">
-        <CarbonBlazorButton Type="CarbonBlazorButtonType.Button" Kind="CarbonBlazorButtonKind.Secondary" Display="CarbonBlazorButtonDisplay.TextOnly" Text="@CancelButtonLabel" Size="CarbonBlazorButtonSize.ExtraLarge" Style="width:50%;" OnClick="@(() => CancelCallback.InvokeAsync(Model))"></CarbonBlazorButton>
+        <CarbonBlazorButton Type="CarbonBlazorButtonType.Button" Kind="CarbonBlazorButtonKind.Secondary" Display="CarbonBlazorButtonDisplay.TextOnly" Text="@CancelButtonLabel" Size="CarbonBlazorButtonSize.ExtraLarge" Style="width:50%;" ClickedCallback="@(() => CancelCallback.InvokeAsync(Model))"></CarbonBlazorButton>
         @if (IsReadOnly)
         {
-            <CarbonBlazorButton Type="CarbonBlazorButtonType.Button" Kind="CarbonBlazorButtonKind.Primary" Display="CarbonBlazorButtonDisplay.TextOnly" Text="@EditButtonLabel" Size="CarbonBlazorButtonSize.ExtraLarge" Style="width:50%;" OnClick="@(() => EditCallback.InvokeAsync(Model))"></CarbonBlazorButton>
+            <CarbonBlazorButton Type="CarbonBlazorButtonType.Button" Kind="CarbonBlazorButtonKind.Primary" Display="CarbonBlazorButtonDisplay.TextOnly" Text="@EditButtonLabel" Size="CarbonBlazorButtonSize.ExtraLarge" Style="width:50%;" ClickedCallback="@(() => EditCallback.InvokeAsync(Model))"></CarbonBlazorButton>
         }
         else
         {

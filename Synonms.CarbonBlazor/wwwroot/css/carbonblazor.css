@@ -1688,6 +1688,15 @@ input[type=number] {
     background-color: var(--cb-layer-03);
 }
 
+.cb-text.error { color: var(--cb-text-error); }
+.cb-text.helper { color: var(--cb-text-helper); }
+.cb-text.inverse { color: var(--cb-text-inverse); }
+.cb-text.on-color { color: var(--cb-text-on-color); }
+.cb-text.on-color-disabled { color: var(--cb-text-on-color-disabled); }
+.cb-text.placeholder { color: var(--cb-text-placeholder); }
+.cb-text.primary { color: var(--cb-text-primary); }
+.cb-text.secondary { color: var(--cb-text-secondary); }
+
 .cb-list {
     color: var(--cb-text-primary);
     font-size: var(--cb-body-01-font-size);

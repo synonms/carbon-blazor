@@ -1,0 +1,51 @@
+<div id="cb-progress-indicator">
+    <ul class="cb-progress-steps">
+        @{
+            int index = 0;
+            foreach (ProgressStep step in Progress.Steps)
+            {
+                <li class="cb-progress-step @step.Status.ToString().ToLower()">
+                    @((MarkupString)CarbonBlazorIconMapper.ToSvg(step.Icon))
+                    <div class="cb-progress-step-text">
+                        <CarbonBlazorText Type="CarbonBlazorTextType.BodyCompact" Colour="CarbonBlazorTextColour.Primary">@step.Label</CarbonBlazorText>
+                        @if (string.IsNullOrWhiteSpace(step.HelperText) is false)
+                        {
+                            <CarbonBlazorText Type="CarbonBlazorTextType.Label" Colour="CarbonBlazorTextColour.Secondary">@step.HelperText</CarbonBlazorText>
+                        }
+                    </div>
+                </li>
+                
+                index++;
+            }
+        }
+    </ul>
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public required Progress Progress { get; set; }
+    
+    public EventCallback StepsCompletedCallback { get; set; }
+
+    public async Task NextStep()
+    {
+        Progress.NextStep();
+
+        if (Progress.IsComplete)
+        {
+            await StepsCompletedCallback.InvokeAsync();
+        }
+        
+        StateHasChanged();
+    }
+
+
+    public Task PreviousStep()
+    {
+        Progress.PreviousStep();
+        
+        StateHasChanged();
+
+        return Task.CompletedTask;
+    }
+}

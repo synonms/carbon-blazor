@@ -1,0 +1,38 @@
+.cb-progress-indicator {
+    
+}
+
+.cb-progress-steps {
+    display: flex;
+    flex-direction: row;
+    gap: 0;
+    list-style: none;
+}
+
+.cb-progress-step {
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 0;
+    border-top: solid 2px var(--cb-border-interactive);
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    min-width: 8rem;
+    padding-top: 1rem;
+}
+.cb-progress-step.complete {
+    fill: var(--cb-interactive);
+}
+.cb-progress-step.current {
+    fill: var(--cb-interactive);
+}
+.cb-progress-step.notstarted {
+    border-top: solid 2px var(--cb-border-subtle);
+    fill: var(--cb-icon-primary);
+}
+
+.cb-progress-step-text {
+    color: var(--cb-text-secondary);
+    display: flex;
+    flex-direction: column;
+}

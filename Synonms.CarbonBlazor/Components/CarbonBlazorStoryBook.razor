@@ -111,11 +111,11 @@ if (isSuperExciting)
     <CarbonBlazorPane Title="Data Table">
         <CarbonBlazorDataTable @ref="@_dataTable" TModel="StoryBookModel" Title="DataTable" Description="This is an example data table." Models="@_models" TotalSize="@_models.Count" Offset="0" PageLimit="10">
             <ToolbarButtons>
-                <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.TextOnly" Text="XS" OnClick="@(() => _dataTable.Resize(CarbonBlazorDataTableRowSize.ExtraSmall))"></CarbonBlazorButton>
-                <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.TextOnly" Text="S" OnClick="@(() => _dataTable.Resize(CarbonBlazorDataTableRowSize.Small))"></CarbonBlazorButton>
-                <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.TextOnly" Text="M" OnClick="@(() => _dataTable.Resize(CarbonBlazorDataTableRowSize.Medium))"></CarbonBlazorButton>
-                <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.TextOnly" Text="L" OnClick="@(() => _dataTable.Resize(CarbonBlazorDataTableRowSize.Large))"></CarbonBlazorButton>
-                <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.TextOnly" Text="XL" OnClick="@(() => _dataTable.Resize(CarbonBlazorDataTableRowSize.ExtraLarge))"></CarbonBlazorButton>
+                <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.TextOnly" Text="XS" ClickedCallback="@(() => _dataTable.Resize(CarbonBlazorDataTableRowSize.ExtraSmall))"></CarbonBlazorButton>
+                <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.TextOnly" Text="S" ClickedCallback="@(() => _dataTable.Resize(CarbonBlazorDataTableRowSize.Small))"></CarbonBlazorButton>
+                <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.TextOnly" Text="M" ClickedCallback="@(() => _dataTable.Resize(CarbonBlazorDataTableRowSize.Medium))"></CarbonBlazorButton>
+                <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.TextOnly" Text="L" ClickedCallback="@(() => _dataTable.Resize(CarbonBlazorDataTableRowSize.Large))"></CarbonBlazorButton>
+                <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.TextOnly" Text="XL" ClickedCallback="@(() => _dataTable.Resize(CarbonBlazorDataTableRowSize.ExtraLarge))"></CarbonBlazorButton>
                 <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.TextAndIcon" Icon="CarbonBlazorIcon.Add" Text="Add Model"></CarbonBlazorButton>
             </ToolbarButtons>
             <HeaderRowTemplate>
@@ -132,8 +132,8 @@ if (isSuperExciting)
                 <CarbonBlazorDataTableDataCell>@context.SomeSelectValue</CarbonBlazorDataTableDataCell>
                 <CarbonBlazorDataTableDataCell>
                     <CarbonBlazorButtonSet Style="justify-content: end;">
-                        <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.Edit" ToggledIcon="CarbonBlazorIcon.Cancel" OnClick="@(() => EditRow(context))"></CarbonBlazorButton>
-                        <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.TrashCan" ToggledIcon="CarbonBlazorIcon.Cancel" OnClick="@(() => DeleteRow(context))"></CarbonBlazorButton>
+                        <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.Edit" ToggledIcon="CarbonBlazorIcon.Cancel" ClickedCallback="@(() => OnEditRow(context))"></CarbonBlazorButton>
+                        <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.TrashCan" ToggledIcon="CarbonBlazorIcon.Cancel" ClickedCallback="@(() => OnDeleteRow(context))"></CarbonBlazorButton>
                     </CarbonBlazorButtonSet>
                 </CarbonBlazorDataTableDataCell>
             </DataRowTemplate>
@@ -255,27 +255,27 @@ if (isSuperExciting)
         <CarbonBlazorModal @ref="@_modal" Label="Modal Label" Title="Modal Title" Size="CarbonBlazorModalSize.Small">
             <CarbonBlazorText Type="CarbonBlazorTextType.Body">Here is a modal with some content.</CarbonBlazorText>
             <CarbonBlazorButtonSet Style="width: 100%;">
-                <CarbonBlazorButton Type="CarbonBlazorButtonType.Button" Kind="CarbonBlazorButtonKind.Secondary" Display="CarbonBlazorButtonDisplay.TextOnly" Text="Close" Size="CarbonBlazorButtonSize.ExtraLarge" Style="width:50%;" OnClick="@(_ => _modal.Hide())"></CarbonBlazorButton>
+                <CarbonBlazorButton Type="CarbonBlazorButtonType.Button" Kind="CarbonBlazorButtonKind.Secondary" Display="CarbonBlazorButtonDisplay.TextOnly" Text="Close" Size="CarbonBlazorButtonSize.ExtraLarge" Style="width:50%;" ClickedCallback="@(() => _modal.Hide())"></CarbonBlazorButton>
             </CarbonBlazorButtonSet>
         </CarbonBlazorModal>
         
-        <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.TextOnly" Kind="CarbonBlazorButtonKind.Primary" Text="Open Modal" OnClick="@(_ => _modal.Show())"></CarbonBlazorButton>
+        <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.TextOnly" Kind="CarbonBlazorButtonKind.Primary" Text="Open Modal" ClickedCallback="@(() => _modal.Show())"></CarbonBlazorButton>
     </CarbonBlazorPane>
     
     <CarbonBlazorPane Title="Notification" Info="Send notifications to the broker.">
         <CarbonBlazorText Type="CarbonBlazorTextType.HeadingCompact">Low Contrast</CarbonBlazorText>
         <CarbonBlazorButtonSet>
-            <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Primary" Display="CarbonBlazorButtonDisplay.TextAndIcon" Icon="CarbonBlazorIcon.InformationFilled" Text="Information" OnClick="@(() => NotificationBroker.Send("StoryBook", "An exciting thing happened!", CarbonBlazorNotificationStyle.LowContrast, CarbonBlazorNotificationLevel.Information))"></CarbonBlazorButton>
-            <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Secondary" Display="CarbonBlazorButtonDisplay.TextAndIcon" Icon="CarbonBlazorIcon.CheckmarkFilled" Text="Success" OnClick="@(() => NotificationBroker.Send("StoryBook", "An exciting thing happened!", CarbonBlazorNotificationStyle.LowContrast, CarbonBlazorNotificationLevel.Success))"></CarbonBlazorButton>
-            <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Tertiary" Display="CarbonBlazorButtonDisplay.TextAndIcon" Icon="CarbonBlazorIcon.WarningFilled" Text="Warning" OnClick="@(() => NotificationBroker.Send("StoryBook", "An exciting thing happened!", CarbonBlazorNotificationStyle.LowContrast, CarbonBlazorNotificationLevel.Warning))"></CarbonBlazorButton>
-            <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Danger" Display="CarbonBlazorButtonDisplay.TextAndIcon" Icon="CarbonBlazorIcon.ErrorFilled" Text="Error" OnClick="@(() => NotificationBroker.Send("StoryBook", "An exciting thing happened!", CarbonBlazorNotificationStyle.LowContrast, CarbonBlazorNotificationLevel.Error))"></CarbonBlazorButton>
+            <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Primary" Display="CarbonBlazorButtonDisplay.TextAndIcon" Icon="CarbonBlazorIcon.InformationFilled" Text="Information" ClickedCallback="@(() => NotificationBroker.Send("StoryBook", "An exciting thing happened!"))"></CarbonBlazorButton>
+            <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Secondary" Display="CarbonBlazorButtonDisplay.TextAndIcon" Icon="CarbonBlazorIcon.CheckmarkFilled" Text="Success" ClickedCallback="@(() => NotificationBroker.Send("StoryBook", "An exciting thing happened!", CarbonBlazorNotificationStyle.LowContrast, CarbonBlazorNotificationLevel.Success))"></CarbonBlazorButton>
+            <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Tertiary" Display="CarbonBlazorButtonDisplay.TextAndIcon" Icon="CarbonBlazorIcon.WarningFilled" Text="Warning" ClickedCallback="@(() => NotificationBroker.Send("StoryBook", "An exciting thing happened!", CarbonBlazorNotificationStyle.LowContrast, CarbonBlazorNotificationLevel.Warning))"></CarbonBlazorButton>
+            <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Danger" Display="CarbonBlazorButtonDisplay.TextAndIcon" Icon="CarbonBlazorIcon.ErrorFilled" Text="Error" ClickedCallback="@(() => NotificationBroker.Send("StoryBook", "An exciting thing happened!", CarbonBlazorNotificationStyle.LowContrast, CarbonBlazorNotificationLevel.Error))"></CarbonBlazorButton>
         </CarbonBlazorButtonSet>
         <CarbonBlazorText Type="CarbonBlazorTextType.HeadingCompact">High Contrast</CarbonBlazorText>
         <CarbonBlazorButtonSet>
-            <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Primary" Display="CarbonBlazorButtonDisplay.TextAndIcon" Icon="CarbonBlazorIcon.InformationFilled" Text="Information" OnClick="@(() => NotificationBroker.Send("StoryBook", "An exciting thing happened!", CarbonBlazorNotificationStyle.HighContrast, CarbonBlazorNotificationLevel.Information))"></CarbonBlazorButton>
-            <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Secondary" Display="CarbonBlazorButtonDisplay.TextAndIcon" Icon="CarbonBlazorIcon.CheckmarkFilled" Text="Success" OnClick="@(() => NotificationBroker.Send("StoryBook", "An exciting thing happened!", CarbonBlazorNotificationStyle.HighContrast, CarbonBlazorNotificationLevel.Success))"></CarbonBlazorButton>
-            <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Tertiary" Display="CarbonBlazorButtonDisplay.TextAndIcon" Icon="CarbonBlazorIcon.WarningFilled" Text="Warning" OnClick="@(() => NotificationBroker.Send("StoryBook", "An exciting thing happened!", CarbonBlazorNotificationStyle.HighContrast, CarbonBlazorNotificationLevel.Warning))"></CarbonBlazorButton>
-            <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Danger" Display="CarbonBlazorButtonDisplay.TextAndIcon" Icon="CarbonBlazorIcon.ErrorFilled" Text="Error" OnClick="@(() => NotificationBroker.Send("StoryBook", "An exciting thing happened!", CarbonBlazorNotificationStyle.HighContrast, CarbonBlazorNotificationLevel.Error))"></CarbonBlazorButton>
+            <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Primary" Display="CarbonBlazorButtonDisplay.TextAndIcon" Icon="CarbonBlazorIcon.InformationFilled" Text="Information" ClickedCallback="@(() => NotificationBroker.Send("StoryBook", "An exciting thing happened!", CarbonBlazorNotificationStyle.HighContrast))"></CarbonBlazorButton>
+            <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Secondary" Display="CarbonBlazorButtonDisplay.TextAndIcon" Icon="CarbonBlazorIcon.CheckmarkFilled" Text="Success" ClickedCallback="@(() => NotificationBroker.Send("StoryBook", "An exciting thing happened!", CarbonBlazorNotificationStyle.HighContrast, CarbonBlazorNotificationLevel.Success))"></CarbonBlazorButton>
+            <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Tertiary" Display="CarbonBlazorButtonDisplay.TextAndIcon" Icon="CarbonBlazorIcon.WarningFilled" Text="Warning" ClickedCallback="@(() => NotificationBroker.Send("StoryBook", "An exciting thing happened!", CarbonBlazorNotificationStyle.HighContrast, CarbonBlazorNotificationLevel.Warning))"></CarbonBlazorButton>
+            <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Danger" Display="CarbonBlazorButtonDisplay.TextAndIcon" Icon="CarbonBlazorIcon.ErrorFilled" Text="Error" ClickedCallback="@(() => NotificationBroker.Send("StoryBook", "An exciting thing happened!", CarbonBlazorNotificationStyle.HighContrast, CarbonBlazorNotificationLevel.Error))"></CarbonBlazorButton>
         </CarbonBlazorButtonSet>
     </CarbonBlazorPane>
 
@@ -296,7 +296,11 @@ if (isSuperExciting)
     </CarbonBlazorPane>
 
     <CarbonBlazorPane Title="Progress Indicator">
-        TODO
+        <CarbonBlazorProgressIndicator Progress="@_progress"></CarbonBlazorProgressIndicator>
+        <CarbonBlazorButtonSet>
+            <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.TextAndIcon" Icon="CarbonBlazorIcon.ChevronLeft" Text="Prev step" ClickedCallback="@(() => _progress.PreviousStep())" IsDisabled="@(_progress.Steps.First().Status == ProgressStep.ProgressStatus.Current)"></CarbonBlazorButton>
+            <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.TextAndIcon" Icon="CarbonBlazorIcon.ChevronRight" Text="Next step" ClickedCallback="@(() => _progress.NextStep())" IsDisabled="@_progress.IsComplete"></CarbonBlazorButton>
+        </CarbonBlazorButtonSet>
     </CarbonBlazorPane>
     
     <CarbonBlazorPane Title="Radio Button">
@@ -472,6 +476,17 @@ if (isSuperExciting)
         <CarbonBlazorText Type="CarbonBlazorTextType.FluidDisplay02">FluidDisplay02</CarbonBlazorText>
         <CarbonBlazorText Type="CarbonBlazorTextType.FluidDisplay03">FluidDisplay03</CarbonBlazorText>
         <CarbonBlazorText Type="CarbonBlazorTextType.FluidDisplay04">FluidDisplay04</CarbonBlazorText>
+        
+        <CarbonBlazorText Type="CarbonBlazorTextType.Body" Colour="CarbonBlazorTextColour.Primary">Primary</CarbonBlazorText>
+        <CarbonBlazorText Type="CarbonBlazorTextType.Body" Colour="CarbonBlazorTextColour.Secondary">Secondary</CarbonBlazorText>
+        <CarbonBlazorText Type="CarbonBlazorTextType.Body" Colour="CarbonBlazorTextColour.Disabled">Disabled</CarbonBlazorText>
+        <CarbonBlazorText Type="CarbonBlazorTextType.Body" Colour="CarbonBlazorTextColour.OnColour">On-Colour</CarbonBlazorText>
+        <CarbonBlazorText Type="CarbonBlazorTextType.Body" Colour="CarbonBlazorTextColour.OnColourDisabled">On-Colour Disabled</CarbonBlazorText>
+        <CarbonBlazorText Type="CarbonBlazorTextType.Body" Colour="CarbonBlazorTextColour.Error">Error</CarbonBlazorText>
+        <CarbonBlazorText Type="CarbonBlazorTextType.Body" Colour="CarbonBlazorTextColour.Helper">Helper</CarbonBlazorText>
+        <CarbonBlazorText Type="CarbonBlazorTextType.Body" Colour="CarbonBlazorTextColour.Inverse">Inverse</CarbonBlazorText>
+        <CarbonBlazorText Type="CarbonBlazorTextType.Body" Colour="CarbonBlazorTextColour.Placeholder">Placeholder</CarbonBlazorText>
+
     </CarbonBlazorPane>
     
 </CarbonBlazorStack>
@@ -545,6 +560,8 @@ if (isSuperExciting)
         new("Disclosed list 1", [new ContainedListItem("List Item 1"), new ContainedListItem("List Item 2")]),
         new("Disclosed list 2", [new ContainedListItem("List Item 1") { Icon = CarbonBlazorIcon.Building }, new ContainedListItem("List Item 2") { Icon = CarbonBlazorIcon.Enterprise }])
     ];
+
+    private Progress _progress = new(new Progress.StepArgs("First step", "Optional label"), new Progress.StepArgs("Second step"), new Progress.StepArgs("Third step"));
     
     private IEnumerable<ValidationOutcome> ValidateForm(StoryBookModel model)
     {
@@ -568,12 +585,12 @@ if (isSuperExciting)
         return validationOutcomes;
     }
 
-    private void EditRow(StoryBookModel model)
+    private void OnEditRow(StoryBookModel model)
     {
         Console.WriteLine("Editing row for model " + model.SomeTextInputValue);
     }
 
-    private void DeleteRow(StoryBookModel model)
+    private void OnDeleteRow(StoryBookModel model)
     {
         Console.WriteLine("Deleting row for model " + model.SomeTextInputValue);
     }

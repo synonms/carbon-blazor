@@ -1,4 +1,4 @@
-﻿<button class="@GetClass()" style="@Style" type="@Type.ToString().ToLower()" onclick="@OnClick" disabled="@IsDisabled">
+﻿<button class="@GetClass()" style="@Style" type="@Type.ToString().ToLower()" onclick="@ClickedCallback" disabled="@IsDisabled">
     @if (Display is CarbonBlazorButtonDisplay.TextOnly or CarbonBlazorButtonDisplay.TextAndIcon)
     {
         @Text
@@ -32,7 +32,7 @@
     public CarbonBlazorButtonSize Size { get; set; } = CarbonBlazorButtonSize.Medium;
 
     [Parameter]
-    public EventCallback OnClick { get; set; } = EventCallback.Empty;
+    public EventCallback ClickedCallback { get; set; } = EventCallback.Empty;
 
     [Parameter]
     public bool IsDisabled { get; set; }

@@ -5,6 +5,13 @@
     position: relative;
 }
 
+.cb-tag-text {
+    font-size: var(--cb-label-01-font-size);
+    font-weight: var(--cb-label-01-font-weight);
+    letter-spacing: var(--cb-label-01-letter-spacing);
+    line-height: var(--cb-label-01-line-height);
+}
+
 .cb-tag-wrapper.read-only {
     border: 0;
 }

@@ -25,9 +25,9 @@
 
         <div class="cb-date-picker-calendar @CarbonBlazorLayerMapper.ToClass(Layer) @(_isExpanded ? "" : "collapsed")">
             <div class="cb-date-picker-calendar-header-wrapper">
-                <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.ChevronLeft" Size="CarbonBlazorButtonSize.Small" OnClick="@PreviousMonth"></CarbonBlazorButton>
+                <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.ChevronLeft" Size="CarbonBlazorButtonSize.Small" ClickedCallback="@OnPreviousMonthClicked"></CarbonBlazorButton>
                 @_firstDayOfDisplayedMonth.ToString("MMM yyyy")
-                <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.ChevronRight" Size="CarbonBlazorButtonSize.Small" OnClick="@NextMonth"></CarbonBlazorButton>
+                <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.ChevronRight" Size="CarbonBlazorButtonSize.Small" ClickedCallback="@OnNextMonthClicked"></CarbonBlazorButton>
             </div>
             <table>
                 <thead>
@@ -170,14 +170,14 @@
         _isExpanded = !_isExpanded;
     }
 
-    private void PreviousMonth()
+    private void OnPreviousMonthClicked()
     {
         _firstDayOfDisplayedMonth = _firstDayOfDisplayedMonth.AddMonths(-1);
         
         GetDisplayedDays();
     }
 
-    private void NextMonth()
+    private void OnNextMonthClicked()
     {
         _firstDayOfDisplayedMonth = _firstDayOfDisplayedMonth.AddMonths(1);
         

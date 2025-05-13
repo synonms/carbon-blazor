@@ -1,5 +1,5 @@
 ﻿<li class="cb-header-action-link">
-    <a href="@NavigationItem.Href" onclick="@OnClick">@NavigationItem.Text</a>
+    <a href="@NavigationItem.Href" onclick="@ClickedCallback">@NavigationItem.Text</a>
 </li>
 
 @code {
@@ -8,5 +8,5 @@
     public NavigationItem NavigationItem { get; set; } = null!;
     
     [Parameter]
-    public EventCallback OnClick { get; set; } = EventCallback.Empty;
+    public EventCallback ClickedCallback { get; set; } = EventCallback.Empty;
 }

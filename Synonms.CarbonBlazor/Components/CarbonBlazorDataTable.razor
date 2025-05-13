@@ -77,10 +77,10 @@
             </div>
             <div class="cb-data-table-pagination-nav">
                 <CarbonBlazorButtonSet>
-                    <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.IconOnly" Kind="CarbonBlazorButtonKind.Ghost" Size="CarbonBlazorButtonSize.LargeExpressive" Icon="CarbonBlazorIcon.PageFirst" OnClick="@FirstCallback"></CarbonBlazorButton>
-                    <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.IconOnly" Kind="CarbonBlazorButtonKind.Ghost" Size="CarbonBlazorButtonSize.LargeExpressive" Icon="CarbonBlazorIcon.ChevronLeft" OnClick="@PreviousCallback" IsDisabled="@IsPreviousDisabled"></CarbonBlazorButton>
-                    <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.IconOnly" Kind="CarbonBlazorButtonKind.Ghost" Size="CarbonBlazorButtonSize.LargeExpressive" Icon="CarbonBlazorIcon.ChevronRight" OnClick="@NextCallback" IsDisabled="@IsNextDisabled"></CarbonBlazorButton>
-                    <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.IconOnly" Kind="CarbonBlazorButtonKind.Ghost" Size="CarbonBlazorButtonSize.LargeExpressive" Icon="CarbonBlazorIcon.PageLast" OnClick="@LastCallback"></CarbonBlazorButton>
+                    <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.IconOnly" Kind="CarbonBlazorButtonKind.Ghost" Size="CarbonBlazorButtonSize.LargeExpressive" Icon="CarbonBlazorIcon.PageFirst" ClickedCallback="@FirstCallback"></CarbonBlazorButton>
+                    <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.IconOnly" Kind="CarbonBlazorButtonKind.Ghost" Size="CarbonBlazorButtonSize.LargeExpressive" Icon="CarbonBlazorIcon.ChevronLeft" ClickedCallback="@PreviousCallback" IsDisabled="@IsPreviousDisabled"></CarbonBlazorButton>
+                    <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.IconOnly" Kind="CarbonBlazorButtonKind.Ghost" Size="CarbonBlazorButtonSize.LargeExpressive" Icon="CarbonBlazorIcon.ChevronRight" ClickedCallback="@NextCallback" IsDisabled="@IsNextDisabled"></CarbonBlazorButton>
+                    <CarbonBlazorButton Display="CarbonBlazorButtonDisplay.IconOnly" Kind="CarbonBlazorButtonKind.Ghost" Size="CarbonBlazorButtonSize.LargeExpressive" Icon="CarbonBlazorIcon.PageLast" ClickedCallback="@LastCallback"></CarbonBlazorButton>
                 </CarbonBlazorButtonSet>
             </div>
         </div>
@@ -127,7 +127,7 @@
     public IEnumerable<TModel> SelectedModels { get; set; } = Enumerable.Empty<TModel>();
 
     [Parameter]
-    public EventCallback<IEnumerable<TModel>> SelectedModelsChanged { get; set; } = EventCallback<IEnumerable<TModel>>.Empty;
+    public EventCallback<IEnumerable<TModel>> SelectedModelsChangedCallback { get; set; } = EventCallback<IEnumerable<TModel>>.Empty;
 
     [Parameter]
     public string Title { get; set; } = string.Empty;
@@ -367,9 +367,9 @@
                     
         SelectedModels = _selectedModels;
         
-        if (SelectedModelsChanged.HasDelegate)
+        if (SelectedModelsChangedCallback.HasDelegate)
         {
-            await SelectedModelsChanged.InvokeAsync(SelectedModels);
+            await SelectedModelsChangedCallback.InvokeAsync(SelectedModels);
         }
     }
 }

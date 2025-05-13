@@ -42,7 +42,7 @@
     private string _valueAsString = "0";
 
     [CascadingParameter]
-    public EditContext EditContext { get; set; } = null!;
+    public EditContext? EditContext { get; set; }
     
     [CascadingParameter]
     public IEnumerable<ValidationOutcome> ValidationOutcomes { get; set; } = [];
@@ -116,7 +116,7 @@
         
         await ValueChanged.InvokeAsync(Value);
             
-        EditContext.NotifyFieldChanged(FieldIdentifier);
+        EditContext?.NotifyFieldChanged(FieldIdentifier);
     }
 
     private async Task Decrement()

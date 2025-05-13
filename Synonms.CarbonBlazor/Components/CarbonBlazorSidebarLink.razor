@@ -1,5 +1,5 @@
 ﻿<li class="cb-sidebar-link">
-    <a href="@NavigationItem.Href" onclick="@OnClick">
+    <a href="@NavigationItem.Href" onclick="@ClickedCallback">
         @if (NavigationItem.Icon is not null)
         {
             @((MarkupString)CarbonBlazorIconMapper.ToSvg(NavigationItem.Icon.Value))
@@ -14,5 +14,5 @@
     public NavigationItem NavigationItem { get; set; } = null!;
     
     [Parameter]
-    public EventCallback OnClick { get; set; } = EventCallback.Empty;
+    public EventCallback ClickedCallback { get; set; } = EventCallback.Empty;
 }

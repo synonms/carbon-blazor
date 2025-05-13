@@ -1,7 +1,7 @@
 ﻿<div class="cb-shell @CarbonBlazorThemeMapper.ToCssClass(Theme)">
     <header class="@GetHeaderClass()">
         <CarbonBlazorStack FlexDirection="FlexDirection.Row" JustifyContent="JustifyContent.Start" AlignItems="AlignItems.Center" Gap="1rem">
-            <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.IconOnly" Size="CarbonBlazorButtonSize.LargeExpressive" Icon="CarbonBlazorIcon.Menu" OnClick="@OnMenuClick"></CarbonBlazorButton>
+            <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.IconOnly" Size="CarbonBlazorButtonSize.LargeExpressive" Icon="CarbonBlazorIcon.Menu" ClickedCallback="@OnMenuClicked"></CarbonBlazorButton>
             @if (string.IsNullOrWhiteSpace(ProductIconImagePath) is false)
             {
                 <img class="cb-header-product-icon" alt="@ProductName Logo" src="@ProductIconImagePath"/>
@@ -10,21 +10,21 @@
         </CarbonBlazorStack>
 
         <CarbonBlazorStack FlexDirection="FlexDirection.Row" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center">
-            @if (OnSearch.HasDelegate)
+            @if (SearchTextChangedCallback.HasDelegate)
             {
-                <CarbonBlazorSearch Size="CarbonBlazorInputSize.Large" SearchTextChangedCallback="@OnSearch"></CarbonBlazorSearch>
+                <CarbonBlazorSearch Size="CarbonBlazorInputSize.Large" SearchTextChangedCallback="@SearchTextChangedCallback"></CarbonBlazorSearch>
             }
             @if (UserPanel is not null)
             {
-                <CarbonBlazorButton @ref="@_userAvatarButton" Kind="CarbonBlazorButtonKind.Ghost" Size="CarbonBlazorButtonSize.LargeExpressive" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.UserAvatar" OnClick="@UserAvatarClicked"></CarbonBlazorButton>
+                <CarbonBlazorButton @ref="@_userAvatarButton" Kind="CarbonBlazorButtonKind.Ghost" Size="CarbonBlazorButtonSize.LargeExpressive" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.UserAvatar" ClickedCallback="@OnUserAvatarClicked"></CarbonBlazorButton>
             }
             @if (IsThemeEnabled)
             {
-                <CarbonBlazorButton @ref="@_themeButton" Kind="CarbonBlazorButtonKind.Ghost" Size="CarbonBlazorButtonSize.LargeExpressive" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.ColourPalette" OnClick="@ThemeClicked"></CarbonBlazorButton>
+                <CarbonBlazorButton @ref="@_themeButton" Kind="CarbonBlazorButtonKind.Ghost" Size="CarbonBlazorButtonSize.LargeExpressive" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.ColourPalette" ClickedCallback="@OnThemeClicked"></CarbonBlazorButton>
             }
             @if (SwitcherPanel is not null)
             {
-                <CarbonBlazorButton @ref="@_switcherButton" Kind="CarbonBlazorButtonKind.Ghost" Size="CarbonBlazorButtonSize.LargeExpressive" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.Switcher" OnClick="@SwitcherClicked"></CarbonBlazorButton>
+                <CarbonBlazorButton @ref="@_switcherButton" Kind="CarbonBlazorButtonKind.Ghost" Size="CarbonBlazorButtonSize.LargeExpressive" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.Switcher" ClickedCallback="@OnSwitcherClicked"></CarbonBlazorButton>
             }
         </CarbonBlazorStack>
 
@@ -36,10 +36,10 @@
         }
 
         <CarbonBlazorHeaderActionPanel @ref="@_themePanel">
-            <CarbonBlazorHeaderActionLink NavigationItem="@(NavigationItem.Create("White", ""))" OnClick="@(() => ChangeTheme(CarbonBlazorTheme.White))"></CarbonBlazorHeaderActionLink>
-            <CarbonBlazorHeaderActionLink NavigationItem="@(NavigationItem.Create("Grey 10", ""))" OnClick="@(() => ChangeTheme(CarbonBlazorTheme.Gray10))"></CarbonBlazorHeaderActionLink>
-            <CarbonBlazorHeaderActionLink NavigationItem="@(NavigationItem.Create("Grey 90", ""))" OnClick="@(() => ChangeTheme(CarbonBlazorTheme.Gray90))"></CarbonBlazorHeaderActionLink>
-            <CarbonBlazorHeaderActionLink NavigationItem="@(NavigationItem.Create("Grey 100", ""))" OnClick="@(() => ChangeTheme(CarbonBlazorTheme.Gray100))"></CarbonBlazorHeaderActionLink>
+            <CarbonBlazorHeaderActionLink NavigationItem="@(NavigationItem.Create("White", ""))" ClickedCallback="@(() => ChangeTheme(CarbonBlazorTheme.White))"></CarbonBlazorHeaderActionLink>
+            <CarbonBlazorHeaderActionLink NavigationItem="@(NavigationItem.Create("Grey 10", ""))" ClickedCallback="@(() => ChangeTheme(CarbonBlazorTheme.Gray10))"></CarbonBlazorHeaderActionLink>
+            <CarbonBlazorHeaderActionLink NavigationItem="@(NavigationItem.Create("Grey 90", ""))" ClickedCallback="@(() => ChangeTheme(CarbonBlazorTheme.Gray90))"></CarbonBlazorHeaderActionLink>
+            <CarbonBlazorHeaderActionLink NavigationItem="@(NavigationItem.Create("Grey 100", ""))" ClickedCallback="@(() => ChangeTheme(CarbonBlazorTheme.Gray100))"></CarbonBlazorHeaderActionLink>
         </CarbonBlazorHeaderActionPanel>
 
         @if (SwitcherPanel is not null)
@@ -80,7 +80,7 @@
     #region Header
     
     [Parameter]
-    public EventCallback MenuClicked { get; set; } = EventCallback.Empty;
+    public EventCallback MenuClickedCallback { get; set; } = EventCallback.Empty;
 
     [Parameter]
     [EditorRequired]
@@ -89,13 +89,13 @@
     [Parameter]
     public string ProductIconImagePath { get; set; } = string.Empty;
 
-    private async Task OnMenuClick()
+    private async Task OnMenuClicked()
     {
         _sidebar.ToggleVisibility();
 
-        if (MenuClicked.HasDelegate)
+        if (MenuClickedCallback.HasDelegate)
         {
-            await MenuClicked.InvokeAsync();
+            await MenuClickedCallback.InvokeAsync();
         }
     }
     
@@ -122,7 +122,7 @@
     [Parameter]
     public RenderFragment? UserPanel { get; set; }
 
-    private void UserAvatarClicked()
+    private void OnUserAvatarClicked()
     {
         if (_userPanel.IsExpanded)
         {
@@ -158,7 +158,7 @@
     [Parameter]
     public RenderFragment? SwitcherPanel { get; set; }
     
-    private void SwitcherClicked()
+    private void OnSwitcherClicked()
     {
         if (_switcherPanel.IsExpanded)
         {
@@ -192,7 +192,7 @@
     #region Search
     
     [Parameter]
-    public EventCallback<string> OnSearch { get; set; }
+    public EventCallback<string> SearchTextChangedCallback { get; set; }
 
     #endregion
     
@@ -212,7 +212,7 @@
     public bool IsThemeEnabled { get; set; } = true;
 
     [Parameter] 
-    public EventCallback<CarbonBlazorTheme> OnThemeChanged { get; set; } = EventCallback<CarbonBlazorTheme>.Empty;
+    public EventCallback<CarbonBlazorTheme> ThemeChangedCallback { get; set; } = EventCallback<CarbonBlazorTheme>.Empty;
     
     private async Task ChangeTheme(CarbonBlazorTheme theme)
     {
@@ -220,13 +220,13 @@
 
         Theme = theme;
 
-        if (OnThemeChanged.HasDelegate)
+        if (ThemeChangedCallback.HasDelegate)
         {
-            await OnThemeChanged.InvokeAsync();
+            await ThemeChangedCallback.InvokeAsync();
         }
     }
 
-    private void ThemeClicked()
+    private void OnThemeClicked()
     {
         if (_themePanel.IsExpanded)
         {
