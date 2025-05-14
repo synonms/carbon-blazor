@@ -5,7 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <IsPackable>true</IsPackable>
-        <PackageVersion>9.0.0</PackageVersion>
+        <PackageVersion>9.0.1</PackageVersion>
         <Title>Synonms Carbon Blazor</Title>
         <Authors>Synonms</Authors>
         <Description>CarbonBlazor is a simple, opinionated implementation of IBM's Carbon Design System for Blazor.</Description>

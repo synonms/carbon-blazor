@@ -1,0 +1,22 @@
+.cb-tab-panel {
+    display: none;
+    background-color: transparent;
+}
+
+.cb-tab-panel.selected {
+    display: block;
+}
+
+.cb-tab-panel.contained.layer-00 {
+    background-color: var(--cb-layer);
+}
+.cb-tab-panel.contained.layer-01 {
+    background-color: var(--cb-layer-01);
+}
+.cb-tab-panel.contained.layer-02 {
+    background-color: var(--cb-layer-02);
+}
+.cb-tab-panel.contained.layer-03 {
+    background-color: var(--cb-layer-03);
+}
+    

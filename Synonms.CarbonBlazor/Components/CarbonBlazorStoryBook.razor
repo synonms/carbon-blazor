@@ -361,7 +361,32 @@ if (isSuperExciting)
     </CarbonBlazorPane>
 
     <CarbonBlazorPane Title="Tabs">
-        TODO
+        <CarbonBlazorTabs Type="CarbonBlazorTabsType.Default" TabItemList="@_tabItemList" Layer="CarbonBlazorLayer.Two">
+            <TabPanels>
+                <CarbonBlazorTabPanel TabItem="_tabItemList.Items[0]">
+                    <CarbonBlazorText Style="padding: 1rem;">Tab Panel 1</CarbonBlazorText>
+                </CarbonBlazorTabPanel>
+                <CarbonBlazorTabPanel TabItem="_tabItemList.Items[1]">
+                    <CarbonBlazorText Style="padding: 1rem;">Tab Panel 2</CarbonBlazorText>
+                </CarbonBlazorTabPanel>
+                <CarbonBlazorTabPanel TabItem="_tabItemList.Items[2]">
+                    <CarbonBlazorText Style="padding: 1rem;">Tab Panel 3</CarbonBlazorText>
+                </CarbonBlazorTabPanel>
+            </TabPanels>
+        </CarbonBlazorTabs>
+        <CarbonBlazorTabs Type="CarbonBlazorTabsType.Contained" TabItemList="@_containedTabItemList" Layer="CarbonBlazorLayer.Two">
+            <TabPanels>
+                <CarbonBlazorTabPanel TabItem="_containedTabItemList.Items[0]">
+                    <CarbonBlazorText Style="padding: 1rem;">Contained Tab Panel 1</CarbonBlazorText>
+                </CarbonBlazorTabPanel>
+                <CarbonBlazorTabPanel TabItem="_containedTabItemList.Items[1]">
+                    <CarbonBlazorText Style="padding: 1rem;">Contained Tab Panel 2</CarbonBlazorText>
+                </CarbonBlazorTabPanel>
+                <CarbonBlazorTabPanel TabItem="_containedTabItemList.Items[2]">
+                    <CarbonBlazorText Style="padding: 1rem;">Contained Tab Panel 3</CarbonBlazorText>
+                </CarbonBlazorTabPanel>
+            </TabPanels>
+        </CarbonBlazorTabs>
     </CarbonBlazorPane>
     
     <CarbonBlazorPane Title="Tag">
@@ -560,9 +585,10 @@ if (isSuperExciting)
         new("Disclosed list 1", [new ContainedListItem("List Item 1"), new ContainedListItem("List Item 2")]),
         new("Disclosed list 2", [new ContainedListItem("List Item 1") { Icon = CarbonBlazorIcon.Building }, new ContainedListItem("List Item 2") { Icon = CarbonBlazorIcon.Enterprise }])
     ];
-
     private Progress _progress = new(new Progress.StepArgs("First step", "Optional label"), new Progress.StepArgs("Second step"), new Progress.StepArgs("Third step"));
-    
+    private readonly TabItemList _tabItemList = TabItemList.Create(TabItem.Create("Tab 1"), TabItem.Create("Tab 2"), TabItem.Create("Tab 3"));
+    private readonly TabItemList _containedTabItemList = TabItemList.Create(TabItem.Create("Tab 1", CarbonBlazorIcon.Building), TabItem.Create("Tab 2", CarbonBlazorIcon.Calendar), TabItem.Create("Tab 3", CarbonBlazorIcon.Database));
+
     private IEnumerable<ValidationOutcome> ValidateForm(StoryBookModel model)
     {
         List<ValidationOutcome> validationOutcomes = [];

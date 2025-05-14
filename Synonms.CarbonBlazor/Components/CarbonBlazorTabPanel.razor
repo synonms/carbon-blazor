@@ -1,0 +1,34 @@
+<div class="cb-tab-panel @(CarbonBlazorTabsTypeMapper.ToClass(Type)) @CarbonBlazorLayerMapper.ToClass(Layer) @(_isSelected ? "selected" : string.Empty)">
+    @ChildContent
+</div>
+
+@code {
+    private bool _isSelected = false;
+
+    [CascadingParameter] 
+    public required TabItemList TabItemList { get; set; }
+
+    [CascadingParameter] 
+    public CarbonBlazorTabsType Type { get; set; } = CarbonBlazorTabsType.Default;
+    
+    [CascadingParameter]
+    public CarbonBlazorLayer Layer { get; set; } = CarbonBlazorLayer.One;
+    
+    [Parameter, EditorRequired] 
+    public required TabItem TabItem { get; set; }
+    
+    [Parameter] 
+    public RenderFragment? ChildContent { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        
+        _isSelected = TabItem == TabItemList.SelectedTabItem;
+        
+        TabItemList.TabItemSelected += TabSelected;
+    }
+
+    private void TabSelected(object? sender, TabItem tabItem) =>
+        _isSelected = tabItem == TabItem;
+}
