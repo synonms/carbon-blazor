@@ -203,6 +203,41 @@ Represents a dividing line to be used to break sets of links in the header actio
 <CarbonBlazorHeaderActionPanelDivider />
 ```
 
+### Link
+
+Links are used to navigate or trigger actions within text or standalone. They support external links, sizes, inline or block display, disabled state, and button-style (no href) interactions.
+
+```htmlinblazor
+<!-- Inline link inside text -->
+<CarbonBlazorText>
+  Here is an inline <CarbonBlazorLink Href="https://carbondesignsystem.com/" Target="_blank" External="true">Carbon Design</CarbonBlazorLink> link.
+</CarbonBlazorText>
+
+<!-- Default link -->
+<CarbonBlazorLink Href="https://example.com">Default link</CarbonBlazorLink>
+
+<!-- External link (adds rel noopener noreferrer and icon) -->
+<CarbonBlazorLink Href="https://example.com" Target="_blank" External="true">External link</CarbonBlazorLink>
+
+<!-- Disabled link -->
+<CarbonBlazorLink IsDisabled="true">Disabled link</CarbonBlazorLink>
+
+<!-- Button-style link (no navigation) -->
+<CarbonBlazorLink Inline="false" Size="CarbonBlazorInputSize.Large" PreventDefault="true" ClickedCallback="@(() => Console.WriteLine("Clicked link"))">Button-style link</CarbonBlazorLink>
+```
+
+Properties:
+- Href: URL to navigate to (optional; omit to use button-style behavior)
+- Target: e.g., _blank (adds rel="noopener noreferrer" automatically)
+- Rel: Additional rel tokens to merge with defaults
+- External: Appends external/launch icon and, with Target _blank, adds hidden text “Opens in new tab” for screen readers
+- Inline: Inline (default) vs block display
+- IsDisabled: Renders an inert, non-focusable span with appropriate aria-disabled semantics
+- Size: Small, Medium, Large; maps to typography tokens
+- AriaLabel, Title, Id, Class, Style, Download: standard attributes
+- PreventDefault: Prevents navigation when clicking the anchor (useful with ClickedCallback)
+- ClickedCallback: Event handler for click
+
 ### List
 
 Lists are vertical groupings of related content. List items begin with either a number or a bullet.
@@ -220,6 +255,16 @@ Lists are vertical groupings of related content. List items begin with either a 
     <CarbonBlazorListItem>Unordered list level 1</CarbonBlazorListItem>
     <CarbonBlazorListItem>Unordered list level 1</CarbonBlazorListItem>
 </CarbonBlazorList>
+```
+
+### Inline Loading
+
+Displays a small inline spinner and optional label to indicate background work.
+
+```htmlinblazor
+<CarbonBlazorInlineLoading Label="Loading..."></CarbonBlazorInlineLoading>
+<CarbonBlazorInlineLoading Label="Success" IsSuccess="true"></CarbonBlazorInlineLoading>
+<CarbonBlazorInlineLoading Label="Error" IsError="true"></CarbonBlazorInlineLoading>
 ```
 
 ### LoadingSpinner

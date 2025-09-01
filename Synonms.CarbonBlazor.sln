@@ -3,6 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{3EEE281A-9709-4B48-A0C5-FEDA7FE0ECA4}"
 	ProjectSection(SolutionItems) = preProject
 		readme.md = readme.md
+		requirements.md = requirements.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Synonms.CarbonBlazor", "Synonms.CarbonBlazor\Synonms.CarbonBlazor.csproj", "{EB42238C-DD7E-4340-94EC-00EDA64A7A4C}"

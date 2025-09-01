@@ -105,7 +105,7 @@ if (isSuperExciting)
     </CarbonBlazorPane>
 
     <CarbonBlazorPane Title="Content Switcher">
-        TODO
+        <CarbonBlazorContentSwitcher Items="@(new string[]{"First","Second","Third"})"></CarbonBlazorContentSwitcher>
     </CarbonBlazorPane>
     
     <CarbonBlazorPane Title="Data Table">
@@ -171,11 +171,23 @@ if (isSuperExciting)
     </CarbonBlazorPane>
 
     <CarbonBlazorPane Title="Inline Loading">
-        TODO
+        <CarbonBlazorStack FlexDirection="FlexDirection.Row" Gap="1rem">
+            <CarbonBlazorInlineLoading Label="Loading..."></CarbonBlazorInlineLoading>
+            <CarbonBlazorInlineLoading Label="Small" Size="CarbonBlazorInputSize.Small"></CarbonBlazorInlineLoading>
+            <CarbonBlazorInlineLoading Label="Large" Size="CarbonBlazorInputSize.Large"></CarbonBlazorInlineLoading>
+            <CarbonBlazorInlineLoading Label="Success" IsSuccess="true"></CarbonBlazorInlineLoading>
+            <CarbonBlazorInlineLoading Label="Error" IsError="true"></CarbonBlazorInlineLoading>
+        </CarbonBlazorStack>
     </CarbonBlazorPane>
     
     <CarbonBlazorPane Title="Link">
-        TODO
+        <CarbonBlazorText>Here is an inline <CarbonBlazorLink Href="https://carbondesignsystem.com/" Target="_blank" External="true">Carbon Design link</CarbonBlazorLink> inside text.</CarbonBlazorText>
+        <CarbonBlazorStack FlexDirection="FlexDirection.Row" Gap="1rem">
+            <CarbonBlazorLink Href="https://example.com">Default link</CarbonBlazorLink>
+            <CarbonBlazorLink Href="https://example.com" Target="_blank" External="true">External link</CarbonBlazorLink>
+            <CarbonBlazorLink IsDisabled="true">Disabled link</CarbonBlazorLink>
+            <CarbonBlazorLink Inline="false" Size="CarbonBlazorInputSize.Large" ClickedCallback="@(() => Console.WriteLine("Clicked link"))" PreventDefault="true">Button-style link</CarbonBlazorLink>
+        </CarbonBlazorStack>
     </CarbonBlazorPane>
 
     <CarbonBlazorPane Title="List">
@@ -292,7 +304,12 @@ if (isSuperExciting)
     </CarbonBlazorPane>
     
     <CarbonBlazorPane Title="Progress Bar">
-        TODO
+        <CarbonBlazorStack FlexDirection="FlexDirection.Column" Gap="1rem">
+            <CarbonBlazorProgressBar Label="Loading data" Value="25"></CarbonBlazorProgressBar>
+            <CarbonBlazorProgressBar Label="Halfway" Value="50" Size="CarbonBlazorInputSize.Large"></CarbonBlazorProgressBar>
+            <CarbonBlazorProgressBar Label="Nearly done" Value="90" Size="CarbonBlazorInputSize.Small"></CarbonBlazorProgressBar>
+            <CarbonBlazorProgressBar Label="Indeterminate" IsIndeterminate="true"></CarbonBlazorProgressBar>
+        </CarbonBlazorStack>
     </CarbonBlazorPane>
 
     <CarbonBlazorPane Title="Progress Indicator">
@@ -449,7 +466,11 @@ if (isSuperExciting)
     </CarbonBlazorPane>
     
     <CarbonBlazorPane Title="Toggle">
-        TODO
+        <CarbonBlazorStack FlexDirection="FlexDirection.Row" Gap="1rem">
+            <CarbonBlazorToggle Label="Enable feature"></CarbonBlazorToggle>
+            <CarbonBlazorToggle Label="Disabled" IsDisabled="true"></CarbonBlazorToggle>
+            <CarbonBlazorToggle Label="Small" Size="CarbonBlazorInputSize.Small"></CarbonBlazorToggle>
+        </CarbonBlazorStack>
     </CarbonBlazorPane>
 
     <CarbonBlazorPane Title="Toggletip">

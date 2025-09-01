@@ -1,0 +1,146 @@
+@if (IsDisabled)
+{
+    <span id="@Id" class="@BuildClasses()" style="@Style" role="link" aria-disabled="true" tabindex="-1">
+        @ChildContent
+        @if (External)
+        {
+            <span class="cb-link-icon" aria-hidden="true">@((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.Launch))</span>
+        }
+    </span>
+}
+else if (string.IsNullOrWhiteSpace(Href))
+{
+    <button id="@Id" class="@BuildClasses()" style="@Style" type="button" aria-label="@AriaLabel" title="@Title" @onclick="OnClicked" disabled="@IsDisabled">
+        @ChildContent
+        @if (External)
+        {
+            <span class="cb-link-icon" aria-hidden="true">@((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.Launch))</span>
+        }
+    </button>
+}
+else
+{
+    var rel = BuildRel();
+    if (PreventDefault)
+    {
+        <a id="@Id" class="@BuildClasses()" style="@Style" href="@Href" target="@Target" rel="@rel" aria-label="@AriaLabel" title="@Title" @onclick="OnClicked" @onclick:preventDefault="true" download="@Download">
+            @ChildContent
+            @if (External)
+            {
+                <span class="cb-link-icon" aria-hidden="true">@((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.Launch))</span>
+                @if (Target == "_blank")
+                {
+                    <span class="cb-visually-hidden"> (Opens in new tab)</span>
+                }
+            }
+        </a>
+    }
+    else
+    {
+        <a id="@Id" class="@BuildClasses()" style="@Style" href="@Href" target="@Target" rel="@rel" aria-label="@AriaLabel" title="@Title" @onclick="OnClicked" download="@Download">
+            @ChildContent
+            @if (External)
+            {
+                <span class="cb-link-icon" aria-hidden="true">@((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.Launch))</span>
+                @if (Target == "_blank")
+                {
+                    <span class="cb-visually-hidden"> (Opens in new tab)</span>
+                }
+            }
+        </a>
+    }
+}
+
+@code {
+    [Parameter]
+    public string? Id { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public string? Style { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = null!;
+
+    [Parameter]
+    public string? Href { get; set; }
+
+    [Parameter]
+    public string? Target { get; set; }
+
+    [Parameter]
+    public string? Rel { get; set; }
+
+    [Parameter]
+    public string? Download { get; set; }
+
+    [Parameter]
+    public bool External { get; set; }
+
+    [Parameter]
+    public bool Inline { get; set; } = true;
+
+    [Parameter]
+    public bool IsDisabled { get; set; }
+
+    [Parameter]
+    public CarbonBlazorInputSize Size { get; set; } = CarbonBlazorInputSize.Medium;
+
+    [Parameter]
+    public string? AriaLabel { get; set; }
+
+    [Parameter]
+    public string? Title { get; set; }
+
+    [Parameter]
+    public EventCallback<MouseEventArgs> ClickedCallback { get; set; }
+
+    [Parameter]
+    public bool PreventDefault { get; set; }
+
+    private async Task OnClicked(MouseEventArgs args)
+    {
+        if (ClickedCallback.HasDelegate)
+        {
+            await ClickedCallback.InvokeAsync(args);
+        }
+    }
+
+    private string BuildClasses()
+    {
+        const string baseClass = CssClasses.Prefix + "link";
+        string inlineClass = Inline ? "inline" : "block";
+        string sizeClass = CarbonBlazorInputSizeMapper.ToClass(Size);
+        string disabledClass = IsDisabled ? "disabled" : string.Empty;
+        string userClasses = string.IsNullOrWhiteSpace(Class) ? string.Empty : Class;
+
+        return CssClasses.Concatenate(baseClass, inlineClass, sizeClass, disabledClass, userClasses);
+    }
+
+    private string? BuildRel()
+    {
+        if (string.IsNullOrWhiteSpace(Target) && string.IsNullOrWhiteSpace(Rel) && !External)
+        {
+            return Rel;
+        }
+
+        HashSet<string> parts = new(StringComparer.OrdinalIgnoreCase);
+        if (!string.IsNullOrWhiteSpace(Rel))
+        {
+            foreach (string part in Rel.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+            {
+                parts.Add(part);
+            }
+        }
+
+        if (External || string.Equals(Target, "_blank", StringComparison.Ordinal))
+        {
+            parts.Add("noopener");
+            parts.Add("noreferrer");
+        }
+
+        return string.Join(' ', parts);
+    }
+}

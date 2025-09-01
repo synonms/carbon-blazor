@@ -1,0 +1,53 @@
+.cb-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cb-spacing-03);
+    cursor: pointer;
+    user-select: none;
+}
+
+.cb-toggle.disabled { cursor: not-allowed; opacity: 0.6; }
+
+.cb-toggle-input { display: none; }
+
+.cb-toggle-visual {
+    position: relative;
+    width: 2.5rem;
+    height: 1.25rem;
+    background: var(--cb-border-subtle, #c6c6c6);
+    border-radius: 9999px;
+    transition: background 120ms ease;
+}
+
+/* knob */
+.cb-toggle-visual::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 0.85rem;
+    height: 0.85rem;
+    background: var(--cb-background, #ffffff);
+    border-radius: 50%;
+    box-shadow: 0 0 1px rgba(0,0,0,0.2);
+    transition: left 120ms ease;
+}
+
+/* checked state */
+.cb-toggle-input:checked + .cb-toggle-visual {
+    background: var(--cb-link-primary, #0f62fe);
+}
+.cb-toggle-input:checked + .cb-toggle-visual::after {
+    left: calc(100% - 2px - 0.85rem);
+}
+
+/* sizes */
+.cb-toggle.small .cb-toggle-visual { width: 2rem; height: 1rem; }
+.cb-toggle.small .cb-toggle-visual::after { width: 0.7rem; height: 0.7rem; top: 0.15rem; left: 0.15rem; }
+.cb-toggle.small .cb-toggle-input:checked + .cb-toggle-visual::after { left: calc(100% - 0.15rem - 0.7rem); }
+
+.cb-toggle.large .cb-toggle-visual { width: 3rem; height: 1.5rem; }
+.cb-toggle.large .cb-toggle-visual::after { width: 1.1rem; height: 1.1rem; top: 0.2rem; left: 0.2rem; }
+.cb-toggle.large .cb-toggle-input:checked + .cb-toggle-visual::after { left: calc(100% - 0.2rem - 1.1rem); }
+
+.cb-toggle-label { color: var(--cb-text-primary, #161616); }

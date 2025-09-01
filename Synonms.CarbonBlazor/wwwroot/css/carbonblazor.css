@@ -1732,6 +1732,19 @@ ol.cb-list ol.cb-list {
     padding-left: 1rem;
 }
 
+.cb-assistive-text,.cb-visually-hidden {
+    position: absolute;
+    overflow: hidden;
+    padding: 0;
+    border: 0;
+    margin: -1px;
+    block-size: 1px;
+    clip: rect(0,0,0,0);
+    inline-size: 1px;
+    visibility: inherit;
+    white-space: nowrap
+}
+
 .transparent { background-color: var(--cb-transparent); color: var(--cb-text-primary); fill: var(--cb-icon-primary); }
 .white { background-color: var(--cb-white); color: var(--cb-black); fill: var(--cb-black); border-color: var(--cb-black); }
 .black { background-color: var(--cb-black); color: var(--cb-white); fill: var(--cb-white); border-color: var(--cb-white); }

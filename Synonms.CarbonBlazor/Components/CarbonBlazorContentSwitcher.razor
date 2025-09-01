@@ -1,0 +1,97 @@
+<div class="@BuildClasses()" style="@Style" role="tablist" aria-label="Content switcher">
+    @for (int i = 0; i < _items.Count; i++)
+    {
+        bool selected = i == SelectedIndex;
+        <button type="button"
+                class="cb-content-switcher-item @(selected ? "selected" : string.Empty)"
+                role="tab"
+                aria-selected="@selected"
+                tabindex="@(selected ? 0 : -1)"
+                @onclick="(() => Select(i))"
+                @onkeydown="(e => OnKeyDown(e, i))">
+            @_items[i]
+        </button>
+    }
+</div>
+
+@code {
+    private List<string> _items = [];
+
+    [Parameter] 
+    public string? Class { get; set; }
+    
+    [Parameter] 
+    public string? Style { get; set; }
+    
+    [Parameter] 
+    public CarbonBlazorInputSize Size { get; set; } = CarbonBlazorInputSize.Medium;
+
+    [Parameter]
+    public IEnumerable<string> Items { get; set; } = [];
+
+    [Parameter]
+    public int SelectedIndex { get; set; }
+
+    [Parameter]
+    public EventCallback<int> SelectedIndexChanged { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        _items = Items?.ToList() ?? [];
+        
+        if (SelectedIndex < 0 || SelectedIndex >= _items.Count)
+        {
+            SelectedIndex = _items.Count > 0 ? 0 : -1;
+        }
+    }
+
+    private string BuildClasses()
+    {
+        string classes = "cb-content-switcher " + CarbonBlazorInputSizeMapper.ToClass(Size);
+        
+        if (!string.IsNullOrWhiteSpace(Class))
+        {
+            classes += " " + Class;
+        }
+        return classes;
+    }
+
+    private async Task Select(int index)
+    {
+        if (index == SelectedIndex)
+        {
+            return;
+        }
+        
+        SelectedIndex = index;
+        
+        if (SelectedIndexChanged.HasDelegate)
+        {
+            await SelectedIndexChanged.InvokeAsync(SelectedIndex);
+        }
+        
+        StateHasChanged();
+    }
+
+    private async Task OnKeyDown(KeyboardEventArgs e, int index)
+    {
+        if (_items.Count == 0)
+        {
+            return;
+        }
+
+        int newIndex = e.Key switch
+        {
+            "ArrowRight" => (index + 1) % _items.Count,
+            "ArrowLeft" => (index - 1 + _items.Count) % _items.Count,
+            "Home" => 0,
+            "End" => _items.Count - 1,
+            _ => index
+        };
+
+        if (newIndex != index)
+        {
+            await Select(newIndex);
+        }
+    }
+}

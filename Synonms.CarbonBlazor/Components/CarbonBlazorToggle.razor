@@ -1,0 +1,68 @@
+<label class="@BuildClasses()" style="@Style">
+    <input id="@Id" class="cb-toggle-input" type="checkbox" role="switch" aria-checked="@Value" @onchange="OnChanged" checked="@Value" disabled="@IsDisabled" />
+    <span class="cb-toggle-visual" aria-hidden="true"></span>
+    @if (!string.IsNullOrWhiteSpace(Label))
+    {
+        <span class="cb-toggle-label">@Label</span>
+    }
+</label>
+
+@code {
+    [Parameter] 
+    public string? Id { get; set; }
+    
+    [Parameter] 
+    public string? Class { get; set; }
+    
+    [Parameter] 
+    public string? Style { get; set; }
+    
+    [Parameter] 
+    public string? Label { get; set; }
+    
+    [Parameter] 
+    public bool IsDisabled { get; set; }
+    
+    [Parameter] 
+    public CarbonBlazorInputSize Size { get; set; } = CarbonBlazorInputSize.Medium;
+    
+    [Parameter] 
+    public bool Value { get; set; }
+    
+    [Parameter] 
+    public EventCallback<bool> ValueChanged { get; set; }
+    
+    [Parameter] 
+    public EventCallback<bool> ChangedCallback { get; set; }
+
+    private string BuildClasses()
+    {
+        string classes = "cb-toggle " + CarbonBlazorInputSizeMapper.ToClass(Size);
+        if (IsDisabled)
+        {
+            classes += " disabled";
+        }
+        if (!string.IsNullOrWhiteSpace(Class))
+        {
+            classes += " " + Class;
+        }
+        return classes;
+    }
+
+    private async Task OnChanged(ChangeEventArgs args)
+    {
+        bool isChecked = args?.Value is bool b ? b : (args?.Value?.ToString()?.ToLowerInvariant() == "true");
+        if (Value != isChecked)
+        {
+            Value = isChecked;
+            if (ValueChanged.HasDelegate)
+            {
+                await ValueChanged.InvokeAsync(Value);
+            }
+            if (ChangedCallback.HasDelegate)
+            {
+                await ChangedCallback.InvokeAsync(Value);
+            }
+        }
+    }
+}

@@ -77,6 +77,9 @@ public static class IconSvgTags
     public const string InformationFilled =
         "<title>information--filled</title><path id=\"inner-path\" class=\"cls-1\" d=\"M16,8a1.5,1.5,0,1,1-1.5,1.5A1.5,1.5,0,0,1,16,8Zm4,13.875H17.125v-8H13v2.25h1.875v5.75H12v2.25h8Z\" transform=\"translate(0 0)\"/><path d=\"M16,2A14,14,0,1,0,30,16,14,14,0,0,0,16,2Zm0,6a1.5,1.5,0,1,1-1.5,1.5A1.5,1.5,0,0,1,16,8Zm4,16.125H12v-2.25h2.875v-5.75H13v-2.25h4.125v8H20Z\" transform=\"translate(0 0)\"/>";
 
+    public const string Launch =
+        "<title>launch</title><path d=\"M26 6H16v2h6.586L14 16.586 15.414 18 24 9.414V16h2V6z\"></path><path d=\"M26 28H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h10v2H6v20h20V16h2v10a2 2 0 0 1-2 2z\"></path>";
+
     public const string Login =
         "<title>login</title><path d=\"M26,30H14a2,2,0,0,1-2-2V25h2v3H26V4H14V7H12V4a2,2,0,0,1,2-2H26a2,2,0,0,1,2,2V28A2,2,0,0,1,26,30Z\"/><polygon points=\"14.59 20.59 18.17 17 4 17 4 15 18.17 15 14.59 11.41 16 10 22 16 16 22 14.59 20.59\"/>";
     

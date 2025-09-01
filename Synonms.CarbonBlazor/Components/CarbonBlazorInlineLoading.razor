@@ -1,0 +1,48 @@
+<div id="@Id" class="@BuildClasses()" style="@Style" role="status" aria-live="polite">
+    <span class="cb-inline-loading-spinner" aria-hidden="true"></span>
+    @if (!string.IsNullOrWhiteSpace(Label))
+    {
+        <span class="cb-inline-loading-label">@Label</span>
+    }
+</div>
+
+@code {
+    [Parameter] 
+    public string? Id { get; set; }
+    
+    [Parameter] 
+    public string? Class { get; set; }
+    
+    [Parameter] 
+    public string? Style { get; set; }
+    
+    [Parameter] 
+    public string? Label { get; set; }
+    
+    [Parameter] 
+    public CarbonBlazorInputSize Size { get; set; } = CarbonBlazorInputSize.Medium;
+    
+    [Parameter] 
+    public bool? IsSuccess { get; set; }
+    
+    [Parameter] 
+    public bool? IsError { get; set; }
+    
+    private string BuildClasses()
+    {
+        string classes = "cb-inline-loading " + CarbonBlazorInputSizeMapper.ToClass(Size);
+        if (IsSuccess == true)
+        {
+            classes += " success";
+        }
+        if (IsError == true)
+        {
+            classes += " error";
+        }
+        if (!string.IsNullOrWhiteSpace(Class))
+        {
+            classes += " " + Class;
+        }
+        return classes;
+    }
+}

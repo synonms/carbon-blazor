@@ -1,0 +1,40 @@
+<div id="@Id" class="@BuildClasses()" style="@Style" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="@GetClampedValue()">
+    @if (!string.IsNullOrWhiteSpace(Label))
+    {
+        <div class="cb-progress-label">@Label</div>
+    }
+    <div class="cb-progress-track">
+        <div class="cb-progress-fill" style="width:@(IsIndeterminate ? "100%" : GetClampedValue() + "%")" aria-hidden="true"></div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string? Id { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public string? Style { get; set; }
+    [Parameter] public string? Label { get; set; }
+    [Parameter] public int Value { get; set; }
+    [Parameter] public bool IsIndeterminate { get; set; }
+    [Parameter] public CarbonBlazorInputSize Size { get; set; } = CarbonBlazorInputSize.Medium;
+
+    private string BuildClasses()
+    {
+        string classes = "cb-progress-bar " + CarbonBlazorInputSizeMapper.ToClass(Size);
+        if (IsIndeterminate)
+        {
+            classes += " indeterminate";
+        }
+        if (!string.IsNullOrWhiteSpace(Class))
+        {
+            classes += " " + Class;
+        }
+        return classes;
+    }
+
+    private int GetClampedValue()
+    {
+        if (Value < 0) return 0;
+        if (Value > 100) return 100;
+        return Value;
+    }
+}
