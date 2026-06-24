@@ -1,0 +1,7 @@
+.cb-menu-item-divider {
+    background-color: var(--cb-border-subtle);
+    height: 1px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    width: 100%;
+}

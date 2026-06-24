@@ -86,6 +86,9 @@ public static class IconSvgTags
     public const string Menu =
         "<title>menu</title><rect x=\"4\" y=\"6\" width=\"24\" height=\"2\"/><rect x=\"4\" y=\"24\" width=\"24\" height=\"2\"/><rect x=\"4\" y=\"12\" width=\"24\" height=\"2\"/><rect x=\"4\" y=\"18\" width=\"24\" height=\"2\"/>";
 
+    public const string OverflowMenuVertical =
+        "<title>overflow-menu--vertical</title><circle cx=\"16\" cy=\"8\" r=\"2\"/><circle cx=\"16\" cy=\"16\" r=\"2\"/><circle cx=\"16\" cy=\"24\" r=\"2\"/>";
+
     public const string PageFirst =
         "<title>page--first</title><polygon points=\"14,16 24,6 25.4,7.4 16.8,16 25.4,24.6 24,26 \"/><rect x=\"8\" y=\"4\" width=\"2\" height=\"24\"/>";
 

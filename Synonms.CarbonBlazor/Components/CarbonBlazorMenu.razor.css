@@ -1,0 +1,40 @@
+.cb-menu {
+    background-color: var(--cb-layer);
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    margin: 0;
+    max-width: 18rem;
+    min-width: 10rem;
+    overflow: hidden;
+    padding: 0.25rem 0;
+}
+
+.cb-menu.collapsed {
+    display: none;
+}
+
+.cb-menu.extra-small ::deep .cb-menu-item {
+    height: 1.5rem;
+    min-height: 1.5rem;
+}
+
+.cb-menu.small ::deep .cb-menu-item {
+    height: 2rem;
+    min-height: 2rem;
+}
+
+.cb-menu.medium ::deep .cb-menu-item {
+    height: 2.5rem;
+    min-height: 2.5rem;
+}
+
+.cb-menu.large ::deep .cb-menu-item {
+    height: 3rem;
+    min-height: 3rem;
+}
+
+.cb-menu-submenu {
+    padding: 0.25rem 0;
+}

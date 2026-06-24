@@ -1,22 +1,24 @@
 # CarbonBlazor
 
+## Solution Overview
+
 CarbonBlazor is a simple, opinionated implementation of the IBM Carbon Design System for Blazor.  
 The Carbon Design System website is https://carbondesignsystem.com.
-CarbonBlazor should try and implement all components listed on the website.
-Each component has documentation available on the website which covers Usage, Style, Code and Accessibility. 
+CarbonBlazor should try and implement all components listed on the website and adhere to the guidelines as closely as is practical.
+Each component has documentation available on the website which covers Usage, Style, Code and Accessibility.
 
 For example:
 
 - Accordion:
-  - Usage: https://carbondesignsystem.com/components/accordion/usage/
-  - Style: https://carbondesignsystem.com/components/accordion/style/
-  - Code: https://carbondesignsystem.com/components/accordion/code/
-  - Accessibility: https://carbondesignsystem.com/components/accordion/accessibility/
+   - Usage: https://carbondesignsystem.com/components/accordion/usage/
+   - Style: https://carbondesignsystem.com/components/accordion/style/
+   - Code: https://carbondesignsystem.com/components/accordion/code/
+   - Accessibility: https://carbondesignsystem.com/components/accordion/accessibility/
 
 ## Components
 
 Several components have already been implemented to some degree with some further work required to get them to properly align with the Carbon Design System standards, particularly around Accessibility.
-The following components have not yet been implemented:
+At the time of writing, the following components have not yet been implemented:
 
 - Content Switcher
 - File Uploader
@@ -49,8 +51,8 @@ C# code should use explicit declarations and avoid 'var'.
 
 Icons are available from https://carbondesignsystem.com/elements/icons/library/.
 When required by a component, icons should be downloaded to the Icons folder in the Synonms.CarbonBlazor project as svg files.
-The icon file svg markup should be copied to a public const string property on the IconSvgTags class. 
-The markup copied to IconSvgTags should be edited so that the following opening and closing tags are removed: '?xml', 'svg', 'style', 'rect'.
+The icon file svg markup should be copied to a public const string property on the IconSvgTags class.
+The markup copied to IconSvgTags should be edited so that the following extraneous opening and closing tags are removed: '?xml', 'svg', 'style', 'rect'.
 The markup copied to IconSvgTags should be edited so that a 'title' tag is added if one is not present, containing the icon name.
 For example, the icon file add.svg contains the following markup:
 
@@ -78,4 +80,14 @@ A corresponding entry should be added to the 'CarbonBlazorIcon' enum and to the 
 ## Storybook
 
 The component CarbonBlazorStorybook is an aggregation of the core components that can be used for demonstration and testing. All components should be added to the Storybook.
-Placeholder sections have been added for components which have not yet been implemented simply containing the text "TODO".
+Placeholder sections have been added for components which have not yet been implemented simply containing the text "TODO".  As new components are implemented they should be added to the Storybook and the placeholder sections removed.
+
+## Data Bindings
+
+Where possible, components should support two-way data binding to both non-nullable and nullable types, for example a component bound to a text value should support binding to either `string` or `string?` model properties.
+
+## Tests
+
+`Synonms.CarbonBlazor.Tests.Unit` is the test project for the CarbonBlazor solution.
+Blazor component tests should be implemented using the Bunit testing framework.  Regular C# (non-Blazor) class tests should be implemented using the xUnit v3 testing framework.
+Tests should be located in the same folder structure as the class/component under test and be suffixed with 'Tests', for example `Components/CarbonBlazorAccordionTests.cs` for the `Components/CarbonBlazorAccordion.razor` component.

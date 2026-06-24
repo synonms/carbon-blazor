@@ -1,0 +1,68 @@
+.cb-overflow-menu-button-backdrop {
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 999;
+}
+
+.cb-overflow-menu-button-wrapper {
+    display: inline-flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1000;
+}
+
+.cb-overflow-menu-button-trigger {
+    align-items: center;
+    background-color: transparent;
+    border: 1px solid transparent;
+    box-sizing: border-box;
+    cursor: pointer;
+    display: inline-flex;
+    fill: var(--cb-icon-primary);
+    justify-content: center;
+    margin: 0;
+    outline: none;
+    padding: 0;
+    transition: background 70ms cubic-bezier(0, 0, 0.38, 0.9);
+}
+
+.cb-overflow-menu-button-trigger:hover {
+    background-color: var(--cb-background-hover);
+}
+
+.cb-overflow-menu-button-trigger:active {
+    background-color: var(--cb-background-active);
+}
+
+.cb-overflow-menu-button-trigger:focus {
+    border-color: var(--cb-focus);
+    outline: none;
+}
+
+.cb-overflow-menu-button-trigger:disabled {
+    cursor: not-allowed;
+    fill: var(--cb-icon-disabled);
+}
+
+.cb-overflow-menu-button-wrapper.extra-small .cb-overflow-menu-button-trigger {
+    height: 1.5rem;
+    width: 1.5rem;
+}
+
+.cb-overflow-menu-button-wrapper.small .cb-overflow-menu-button-trigger {
+    height: 2rem;
+    width: 2rem;
+}
+
+.cb-overflow-menu-button-wrapper.medium .cb-overflow-menu-button-trigger {
+    height: 2.5rem;
+    width: 2.5rem;
+}
+
+.cb-overflow-menu-button-wrapper.large .cb-overflow-menu-button-trigger {
+    height: 3rem;
+    width: 3rem;
+}

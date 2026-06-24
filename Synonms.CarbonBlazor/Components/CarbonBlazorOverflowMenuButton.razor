@@ -1,0 +1,54 @@
+@if (_isOpen)
+{
+    <div class="cb-overflow-menu-button-backdrop" @onclick="Close"></div>
+}
+
+<div class="cb-overflow-menu-button-wrapper @CarbonBlazorMenuItemSizeMapper.ToClass(Size)">
+    <button class="cb-overflow-menu-button-trigger @CarbonBlazorMenuItemSizeMapper.ToClass(Size)"
+            type="button"
+            aria-haspopup="true"
+            aria-expanded="@_isOpen"
+            disabled="@IsDisabled"
+            @onclick="Toggle">
+        @((MarkupString)CarbonBlazorIconMapper.ToSvg(TriggerIcon, 16))
+    </button>
+    <CascadingValue Name="CloseMenu" Value="_closeMenuAction">
+        <CarbonBlazorMenu Size="@Size" IsOpen="@_isOpen">
+            @Items
+        </CarbonBlazorMenu>
+    </CascadingValue>
+</div>
+
+@code {
+    private bool _isOpen;
+    private Action _closeMenuAction = null!;
+
+    [Parameter]
+    public CarbonBlazorMenuItemSize Size { get; set; } = CarbonBlazorMenuItemSize.Medium;
+
+    [Parameter]
+    public bool IsDisabled { get; set; }
+
+    [Parameter]
+    public CarbonBlazorIcon TriggerIcon { get; set; } = CarbonBlazorIcon.OverflowMenuVertical;
+
+    [Parameter]
+    [EditorRequired]
+    public RenderFragment Items { get; set; } = null!;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        _closeMenuAction = Close;
+    }
+
+    private void Toggle()
+    {
+        _isOpen = !_isOpen;
+    }
+
+    private void Close()
+    {
+        _isOpen = false;
+    }
+}

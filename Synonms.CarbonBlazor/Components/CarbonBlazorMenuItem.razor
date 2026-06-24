@@ -1,0 +1,98 @@
+<li class="@GetClass()"
+    role="@(IsSelected ? "menuitemcheckbox" : "menuitem")"
+    aria-disabled="@IsDisabled"
+    aria-checked="@IsSelected"
+    tabindex="@(IsDisabled ? -1 : 0)"
+    title="@Label"
+    @onclick="OnClicked"
+    @onkeydown="OnKeyDown">
+
+    <span class="cb-menu-item-selection">
+        @if (IsSelected)
+        {
+            @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.Checkmark, 16))
+        }
+    </span>
+
+    <span class="cb-menu-item-label">@Label</span>
+
+    <span class="cb-menu-item-trailing">
+        @if (string.IsNullOrWhiteSpace(KeyboardShortcut) is false)
+        {
+            <span class="cb-menu-item-shortcut">@KeyboardShortcut</span>
+        }
+        @if (SubItems != null)
+        {
+            @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.ChevronRight, 16))
+        }
+    </span>
+
+    @if (SubItems != null)
+    {
+        <ul class="cb-menu cb-menu-submenu" role="menu">
+            @SubItems
+        </ul>
+    }
+</li>
+
+@code {
+    [CascadingParameter(Name = "CloseMenu")]
+    public Action? CloseMenu { get; set; }
+
+    [Parameter]
+    [EditorRequired]
+    public string Label { get; set; } = string.Empty;
+
+    [Parameter]
+    public bool IsDisabled { get; set; }
+
+    [Parameter]
+    public bool IsDanger { get; set; }
+
+    [Parameter]
+    public bool IsSelected { get; set; }
+
+    [Parameter]
+    public string? KeyboardShortcut { get; set; }
+
+    [Parameter]
+    public EventCallback ClickedCallback { get; set; }
+
+    [Parameter]
+    public RenderFragment? SubItems { get; set; }
+
+    private string GetClass()
+    {
+        const string baseClass = "cb-menu-item";
+        string dangerClass = IsDanger ? "danger" : string.Empty;
+        string disabledClass = IsDisabled ? "disabled" : string.Empty;
+        string selectedClass = IsSelected ? "selected" : string.Empty;
+
+        return CssClasses.Concatenate(baseClass, dangerClass, disabledClass, selectedClass);
+    }
+
+    private async Task OnClicked()
+    {
+        if (IsDisabled)
+        {
+            return;
+        }
+
+        await ClickedCallback.InvokeAsync();
+        CloseMenu?.Invoke();
+    }
+
+    private async Task OnKeyDown(KeyboardEventArgs args)
+    {
+        if (IsDisabled)
+        {
+            return;
+        }
+
+        if (args.Key is "Enter" or " ")
+        {
+            await ClickedCallback.InvokeAsync();
+            CloseMenu?.Invoke();
+        }
+    }
+}

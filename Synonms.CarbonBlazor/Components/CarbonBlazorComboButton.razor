@@ -1,0 +1,69 @@
+@if (_isOpen)
+{
+    <div class="cb-combo-button-backdrop" @onclick="Close"></div>
+}
+
+<div class="cb-combo-button-wrapper @CarbonBlazorMenuItemSizeMapper.ToClass(Size)">
+    <button class="cb-combo-button-primary @CarbonBlazorMenuItemSizeMapper.ToClass(Size)"
+            type="button"
+            disabled="@IsDisabled"
+            @onclick="OnPrimaryClicked">
+        @Label
+    </button>
+    <button class="cb-combo-button-trigger @CarbonBlazorMenuItemSizeMapper.ToClass(Size)"
+            type="button"
+            aria-haspopup="true"
+            aria-expanded="@_isOpen"
+            disabled="@IsDisabled"
+            @onclick="Toggle">
+        @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.ChevronDown, 16))
+    </button>
+    <CascadingValue Name="CloseMenu" Value="_closeMenuAction">
+        <CarbonBlazorMenu Size="@Size" IsOpen="@_isOpen">
+            @Items
+        </CarbonBlazorMenu>
+    </CascadingValue>
+</div>
+
+@code {
+    private bool _isOpen;
+    private Action _closeMenuAction = null!;
+
+    [Parameter]
+    [EditorRequired]
+    public string Label { get; set; } = string.Empty;
+
+    [Parameter]
+    public CarbonBlazorMenuItemSize Size { get; set; } = CarbonBlazorMenuItemSize.Medium;
+
+    [Parameter]
+    public bool IsDisabled { get; set; }
+
+    [Parameter]
+    public EventCallback PrimaryActionCallback { get; set; }
+
+    [Parameter]
+    [EditorRequired]
+    public RenderFragment Items { get; set; } = null!;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        _closeMenuAction = Close;
+    }
+
+    private async Task OnPrimaryClicked()
+    {
+        await PrimaryActionCallback.InvokeAsync();
+    }
+
+    private void Toggle()
+    {
+        _isOpen = !_isOpen;
+    }
+
+    private void Close()
+    {
+        _isOpen = false;
+    }
+}

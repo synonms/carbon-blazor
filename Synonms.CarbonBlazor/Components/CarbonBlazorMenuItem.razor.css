@@ -1,0 +1,101 @@
+.cb-menu-item {
+    align-items: center;
+    background-color: var(--cb-layer);
+    color: var(--cb-text-primary);
+    cursor: pointer;
+    display: grid;
+    fill: var(--cb-icon-primary);
+    font-family: inherit;
+    font-size: var(--cb-body-compact-01-font-size);
+    font-weight: var(--cb-body-compact-01-font-weight);
+    gap: 0;
+    grid-template-columns: 2.5rem 1fr auto;
+    letter-spacing: var(--cb-body-compact-01-letter-spacing);
+    line-height: var(--cb-body-compact-01-line-height);
+    list-style: none;
+    outline: none;
+    padding-right: 1rem;
+    position: relative;
+    text-decoration: none;
+    user-select: none;
+    white-space: nowrap;
+}
+
+.cb-menu-item:hover {
+    background-color: var(--cb-layer-hover-01);
+}
+
+.cb-menu-item:focus {
+    outline: 2px solid var(--cb-focus);
+    outline-offset: -2px;
+}
+
+.cb-menu-item.selected {
+    background-color: var(--cb-layer-selected-01);
+}
+
+.cb-menu-item.danger:hover {
+    background-color: var(--cb-button-danger-primary);
+    color: var(--cb-text-on-color);
+    fill: var(--cb-icon-on-color);
+}
+
+.cb-menu-item.danger:focus {
+    background-color: var(--cb-button-danger-primary);
+    color: var(--cb-text-on-color);
+    fill: var(--cb-icon-on-color);
+    outline: 2px solid var(--cb-focus);
+    outline-offset: -2px;
+}
+
+.cb-menu-item.disabled {
+    background-color: var(--cb-layer);
+    color: var(--cb-text-disabled);
+    cursor: not-allowed;
+    fill: var(--cb-icon-disabled);
+    pointer-events: none;
+}
+
+.cb-menu-item-selection {
+    align-items: center;
+    display: flex;
+    flex-shrink: 0;
+    height: 100%;
+    justify-content: center;
+    width: 2.5rem;
+}
+
+.cb-menu-item-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.cb-menu-item-trailing {
+    align-items: center;
+    color: var(--cb-text-secondary);
+    display: flex;
+    flex-shrink: 0;
+    gap: 0.5rem;
+    justify-content: flex-end;
+    padding-left: 2rem;
+}
+
+.cb-menu-item-shortcut {
+    color: var(--cb-text-secondary);
+    font-size: var(--cb-label-01-font-size);
+}
+
+.cb-menu-submenu {
+    display: none;
+    left: 100%;
+    min-width: 10rem;
+    position: absolute;
+    top: 0;
+    z-index: 10;
+}
+
+.cb-menu-item:hover > .cb-menu-submenu,
+.cb-menu-item:focus-within > .cb-menu-submenu {
+    display: flex;
+}

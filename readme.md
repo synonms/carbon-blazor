@@ -112,6 +112,32 @@ Code snippets are strings or small blocks of reusable code that can be copied an
 <CarbonBlazorCodeSnippet Type="CarbonBlazorCodeSnippetType.SingleLine">CodeSnippet singleLine = new();</CarbonBlazorCodeSnippet>
 ```
 
+### ComboButton
+
+Combo buttons are comprised of two parts: a primary button on the left which triggers the most commonly used action, and a chevron icon button on the right which reveals a menu of additional options.
+
+```htmlinblazor
+<CarbonBlazorComboButton Label="Save" Size="CarbonBlazorMenuItemSize.Medium" PrimaryActionCallback="@OnSave">
+    <Items>
+        <CarbonBlazorMenuItem Label="Save as draft" ClickedCallback="@OnSaveAsDraft"></CarbonBlazorMenuItem>
+        <CarbonBlazorMenuItem Label="Save as template" ClickedCallback="@OnSaveAsTemplate"></CarbonBlazorMenuItem>
+        <CarbonBlazorMenuItemDivider></CarbonBlazorMenuItemDivider>
+        <CarbonBlazorMenuItem Label="Discard" IsDanger="true" ClickedCallback="@OnDiscard"></CarbonBlazorMenuItem>
+    </Items>
+</CarbonBlazorComboButton>
+```
+
+| Property              | Option         | Notes                                                         |
+|-----------------------|----------------|---------------------------------------------------------------|
+| Label                 | string         | Text displayed on the primary action button                   |
+| Size                  | ExtraSmall     | 24px height                                                   |
+|                       | Small          | 32px height                                                   |
+|                       | Medium         | 40px height (default)                                         |
+|                       | Large          | 48px height                                                   |
+| IsDisabled            | bool           | Disables both the primary and chevron buttons                 |
+| PrimaryActionCallback | EventCallback  | Invoked when the primary button is clicked                    |
+| Items                 | RenderFragment | Child `CarbonBlazorMenuItem` and `CarbonBlazorMenuItemDivider` components |
+
 ### ConfirmDeleteModal
 
 Specialised modal used when asking the user to confirm the deletion of a RESTEasy resource.
@@ -275,6 +301,93 @@ Widget to use while waiting for child content to load, e.g. fetching resources f
 <CarbonBlazorLoadingSpinner />
 ```
 
+### Menu
+
+A menu is a disclosure component that appears with a set of actions relevant to a specific control, interface area, or data element. Menus can be used standalone (e.g. context menus) or embedded within menu button trigger components.
+
+```htmlinblazor
+<CarbonBlazorMenu Size="CarbonBlazorMenuItemSize.Medium" IsOpen="true">
+    <CarbonBlazorMenuItem Label="Cut" KeyboardShortcut="⌘X" ClickedCallback="@OnCut"></CarbonBlazorMenuItem>
+    <CarbonBlazorMenuItem Label="Copy" KeyboardShortcut="⌘C" ClickedCallback="@OnCopy"></CarbonBlazorMenuItem>
+    <CarbonBlazorMenuItem Label="Paste" KeyboardShortcut="⌘V" ClickedCallback="@OnPaste"></CarbonBlazorMenuItem>
+    <CarbonBlazorMenuItemDivider></CarbonBlazorMenuItemDivider>
+    <CarbonBlazorMenuItem Label="Delete" IsDanger="true" ClickedCallback="@OnDelete"></CarbonBlazorMenuItem>
+</CarbonBlazorMenu>
+```
+
+| Property     | Option         | Notes                                           |
+|--------------|----------------|-------------------------------------------------|
+| Size         | ExtraSmall     | 24px item height                                |
+|              | Small          | 32px item height                                |
+|              | Medium         | 40px item height (default)                      |
+|              | Large          | 48px item height                                |
+| IsOpen       | bool           | Controls menu visibility (default: true)        |
+| ChildContent | RenderFragment | Child `CarbonBlazorMenuItem` and `CarbonBlazorMenuItemDivider` components |
+
+### MenuButton
+
+Menu buttons open a menu with a list of interactive options. Use a menu button when all actions in the menu share the same level of importance. Supports Primary, Tertiary, and Ghost button kinds.
+
+```htmlinblazor
+<CarbonBlazorMenuButton Label="Actions" Kind="CarbonBlazorButtonKind.Primary" Size="CarbonBlazorMenuItemSize.Medium">
+    <Items>
+        <CarbonBlazorMenuItem Label="Option 1" ClickedCallback="@OnOption1"></CarbonBlazorMenuItem>
+        <CarbonBlazorMenuItem Label="Option 2" ClickedCallback="@OnOption2"></CarbonBlazorMenuItem>
+        <CarbonBlazorMenuItem Label="Delete" IsDanger="true" ClickedCallback="@OnDelete"></CarbonBlazorMenuItem>
+    </Items>
+</CarbonBlazorMenuButton>
+```
+
+| Property   | Option         | Notes                                                         |
+|------------|----------------|---------------------------------------------------------------|
+| Label      | string         | Button label text                                             |
+| Kind       | Primary        | Primary button style (default)                                |
+|            | Tertiary       | Tertiary button style                                         |
+|            | Ghost          | Ghost button style                                            |
+| Size       | ExtraSmall     | 24px height                                                   |
+|            | Small          | 32px height                                                   |
+|            | Medium         | 40px height (default)                                         |
+|            | Large          | 48px height                                                   |
+| IsDisabled | bool           | Disables the trigger button                                   |
+| Items      | RenderFragment | Child `CarbonBlazorMenuItem` and `CarbonBlazorMenuItemDivider` components |
+
+### MenuItem
+
+An individual action item within a `CarbonBlazorMenu`. Supports danger styling, disabled state, selection indicator, keyboard shortcut display, and optional nested submenus.
+
+```htmlinblazor
+<CarbonBlazorMenuItem Label="Copy" KeyboardShortcut="⌘C" ClickedCallback="@OnCopy"></CarbonBlazorMenuItem>
+<CarbonBlazorMenuItem Label="Delete" IsDanger="true" ClickedCallback="@OnDelete"></CarbonBlazorMenuItem>
+<CarbonBlazorMenuItem Label="Unavailable" IsDisabled="true" ClickedCallback="@OnUnavailable"></CarbonBlazorMenuItem>
+<CarbonBlazorMenuItem Label="Active option" IsSelected="true" ClickedCallback="@OnToggle"></CarbonBlazorMenuItem>
+
+<!-- With submenu (revealed on hover) -->
+<CarbonBlazorMenuItem Label="Edit">
+    <SubItems>
+        <CarbonBlazorMenuItem Label="Undo" KeyboardShortcut="⌘Z" ClickedCallback="@OnUndo"></CarbonBlazorMenuItem>
+        <CarbonBlazorMenuItem Label="Redo" KeyboardShortcut="⌘⇧Z" ClickedCallback="@OnRedo"></CarbonBlazorMenuItem>
+    </SubItems>
+</CarbonBlazorMenuItem>
+```
+
+| Property          | Option         | Notes                                                          |
+|-------------------|----------------|----------------------------------------------------------------|
+| Label             | string         | Item display text (required)                                   |
+| IsDisabled        | bool           | Renders item in disabled state; click events are suppressed    |
+| IsDanger          | bool           | Applies danger/destructive styling on hover                    |
+| IsSelected        | bool           | Shows a checkmark indicator and applies selected styling       |
+| KeyboardShortcut  | string?        | Optional shortcut text displayed on the right                  |
+| ClickedCallback   | EventCallback  | Invoked when item is activated (click or Enter/Space key)      |
+| SubItems          | RenderFragment?| Optional nested submenu items, revealed on hover               |
+
+### MenuItemDivider
+
+A horizontal rule that visually separates groups of related menu items within a `CarbonBlazorMenu`. Takes no parameters.
+
+```htmlinblazor
+<CarbonBlazorMenuItemDivider></CarbonBlazorMenuItemDivider>
+```
+
 ### Modal
 
 Modals focus the user’s attention exclusively on one task or piece of information via a window that sits on top of the page content.
@@ -320,6 +433,31 @@ Number input lets users enter a numeric value and incrementally increase or decr
 ```htmlinblazor
 <CarbonBlazorNumberInput Id="SomeNumberInput" Label="Number input label" @bind-Value="@_model.SomeIntInputValue" FieldIdentifier="@(FieldIdentifier.Create(() => _model.SomeIntInputValue))" Min="0" Max="100" Step="5"></CarbonBlazorNumberInput>
 ```
+
+### OverflowMenuButton
+
+Overflow menus reveal additional options when there is a space constraint. The trigger is an icon-only ghost button (defaulting to the three-dot vertical icon). Typically used in data table rows or cards.
+
+```htmlinblazor
+<CarbonBlazorOverflowMenuButton Size="CarbonBlazorMenuItemSize.Medium">
+    <Items>
+        <CarbonBlazorMenuItem Label="Edit" ClickedCallback="@OnEdit"></CarbonBlazorMenuItem>
+        <CarbonBlazorMenuItem Label="Duplicate" ClickedCallback="@OnDuplicate"></CarbonBlazorMenuItem>
+        <CarbonBlazorMenuItemDivider></CarbonBlazorMenuItemDivider>
+        <CarbonBlazorMenuItem Label="Delete" IsDanger="true" ClickedCallback="@OnDelete"></CarbonBlazorMenuItem>
+    </Items>
+</CarbonBlazorOverflowMenuButton>
+```
+
+| Property     | Option         | Notes                                                         |
+|--------------|----------------|---------------------------------------------------------------|
+| Size         | ExtraSmall     | 24px height                                                   |
+|              | Small          | 32px height                                                   |
+|              | Medium         | 40px height (default)                                         |
+|              | Large          | 48px height                                                   |
+| IsDisabled   | bool           | Disables the trigger button                                   |
+| TriggerIcon  | CarbonBlazorIcon | Icon shown on the trigger button (default: OverflowMenuVertical) |
+| Items        | RenderFragment | Child `CarbonBlazorMenuItem` and `CarbonBlazorMenuItemDivider` components |
 
 ### Pane
 

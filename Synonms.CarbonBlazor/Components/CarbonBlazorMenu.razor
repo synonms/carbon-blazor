@@ -1,0 +1,14 @@
+<ul class="cb-menu @CarbonBlazorMenuItemSizeMapper.ToClass(Size) @(IsOpen ? string.Empty : "collapsed")" role="menu">
+    @ChildContent
+</ul>
+
+@code {
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public CarbonBlazorMenuItemSize Size { get; set; } = CarbonBlazorMenuItemSize.Medium;
+
+    [Parameter]
+    public bool IsOpen { get; set; } = true;
+}

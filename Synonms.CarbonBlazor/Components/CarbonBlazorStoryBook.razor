@@ -105,7 +105,7 @@ if (isSuperExciting)
     </CarbonBlazorPane>
 
     <CarbonBlazorPane Title="Content Switcher">
-        <CarbonBlazorContentSwitcher Items="@(new string[]{"First","Second","Third"})"></CarbonBlazorContentSwitcher>
+        <CarbonBlazorContentSwitcher Items="@(["First","Second","Third"])"></CarbonBlazorContentSwitcher>
     </CarbonBlazorPane>
     
     <CarbonBlazorPane Title="Data Table">
@@ -256,11 +256,134 @@ if (isSuperExciting)
     </CarbonBlazorPane>
     
     <CarbonBlazorPane Title="Menu">
-        TODO
+        <CarbonBlazorStack FlexDirection="FlexDirection.Column" Gap="1rem">
+            <CarbonBlazorText Type="CarbonBlazorTextType.HeadingCompact">Inline Menu (always open)</CarbonBlazorText>
+            <CarbonBlazorMenu>
+                <CarbonBlazorMenuItem Label="Cut" KeyboardShortcut="⌘X" ClickedCallback="@(() => {})"></CarbonBlazorMenuItem>
+                <CarbonBlazorMenuItem Label="Copy" KeyboardShortcut="⌘C" ClickedCallback="@(() => {})"></CarbonBlazorMenuItem>
+                <CarbonBlazorMenuItem Label="Paste" KeyboardShortcut="⌘V" ClickedCallback="@(() => {})"></CarbonBlazorMenuItem>
+                <CarbonBlazorMenuItemDivider></CarbonBlazorMenuItemDivider>
+                <CarbonBlazorMenuItem Label="Select All" KeyboardShortcut="⌘A" ClickedCallback="@(() => {})"></CarbonBlazorMenuItem>
+                <CarbonBlazorMenuItemDivider></CarbonBlazorMenuItemDivider>
+                <CarbonBlazorMenuItem Label="Delete" IsDanger="true" ClickedCallback="@(() => {})"></CarbonBlazorMenuItem>
+                <CarbonBlazorMenuItem Label="Disabled option" IsDisabled="true" ClickedCallback="@(() => {})"></CarbonBlazorMenuItem>
+            </CarbonBlazorMenu>
+
+            <CarbonBlazorText Type="CarbonBlazorTextType.HeadingCompact">With Selectable Items</CarbonBlazorText>
+            <CarbonBlazorMenu>
+                <CarbonBlazorMenuItem Label="Option A" IsSelected="true" ClickedCallback="@(() => {})"></CarbonBlazorMenuItem>
+                <CarbonBlazorMenuItem Label="Option B" ClickedCallback="@(() => {})"></CarbonBlazorMenuItem>
+                <CarbonBlazorMenuItem Label="Option C" ClickedCallback="@(() => {})"></CarbonBlazorMenuItem>
+            </CarbonBlazorMenu>
+
+            <CarbonBlazorText Type="CarbonBlazorTextType.HeadingCompact">With Submenu</CarbonBlazorText>
+            <CarbonBlazorMenu>
+                <CarbonBlazorMenuItem Label="File" ClickedCallback="@(() => {})"></CarbonBlazorMenuItem>
+                <CarbonBlazorMenuItem Label="Edit">
+                    <SubItems>
+                        <CarbonBlazorMenuItem Label="Undo" KeyboardShortcut="⌘Z" ClickedCallback="@(() => {})"></CarbonBlazorMenuItem>
+                        <CarbonBlazorMenuItem Label="Redo" KeyboardShortcut="⌘⇧Z" ClickedCallback="@(() => {})"></CarbonBlazorMenuItem>
+                    </SubItems>
+                </CarbonBlazorMenuItem>
+                <CarbonBlazorMenuItem Label="View" ClickedCallback="@(() => {})"></CarbonBlazorMenuItem>
+            </CarbonBlazorMenu>
+        </CarbonBlazorStack>
     </CarbonBlazorPane>
 
     <CarbonBlazorPane Title="Menu Buttons">
-        TODO
+        <CarbonBlazorStack FlexDirection="FlexDirection.Column" Gap="2rem">
+            <CarbonBlazorText Type="CarbonBlazorTextType.HeadingCompact">Menu Button</CarbonBlazorText>
+            <CarbonBlazorStack FlexDirection="FlexDirection.Row" Gap="1rem">
+                <CarbonBlazorMenuButton Label="Primary" Kind="CarbonBlazorButtonKind.Primary">
+                    <Items>
+                        <CarbonBlazorMenuItem Label="Option 1" ClickedCallback="@(() => {})"></CarbonBlazorMenuItem>
+                        <CarbonBlazorMenuItem Label="Option 2" ClickedCallback="@(() => {})"></CarbonBlazorMenuItem>
+                        <CarbonBlazorMenuItem Label="Option 3" ClickedCallback="@(() => {})"></CarbonBlazorMenuItem>
+                    </Items>
+                </CarbonBlazorMenuButton>
+                <CarbonBlazorMenuButton Label="Tertiary" Kind="CarbonBlazorButtonKind.Tertiary">
+                    <Items>
+                        <CarbonBlazorMenuItem Label="Option 1" ClickedCallback="@(() => {})"></CarbonBlazorMenuItem>
+                        <CarbonBlazorMenuItem Label="Option 2" ClickedCallback="@(() => {})"></CarbonBlazorMenuItem>
+                        <CarbonBlazorMenuItem Label="Option 3" ClickedCallback="@(() => {})"></CarbonBlazorMenuItem>
+                    </Items>
+                </CarbonBlazorMenuButton>
+                <CarbonBlazorMenuButton Label="Ghost" Kind="CarbonBlazorButtonKind.Ghost">
+                    <Items>
+                        <CarbonBlazorMenuItem Label="Option 1" ClickedCallback="@(() => {})"></CarbonBlazorMenuItem>
+                        <CarbonBlazorMenuItem Label="Option 2" ClickedCallback="@(() => {})"></CarbonBlazorMenuItem>
+                        <CarbonBlazorMenuItem Label="Option 3" ClickedCallback="@(() => {})"></CarbonBlazorMenuItem>
+                    </Items>
+                </CarbonBlazorMenuButton>
+                <CarbonBlazorMenuButton Label="Disabled" IsDisabled="true">
+                    <Items>
+                        <CarbonBlazorMenuItem Label="Option 1" ClickedCallback="@(() => {})"></CarbonBlazorMenuItem>
+                    </Items>
+                </CarbonBlazorMenuButton>
+            </CarbonBlazorStack>
+
+            <CarbonBlazorText Type="CarbonBlazorTextType.HeadingCompact">Menu Button Sizes</CarbonBlazorText>
+            <CarbonBlazorStack FlexDirection="FlexDirection.Row" Gap="1rem">
+                <CarbonBlazorMenuButton Label="Extra Small" Size="CarbonBlazorMenuItemSize.ExtraSmall">
+                    <Items>
+                        <CarbonBlazorMenuItem Label="Option 1" ClickedCallback="@(() => {})"></CarbonBlazorMenuItem>
+                        <CarbonBlazorMenuItem Label="Option 2" ClickedCallback="@(() => {})"></CarbonBlazorMenuItem>
+                    </Items>
+                </CarbonBlazorMenuButton>
+                <CarbonBlazorMenuButton Label="Small" Size="CarbonBlazorMenuItemSize.Small">
+                    <Items>
+                        <CarbonBlazorMenuItem Label="Option 1" ClickedCallback="@(() => {})"></CarbonBlazorMenuItem>
+                        <CarbonBlazorMenuItem Label="Option 2" ClickedCallback="@(() => {})"></CarbonBlazorMenuItem>
+                    </Items>
+                </CarbonBlazorMenuButton>
+                <CarbonBlazorMenuButton Label="Medium" Size="CarbonBlazorMenuItemSize.Medium">
+                    <Items>
+                        <CarbonBlazorMenuItem Label="Option 1" ClickedCallback="@(() => {})"></CarbonBlazorMenuItem>
+                        <CarbonBlazorMenuItem Label="Option 2" ClickedCallback="@(() => {})"></CarbonBlazorMenuItem>
+                    </Items>
+                </CarbonBlazorMenuButton>
+                <CarbonBlazorMenuButton Label="Large" Size="CarbonBlazorMenuItemSize.Large">
+                    <Items>
+                        <CarbonBlazorMenuItem Label="Option 1" ClickedCallback="@(() => {})"></CarbonBlazorMenuItem>
+                        <CarbonBlazorMenuItem Label="Option 2" ClickedCallback="@(() => {})"></CarbonBlazorMenuItem>
+                    </Items>
+                </CarbonBlazorMenuButton>
+            </CarbonBlazorStack>
+
+            <CarbonBlazorText Type="CarbonBlazorTextType.HeadingCompact">Combo Button</CarbonBlazorText>
+            <CarbonBlazorStack FlexDirection="FlexDirection.Row" Gap="1rem">
+                <CarbonBlazorComboButton Label="Save" PrimaryActionCallback="@(() => {})">
+                    <Items>
+                        <CarbonBlazorMenuItem Label="Save as draft" ClickedCallback="@(() => {})"></CarbonBlazorMenuItem>
+                        <CarbonBlazorMenuItem Label="Save as template" ClickedCallback="@(() => {})"></CarbonBlazorMenuItem>
+                        <CarbonBlazorMenuItemDivider></CarbonBlazorMenuItemDivider>
+                        <CarbonBlazorMenuItem Label="Discard" IsDanger="true" ClickedCallback="@(() => {})"></CarbonBlazorMenuItem>
+                    </Items>
+                </CarbonBlazorComboButton>
+                <CarbonBlazorComboButton Label="Disabled" IsDisabled="true" PrimaryActionCallback="@(() => {})">
+                    <Items>
+                        <CarbonBlazorMenuItem Label="Option 1" ClickedCallback="@(() => {})"></CarbonBlazorMenuItem>
+                    </Items>
+                </CarbonBlazorComboButton>
+            </CarbonBlazorStack>
+
+            <CarbonBlazorText Type="CarbonBlazorTextType.HeadingCompact">Overflow Menu Button</CarbonBlazorText>
+            <CarbonBlazorStack FlexDirection="FlexDirection.Row" Gap="1rem">
+                <CarbonBlazorOverflowMenuButton>
+                    <Items>
+                        <CarbonBlazorMenuItem Label="Edit" ClickedCallback="@(() => {})"></CarbonBlazorMenuItem>
+                        <CarbonBlazorMenuItem Label="Duplicate" ClickedCallback="@(() => {})"></CarbonBlazorMenuItem>
+                        <CarbonBlazorMenuItemDivider></CarbonBlazorMenuItemDivider>
+                        <CarbonBlazorMenuItem Label="Delete" IsDanger="true" ClickedCallback="@(() => {})"></CarbonBlazorMenuItem>
+                    </Items>
+                </CarbonBlazorOverflowMenuButton>
+                <CarbonBlazorOverflowMenuButton IsDisabled="true">
+                    <Items>
+                        <CarbonBlazorMenuItem Label="Edit" ClickedCallback="@(() => {})"></CarbonBlazorMenuItem>
+                    </Items>
+                </CarbonBlazorOverflowMenuButton>
+            </CarbonBlazorStack>
+        </CarbonBlazorStack>
     </CarbonBlazorPane>
     
     <CarbonBlazorPane Title="Modal">
