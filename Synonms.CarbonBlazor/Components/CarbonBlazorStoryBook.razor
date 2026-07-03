@@ -151,7 +151,20 @@ if (isSuperExciting)
     </CarbonBlazorPane>
     
     <CarbonBlazorPane Title="File Uploader">
-        TODO
+        <CarbonBlazorStack FlexDirection="FlexDirection.Column" Gap="1rem">
+            <CarbonBlazorFileUploader Label="Upload files"
+                                      Description="Select one or more files to upload."
+                                      @bind-Files="@_fileUploaderFiles"
+                                      FieldIdentifier="@FieldIdentifier.Create(() => _fileUploaderFiles)">
+            </CarbonBlazorFileUploader>
+
+            <CarbonBlazorFileUploader Label="Drop zone uploader"
+                                      Description="Drag and drop files into the zone below."
+                                      Variant="CarbonBlazorFileUploaderVariant.DragAndDrop"
+                                      @bind-Files="@_fileUploaderDropZoneFiles"
+                                      FieldIdentifier="@FieldIdentifier.Create(() => _fileUploaderDropZoneFiles)">
+            </CarbonBlazorFileUploader>
+        </CarbonBlazorStack>
     </CarbonBlazorPane>
 
     <CarbonBlazorPane Title="Form" Info="This is an example form with controls and stuff on it.">
@@ -697,6 +710,8 @@ if (isSuperExciting)
     private TimeOnly? _timePickerValue = TimeOnly.FromDateTime(DateTime.Now);
     private DateTime? _dateTimePickerValue = DateTime.Now;
     private IEnumerable<string> _dropDownValues = [];
+    private IEnumerable<IBrowserFile> _fileUploaderDropZoneFiles = [];
+    private IEnumerable<IBrowserFile> _fileUploaderFiles = [];
     private int _numberInputValue; 
     private string _radioButtonValue = string.Empty;
     private string _selectValue = string.Empty;

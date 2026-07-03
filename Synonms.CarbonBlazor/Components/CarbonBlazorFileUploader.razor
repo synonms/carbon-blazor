@@ -1,0 +1,204 @@
+@using Microsoft.JSInterop
+
+<div id="@Id" class="@BuildClasses()" style="@Style">
+    @if (string.IsNullOrWhiteSpace(Label) is false)
+    {
+        <CarbonBlazorText Type="CarbonBlazorTextType.HeadingCompact">@Label</CarbonBlazorText>
+    }
+
+    @if (string.IsNullOrWhiteSpace(Description) is false)
+    {
+        <CarbonBlazorText Type="CarbonBlazorTextType.BodyCompact">@Description</CarbonBlazorText>
+    }
+
+    @if (Variant is CarbonBlazorFileUploaderVariant.Button)
+    {
+        <div class="cb-file-uploader-trigger-shell">
+            <CarbonBlazorButton Kind="@ButtonKind"
+                                Display="CarbonBlazorButtonDisplay.TextAndIcon"
+                                Size="@GetButtonSize()"
+                                Text="@ButtonText"
+                                Icon="@ButtonIcon"
+                                IsDisabled="@IsDisabled" ClickedCallback="@(_ => JsRuntime.ClickAsync(_inputId))">
+            </CarbonBlazorButton>
+        </div>
+    }
+    else if (AllowMultiple || _files.Count == 0)
+    {
+        <div id="@_dropZoneId" class="@GetDropZoneClass()" aria-disabled="@IsDisabled" @onclick="@(() => JsRuntime.ClickAsync(_inputId))">
+            <span class="cb-file-uploader-drop-zone-content">
+                <CarbonBlazorText Type="CarbonBlazorTextType.BodyCompact">@DropZoneText</CarbonBlazorText>
+            </span>
+        </div>
+    }
+
+    <InputFile id="@_inputId" style="display: none;" OnChange="@OnFilesSelected" accept="@Accept" multiple="@AllowMultiple" disabled="@IsDisabled"></InputFile>
+
+    @if (_files.Count > 0)
+    {
+        <ul class="cb-file-uploader-files" aria-label="@($"{Label ?? "Files"} uploaded files")">
+            @foreach (IBrowserFile file in _files)
+            {
+                <li class="cb-file-uploader-file">
+                    <CarbonBlazorText Type="CarbonBlazorTextType.BodyCompact" WhiteSpace="WhiteSpace.Nowrap">@file.Name</CarbonBlazorText>
+                    <CarbonBlazorButton Type="CarbonBlazorButtonType.Button" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.Cancel" 
+                                        Size="CarbonBlazorButtonSize.Small" Kind="CarbonBlazorButtonKind.Ghost" IsDisabled="@IsDisabled" 
+                                        ClickedCallback="@(() => RemoveFile(file))" />
+                </li>
+            }
+        </ul>
+    }
+
+    <CarbonBlazorValidationMessage FieldIdentifier="@FieldIdentifier"></CarbonBlazorValidationMessage>
+</div>
+
+@code {
+    private readonly string _inputId = "cb-file-uploader-" + Guid.NewGuid().ToString("N");
+    private readonly string _dropZoneId = "cb-file-uploader-drop-zone-" + Guid.NewGuid().ToString("N");
+    private List<IBrowserFile> _files = [];
+    private bool _dropZoneInitialised;
+
+    [Inject] 
+    public required IJSRuntime JsRuntime { get; set; }
+
+    [CascadingParameter]
+    public EditContext? EditContext { get; set; }
+
+    [CascadingParameter]
+    public IEnumerable<ValidationOutcome> ValidationOutcomes { get; set; } = [];
+
+    [Parameter]
+    [EditorRequired]
+    public FieldIdentifier FieldIdentifier { get; set; }
+
+    [Parameter]
+    public IEnumerable<IBrowserFile> Files { get; set; } = [];
+
+    [Parameter]
+    public EventCallback<IEnumerable<IBrowserFile>> FilesChanged { get; set; }
+
+    [Parameter]
+    public string? Id { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public string? Style { get; set; }
+
+    [Parameter]
+    public string? Label { get; set; }
+
+    [Parameter]
+    public string? Description { get; set; }
+
+    [Parameter]
+    public string ButtonText { get; set; } = "Add files";
+
+    [Parameter]
+    public string DropZoneText { get; set; } = "Drag and drop files here or click to upload";
+
+    [Parameter]
+    public CarbonBlazorFileUploaderVariant Variant { get; set; } = CarbonBlazorFileUploaderVariant.Button;
+
+    [Parameter]
+    public CarbonBlazorInputSize Size { get; set; } = CarbonBlazorInputSize.Medium;
+
+    [Parameter]
+    public CarbonBlazorButtonKind ButtonKind { get; set; } = CarbonBlazorButtonKind.Tertiary;
+
+    [Parameter]
+    public CarbonBlazorIcon ButtonIcon { get; set; } = CarbonBlazorIcon.Add;
+
+    [Parameter]
+    public bool AllowMultiple { get; set; } = true;
+
+    [Parameter]
+    public string? Accept { get; set; }
+
+    [Parameter]
+    public bool IsDisabled { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        _files = Files.ToList();
+    }
+
+    private string BuildClasses()
+    {
+        string classes = CssClasses.Concatenate(
+            CssClasses.Prefix + "file-uploader",
+            CarbonBlazorInputSizeMapper.ToClass(Size),
+            Variant is CarbonBlazorFileUploaderVariant.DragAndDrop ? "drag-and-drop" : "button",
+            IsDisabled ? "disabled" : string.Empty,
+            Class ?? string.Empty);
+
+        return classes;
+    }
+
+    private string GetDropZoneClass()
+    {
+        return CssClasses.Concatenate(
+            "cb-file-uploader-drop-zone",
+            CarbonBlazorInputSizeMapper.ToClass(Size),
+            IsDisabled ? "disabled" : string.Empty);
+    }
+
+    private CarbonBlazorButtonSize GetButtonSize() => Size switch
+    {
+        CarbonBlazorInputSize.Small => CarbonBlazorButtonSize.Small,
+        CarbonBlazorInputSize.Large => CarbonBlazorButtonSize.LargeProductive,
+        _ => CarbonBlazorButtonSize.Medium
+    };
+
+    private async Task OnFilesSelected(InputFileChangeEventArgs args)
+    {
+        List<IBrowserFile> selectedFiles = AllowMultiple
+            ? args.GetMultipleFiles().ToList()
+            : [args.File];
+
+        if (AllowMultiple)
+        {
+            _files.AddRange(selectedFiles);
+        }
+        else
+        {
+            _files = selectedFiles;
+        }
+
+        Files = _files;
+
+        if (FilesChanged.HasDelegate)
+        {
+            await FilesChanged.InvokeAsync(Files);
+        }
+
+        EditContext?.NotifyFieldChanged(FieldIdentifier);
+    }
+
+    private async Task RemoveFile(IBrowserFile file)
+    {
+        if (_files.Remove(file))
+        {
+            Files = _files;
+
+            if (FilesChanged.HasDelegate)
+            {
+                await FilesChanged.InvokeAsync(Files);
+            }
+
+            EditContext?.NotifyFieldChanged(FieldIdentifier);
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (Variant is CarbonBlazorFileUploaderVariant.DragAndDrop && _dropZoneInitialised is false)
+        {
+            await JsRuntime.InvokeVoidAsync("carbonBlazorFileUploader.init", _dropZoneId, _inputId, AllowMultiple);
+            _dropZoneInitialised = true;
+        }
+    }
+}

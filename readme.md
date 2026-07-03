@@ -2,13 +2,11 @@
 
 CarbonBlazor is a simple, opinionated implementation of the IBM [Carbon Design System](https://carbondesignsystem.com/) for Blazor.
 
-_Note that this is a work in progress and the components and documentation are incomplete and highly prone to change_
-
 [![NuGet version (Synonms.CarbonBlazor)](https://img.shields.io/nuget/v/Synonms.CarbonBlazor?label=Synonms.CarbonBlazor)](https://www.nuget.org/packages/Synonms.CarbonBlazor/)
 
 ## Usage
 
-Carbon Blazor is mostly just Blazor components and some CSS so requires very little setup.
+Setup Carbon Blazor as follows:
 
 - Install the NuGet package `Synonms.CarbonBlazor`
 - Add the global and isolated CSS files to your `wwwroot/index.html` file:
@@ -16,6 +14,11 @@ Carbon Blazor is mostly just Blazor components and some CSS so requires very lit
 ```
 <link rel="stylesheet" href="_content/Synonms.CarbonBlazor/css/carbonblazor.css"></link>
 <link rel="stylesheet" href="_content/Synonms.CarbonBlazor/Synonms.CarbonBlazor.bundle.scp.css" />
+```
+- Add the global JavaScript file to your `wwwroot/index.html` file:
+
+```
+<script src="_content/Synonms.CarbonBlazor/js/carbon-blazor.js"></script>
 ```
 - Add the CarbonBlazor dependencies in `Program.cs` or wherever you configure your dependency injection container:
 
@@ -72,8 +75,6 @@ Buttons are used to initialize an action. Button labels express what action will
 |          | Header         | Special case for buttons in the header bar             |
 |          | Input          | Special case for buttons embedded in input controls    |
 |          | Body           | Special case for buttons floating in the document body |
-
-//TODO
 
 ### ButtonSet
 
@@ -199,6 +200,37 @@ To constrain the user to a single selection, use a `Select` component instead.
 ```htmlinblazor
 <CarbonBlazorDropDown Id="SomeDropDown" Label="Dropdown label" @bind-Values="@_model.SomeDropDownValues" FieldIdentifier="@FieldIdentifier.Create(() => _model.SomeDropDownValues)" Items="@([DropDownItem<string>.Create("One"), DropDownItem<string>.Create("Two"), DropDownItem<string>.Create("Three"), DropDownItem<string>.Create("Four")])"/>
 ```
+
+### FileUploader
+
+File uploaders let users select one or more files, or drag and drop them into a drop zone.
+Drag-and-drop mode also requires the `_content/Synonms.CarbonBlazor/fileUploader.js` script to be loaded.
+
+```htmlinblazor
+<CarbonBlazorFileUploader Label="Upload files"
+                          Description="Select one or more files to upload."
+                          @bind-Files="@_files"
+                          FieldIdentifier="@FieldIdentifier.Create(() => _files)">
+</CarbonBlazorFileUploader>
+
+<CarbonBlazorFileUploader Label="Drop zone uploader"
+                          Description="Drag and drop files into the zone below."
+                          Variant="CarbonBlazorFileUploaderVariant.DragAndDrop"
+                          @bind-Files="@_dropZoneFiles"
+                          FieldIdentifier="@FieldIdentifier.Create(() => _dropZoneFiles)">
+</CarbonBlazorFileUploader>
+```
+
+| Property | Option | Notes |
+|----------|--------|-------|
+| Variant | Button | Default upload button |
+|  | DragAndDrop | Drop zone uploader |
+| Size | Small | 32px height |
+|  | Medium | 40px height |
+|  | Large | 48px height |
+| ButtonKind | Primary | Main call to action |
+|  | Tertiary | Default, less prominent action |
+| AllowMultiple | bool | Select or upload multiple files |
 
 ### Form
 
