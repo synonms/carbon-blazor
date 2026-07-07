@@ -16,15 +16,15 @@
             }
             @if (UserPanel is not null)
             {
-                <CarbonBlazorButton @ref="@_userAvatarButton" Kind="CarbonBlazorButtonKind.Ghost" Size="CarbonBlazorButtonSize.LargeExpressive" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.UserAvatar" ClickedCallback="@OnUserAvatarClicked"></CarbonBlazorButton>
+                <CarbonBlazorHeaderButton @ref="@_userAvatarButton" Icon="CarbonBlazorIcon.UserAvatar" ClickedCallback="@OnUserAvatarClicked"></CarbonBlazorHeaderButton>
             }
             @if (IsThemeEnabled)
             {
-                <CarbonBlazorButton @ref="@_themeButton" Kind="CarbonBlazorButtonKind.Ghost" Size="CarbonBlazorButtonSize.LargeExpressive" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.ColourPalette" ClickedCallback="@OnThemeClicked"></CarbonBlazorButton>
+                <CarbonBlazorHeaderButton @ref="@_themeButton" Icon="CarbonBlazorIcon.ColourPalette" ClickedCallback="@OnThemeClicked"></CarbonBlazorHeaderButton>
             }
             @if (SwitcherPanel is not null)
             {
-                <CarbonBlazorButton @ref="@_switcherButton" Kind="CarbonBlazorButtonKind.Ghost" Size="CarbonBlazorButtonSize.LargeExpressive" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.Switcher" ClickedCallback="@OnSwitcherClicked"></CarbonBlazorButton>
+                <CarbonBlazorHeaderButton @ref="@_switcherButton" Icon="CarbonBlazorIcon.Switcher" ClickedCallback="@OnSwitcherClicked"></CarbonBlazorHeaderButton>
             }
         </CarbonBlazorStack>
 
@@ -61,9 +61,9 @@
 
 @code {
     private CarbonBlazorSidebar _sidebar = null!;
-    private CarbonBlazorButton _switcherButton = null!;
-    private CarbonBlazorButton _themeButton = null!;
-    private CarbonBlazorButton _userAvatarButton = null!;
+    private CarbonBlazorHeaderButton _switcherButton = null!;
+    private CarbonBlazorHeaderButton _themeButton = null!;
+    private CarbonBlazorHeaderButton _userAvatarButton = null!;
     private CarbonBlazorHeaderActionPanel _switcherPanel = null!;
     private CarbonBlazorHeaderActionPanel _themePanel = null!;
     private CarbonBlazorHeaderActionPanel _userPanel = null!;

@@ -1,0 +1,49 @@
+.cb-icon-indicator {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.5rem;
+}
+
+.red {
+    color: var(--cb-support-error);
+    fill: var(--cb-support-error);
+    stroke: var(--cb-icon-on-color);
+}
+
+.orange {
+    color: var(--cb-support-caution-major);
+    fill: var(--cb-support-caution-major);
+    stroke: var(--cb-icon-on-color);
+}
+
+.yellow {
+    color: var(--cb-support-caution-minor);
+    fill: var(--cb-support-caution-minor);
+    stroke: var(--cb-icon-on-color);
+}
+
+.green {
+    color: var(--cb-support-success);
+    fill: var(--cb-support-success);
+    stroke: var(--cb-icon-on-color);
+}
+
+.blue {
+    color: var(--cb-support-info);
+    fill: var(--cb-support-info);
+    stroke: var(--cb-icon-on-color);
+}
+
+.purple {
+    color: var(--cb-support-caution-undefined);
+    fill: var(--cb-support-caution-undefined);
+    stroke: var(--cb-icon-on-color);
+}
+
+.grey {
+    color: var(--cb-gray-60);
+    fill: var(--cb-gray-60);
+    stroke: var(--cb-icon-on-color);
+}

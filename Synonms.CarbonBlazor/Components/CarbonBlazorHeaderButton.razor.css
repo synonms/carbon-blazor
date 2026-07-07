@@ -1,0 +1,5 @@
+.cb-header-button > svg {
+    color: var(--cb-support-error);
+    fill: var(--cb-support-error);
+    stroke: var(--cb-icon-on-color);
+}

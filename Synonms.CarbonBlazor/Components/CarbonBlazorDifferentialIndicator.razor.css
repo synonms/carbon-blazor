@@ -1,0 +1,26 @@
+.cb-differential-indicator {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.5rem;
+}
+
+.red {
+    color: var(--cb-support-error);
+    fill: var(--cb-support-error);
+}
+.green {
+    color: var(--cb-support-success);
+    fill: var(--cb-support-success);
+}
+
+.blue {
+    color: var(--cb-support-info);
+    fill: var(--cb-support-info);
+}
+
+.grey {
+    color: var(--cb-gray-60);
+    fill: var(--cb-gray-60);
+}

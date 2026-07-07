@@ -1,0 +1,50 @@
+.cb-shape-indicator {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.5rem;
+}
+
+.cb-shape-indicator-label {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.5rem;
+}
+
+.red {
+    color: var(--cb-support-error);
+    fill: var(--cb-support-error);
+}
+
+.orange {
+    color: var(--cb-support-caution-major);
+    fill: var(--cb-support-caution-major);
+}
+
+.yellow {
+    color: var(--cb-support-caution-minor);
+    fill: var(--cb-support-caution-minor);
+}
+
+.green {
+    color: var(--cb-support-success);
+    fill: var(--cb-support-success);
+}
+
+.blue {
+    color: var(--cb-support-info);
+    fill: var(--cb-support-info);
+}
+
+.purple {
+    color: var(--cb-support-caution-undefined);
+    fill: var(--cb-support-caution-undefined);
+}
+
+.grey {
+    color: var(--cb-gray-60);
+    fill: var(--cb-gray-60);
+}

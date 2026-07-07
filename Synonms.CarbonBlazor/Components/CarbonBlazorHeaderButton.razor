@@ -1,0 +1,39 @@
+<div class="cb-header-button">
+    <CarbonBlazorButton @ref="_button" Kind="CarbonBlazorButtonKind.Ghost" Size="CarbonBlazorButtonSize.LargeExpressive" Display="CarbonBlazorButtonDisplay.IconOnly" 
+                        Icon="@Icon" ClickedCallback="@ClickedCallback"></CarbonBlazorButton>
+    
+    @if (_isBadgeShown)
+    {
+        @GetIcon()
+    }
+</div>
+
+@code {
+    private CarbonBlazorButton _button = null!;
+    private bool _isBadgeShown;
+    
+    [Parameter, EditorRequired]
+    public CarbonBlazorIcon Icon { get; set; }
+    
+    [Parameter]
+    public EventCallback ClickedCallback { get; set; } = EventCallback.Empty;
+    
+    public bool IsToggled
+    {
+        get => _button.IsToggled; 
+        set => _button.IsToggled = value;
+    }
+
+    public void ShowBadge()
+    {
+        _isBadgeShown = true;
+    }
+
+    public void HideBadge()
+    {
+        _isBadgeShown = false;
+    }
+
+    private MarkupString GetIcon() =>
+        (MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.CircleFill, sizeInPixels: 16, resizeViewBox: false);
+}

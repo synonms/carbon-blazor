@@ -472,6 +472,46 @@ if (isSuperExciting)
         TODO
     </CarbonBlazorPane>
 
+    <CarbonBlazorPane Title="Status Indicators">
+        <CarbonBlazorText Type="CarbonBlazorTextType.HeadingCompact">Shape Indicator</CarbonBlazorText>
+        <CarbonBlazorStack FlexDirection="FlexDirection.Column" Gap="1rem">
+            <CarbonBlazorShapeIndicator Type="CarbonBlazorShapeIndicatorType.Failed" Label="Failed"></CarbonBlazorShapeIndicator>
+            <CarbonBlazorShapeIndicator Type="CarbonBlazorShapeIndicatorType.Critical" Label="Critical"></CarbonBlazorShapeIndicator>
+            <CarbonBlazorShapeIndicator Type="CarbonBlazorShapeIndicatorType.High" Label="High"></CarbonBlazorShapeIndicator>
+            <CarbonBlazorShapeIndicator Type="CarbonBlazorShapeIndicatorType.Medium" Label="Medium"></CarbonBlazorShapeIndicator>
+            <CarbonBlazorShapeIndicator Type="CarbonBlazorShapeIndicatorType.Low" Label="Low"></CarbonBlazorShapeIndicator>
+            <CarbonBlazorShapeIndicator Type="CarbonBlazorShapeIndicatorType.Cautious" Label="Cautious"></CarbonBlazorShapeIndicator>
+            <CarbonBlazorShapeIndicator Type="CarbonBlazorShapeIndicatorType.Undefined" Label="Undefined"></CarbonBlazorShapeIndicator>
+            <CarbonBlazorShapeIndicator Type="CarbonBlazorShapeIndicatorType.Stable" Label="Stable"></CarbonBlazorShapeIndicator>
+            <CarbonBlazorShapeIndicator Type="CarbonBlazorShapeIndicatorType.Informative" Label="Informative"></CarbonBlazorShapeIndicator>
+            <CarbonBlazorShapeIndicator Type="CarbonBlazorShapeIndicatorType.Incomplete" Label="Incomplete"></CarbonBlazorShapeIndicator>
+            <CarbonBlazorShapeIndicator Type="CarbonBlazorShapeIndicatorType.Draft" Label="Draft"></CarbonBlazorShapeIndicator>
+        </CarbonBlazorStack>
+        <CarbonBlazorText Type="CarbonBlazorTextType.HeadingCompact">Icon Indicator</CarbonBlazorText>
+        <CarbonBlazorStack FlexDirection="FlexDirection.Column" Gap="1rem">
+            <CarbonBlazorIconIndicator Type="CarbonBlazorIconIndicatorType.Failed" Label="Failed"></CarbonBlazorIconIndicator>
+            <CarbonBlazorIconIndicator Type="CarbonBlazorIconIndicatorType.CautionMajor" Label="Caution Major"></CarbonBlazorIconIndicator>
+            <CarbonBlazorIconIndicator Type="CarbonBlazorIconIndicatorType.CautionMinor" Label="Caution Minor"></CarbonBlazorIconIndicator>
+            <CarbonBlazorIconIndicator Type="CarbonBlazorIconIndicatorType.Undefined" Label="Undefined"></CarbonBlazorIconIndicator>
+            <CarbonBlazorIconIndicator Type="CarbonBlazorIconIndicatorType.Succeeded" Label="Succeeded"></CarbonBlazorIconIndicator>
+            <CarbonBlazorIconIndicator Type="CarbonBlazorIconIndicatorType.Normal" Label="Normal"></CarbonBlazorIconIndicator>
+            <CarbonBlazorIconIndicator Type="CarbonBlazorIconIndicatorType.InProgress" Label="In Progress"></CarbonBlazorIconIndicator>
+            <CarbonBlazorIconIndicator Type="CarbonBlazorIconIndicatorType.Incomplete" Label="Incomplete"></CarbonBlazorIconIndicator>
+            <CarbonBlazorIconIndicator Type="CarbonBlazorIconIndicatorType.NotStarted" Label="Not Started"></CarbonBlazorIconIndicator>
+            <CarbonBlazorIconIndicator Type="CarbonBlazorIconIndicatorType.Pending" Label="Pending"></CarbonBlazorIconIndicator>
+            <CarbonBlazorIconIndicator Type="CarbonBlazorIconIndicatorType.Unknown" Label="Unknown"></CarbonBlazorIconIndicator>
+            <CarbonBlazorIconIndicator Type="CarbonBlazorIconIndicatorType.Informative" Label="Informative"></CarbonBlazorIconIndicator>
+        </CarbonBlazorStack>
+        <CarbonBlazorText Type="CarbonBlazorTextType.HeadingCompact">Differential Indicator</CarbonBlazorText>
+        <CarbonBlazorStack FlexDirection="FlexDirection.Column" Gap="1rem">
+            <CarbonBlazorDifferentialIndicator Type="CarbonBlazorDifferentialIndicatorType.CaretDown" Label="-10%"></CarbonBlazorDifferentialIndicator>
+            <CarbonBlazorDifferentialIndicator Type="CarbonBlazorDifferentialIndicatorType.CaretUp" Label="+10%"></CarbonBlazorDifferentialIndicator>
+            <CarbonBlazorDifferentialIndicator Type="CarbonBlazorDifferentialIndicatorType.ArrowDown" Label="-5%"></CarbonBlazorDifferentialIndicator>
+            <CarbonBlazorDifferentialIndicator Type="CarbonBlazorDifferentialIndicatorType.ArrowUp" Label="+5%"></CarbonBlazorDifferentialIndicator>
+            <CarbonBlazorDifferentialIndicator Type="CarbonBlazorDifferentialIndicatorType.Neutral" Label="0%"></CarbonBlazorDifferentialIndicator>
+        </CarbonBlazorStack>
+    </CarbonBlazorPane>
+
     <CarbonBlazorPane Title="Structured List">
         <CarbonBlazorStructuredList RowSize="CarbonBlazorStructuredListRowSize.Normal">
             <HeaderCells>
