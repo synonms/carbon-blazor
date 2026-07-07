@@ -2,16 +2,16 @@
     <li class="cb-sidebar-submenu" onclick="@(() => Toggle())">
         @if (Icon is not null)
         {
-            @((MarkupString)CarbonBlazorIconMapper.ToSvg(Icon.Value))
+            <CarbonBlazorIcon Type="@(Icon.Value)"></CarbonBlazorIcon>
         }
         <span style="flex: 1">@Text</span>
         @if (_isExpanded)
         {
-            @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.ChevronUp))
+            <CarbonBlazorIcon Type="CarbonBlazorIconType.ChevronUp"></CarbonBlazorIcon>
         }
         else
         {
-            @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.ChevronDown))
+            <CarbonBlazorIcon Type="CarbonBlazorIconType.ChevronDown"></CarbonBlazorIcon>
         }
     </li>
     
@@ -27,7 +27,7 @@
     private bool _isExpanded;
     
     [Parameter]
-    public CarbonBlazorIcon? Icon { get; set; }
+    public CarbonBlazorIconType? Icon { get; set; }
     
     [Parameter]
     [EditorRequired]

@@ -4,7 +4,9 @@
         @ChildContent
         @if (External)
         {
-            <span class="cb-link-icon" aria-hidden="true">@((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.Launch))</span>
+            <span class="cb-link-icon" aria-hidden="true">
+                <CarbonBlazorIcon Type="CarbonBlazorIconType.Launch"></CarbonBlazorIcon>
+            </span>
         }
     </span>
 }
@@ -14,7 +16,9 @@ else if (string.IsNullOrWhiteSpace(Href))
         @ChildContent
         @if (External)
         {
-            <span class="cb-link-icon" aria-hidden="true">@((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.Launch))</span>
+            <span class="cb-link-icon" aria-hidden="true">
+                <CarbonBlazorIcon Type="CarbonBlazorIconType.Launch"></CarbonBlazorIcon>
+            </span>
         }
     </button>
 }
@@ -27,7 +31,9 @@ else
             @ChildContent
             @if (External)
             {
-                <span class="cb-link-icon" aria-hidden="true">@((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.Launch))</span>
+                <span class="cb-link-icon" aria-hidden="true">
+                    <CarbonBlazorIcon Type="CarbonBlazorIconType.Launch"></CarbonBlazorIcon>
+                </span>
                 @if (Target == "_blank")
                 {
                     <span class="cb-visually-hidden"> (Opens in new tab)</span>
@@ -41,7 +47,9 @@ else
             @ChildContent
             @if (External)
             {
-                <span class="cb-link-icon" aria-hidden="true">@((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.Launch))</span>
+                <span class="cb-link-icon" aria-hidden="true">
+                    <CarbonBlazorIcon Type="CarbonBlazorIconType.Launch"></CarbonBlazorIcon>
+                </span>
                 @if (Target == "_blank")
                 {
                     <span class="cb-visually-hidden"> (Opens in new tab)</span>

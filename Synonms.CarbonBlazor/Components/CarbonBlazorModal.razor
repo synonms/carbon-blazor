@@ -14,7 +14,7 @@
                     }
                 </div>
                 <button class="cb-modal-close-button" type="button" onclick="@(() => Close())">
-                    @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.Cancel))
+                    <CarbonBlazorIcon Type="CarbonBlazorIconType.Cancel"></CarbonBlazorIcon>
                 </button>
             </div>
             @ChildContent

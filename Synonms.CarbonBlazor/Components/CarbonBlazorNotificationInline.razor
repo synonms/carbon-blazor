@@ -2,14 +2,14 @@
 {
     <div class="@GetClass()">
         <div class="cb-notification-inline-icon">
-            @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorNotificationLevelMapper.ToIcon(_notification.Level), 20))
+            <CarbonBlazorIcon Type="@(CarbonBlazorNotificationLevelMapper.ToIcon(_notification.Level))" Size="CarbonBlazorIconSize.Large"></CarbonBlazorIcon>
         </div>
         <div class="cb-notification-inline-content-wrapper">
             <CarbonBlazorText Type="CarbonBlazorTextType.HeadingCompact">@_notification.Title</CarbonBlazorText>
             <CarbonBlazorText Type="CarbonBlazorTextType.BodyCompact">@_notification.Message</CarbonBlazorText>
         </div>
         <button class="cb-notification-inline-close-button" type="button" onclick="@(() => Hide())">
-            @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.Cancel, 20))
+            <CarbonBlazorIcon Type="CarbonBlazorIconType.Cancel" Size="CarbonBlazorIconSize.Large"></CarbonBlazorIcon>
         </button>
     </div>
 }

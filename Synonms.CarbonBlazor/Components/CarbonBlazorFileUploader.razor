@@ -18,7 +18,7 @@
                                 Display="CarbonBlazorButtonDisplay.TextAndIcon"
                                 Size="@GetButtonSize()"
                                 Text="@ButtonText"
-                                Icon="@ButtonIcon"
+                                IconType="@ButtonIconType"
                                 IsDisabled="@IsDisabled" ClickedCallback="@(_ => JsRuntime.ClickAsync(_inputId))">
             </CarbonBlazorButton>
         </div>
@@ -41,7 +41,7 @@
             {
                 <li class="cb-file-uploader-file">
                     <CarbonBlazorText Type="CarbonBlazorTextType.BodyCompact" WhiteSpace="WhiteSpace.Nowrap">@file.Name</CarbonBlazorText>
-                    <CarbonBlazorButton Type="CarbonBlazorButtonType.Button" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.Cancel" 
+                    <CarbonBlazorButton Type="CarbonBlazorButtonType.Button" Display="CarbonBlazorButtonDisplay.IconOnly" IconType="CarbonBlazorIconType.Cancel" 
                                         Size="CarbonBlazorButtonSize.Small" Kind="CarbonBlazorButtonKind.Ghost" IsDisabled="@IsDisabled" 
                                         ClickedCallback="@(() => RemoveFile(file))" />
                 </li>
@@ -108,7 +108,7 @@
     public CarbonBlazorButtonKind ButtonKind { get; set; } = CarbonBlazorButtonKind.Tertiary;
 
     [Parameter]
-    public CarbonBlazorIcon ButtonIcon { get; set; } = CarbonBlazorIcon.Add;
+    public CarbonBlazorIconType ButtonIconType { get; set; } = CarbonBlazorIconType.Add;
 
     [Parameter]
     public bool AllowMultiple { get; set; } = true;

@@ -22,10 +22,10 @@
             }
         </svg>
         <button class="cb-decimal-input-button decrement" type="button" onclick="@(() => Decrement())" disabled="@IsDisabled">
-            @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.Subtract))
+            <CarbonBlazorIcon Type="CarbonBlazorIconType.Subtract"></CarbonBlazorIcon>
         </button>
         <button class="cb-decimal-input-button increment" type="button" onclick="@(() => Increment())" disabled="@IsDisabled">
-            @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.Add))
+            <CarbonBlazorIcon Type="CarbonBlazorIconType.Add"></CarbonBlazorIcon>
         </button>
     </div>
 

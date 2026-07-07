@@ -10,7 +10,7 @@
     <span class="cb-menu-item-selection">
         @if (IsSelected)
         {
-            @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.Checkmark, 16))
+            <CarbonBlazorIcon Type="CarbonBlazorIconType.Checkmark"></CarbonBlazorIcon>
         }
     </span>
 
@@ -23,7 +23,7 @@
         }
         @if (SubItems != null)
         {
-            @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.ChevronRight, 16))
+            <CarbonBlazorIcon Type="CarbonBlazorIconType.ChevronRight"></CarbonBlazorIcon>
         }
     </span>
 

@@ -14,9 +14,9 @@ public class NavigationItem
     
     public string Href { get; }
     
-    public CarbonBlazorIcon? Icon { get; init; }
+    public CarbonBlazorIconType? Icon { get; init; }
 
     public static NavigationItem Create(string text, string href) => new(text, href);
     
-    public static NavigationItem Create(CarbonBlazorIcon icon, string text, string href) => new(text, href) { Icon = icon };
+    public static NavigationItem Create(CarbonBlazorIconType iconType, string text, string href) => new(text, href) { Icon = iconType };
 }

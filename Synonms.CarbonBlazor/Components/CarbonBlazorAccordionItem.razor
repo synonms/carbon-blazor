@@ -4,11 +4,11 @@
         <div class="cb-accordion-arrow">
             @if (_isExpanded)
             {
-                @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.ChevronUp))
+                <CarbonBlazorIcon Type="CarbonBlazorIconType.ChevronUp"></CarbonBlazorIcon>
             }
             else
             {
-                @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.ChevronDown))
+                <CarbonBlazorIcon Type="CarbonBlazorIconType.ChevronDown"></CarbonBlazorIcon>
             }
         </div>
     </div>

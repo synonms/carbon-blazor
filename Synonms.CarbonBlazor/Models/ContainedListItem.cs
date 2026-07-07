@@ -11,5 +11,5 @@ public class ContainedListItem
     
     public string Text { get; }
     
-    public CarbonBlazorIcon? Icon { get; set; }
+    public CarbonBlazorIconType? Icon { get; set; }
 }

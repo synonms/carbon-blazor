@@ -5,16 +5,16 @@
     }
     @if (Display is not CarbonBlazorButtonDisplay.TextOnly)
     {
-        @GetIcon()
+        <CarbonBlazorIcon Type="@(IsToggled ? ToggledIconType : IconType)" Size="@(Size == CarbonBlazorButtonSize.LargeExpressive ? CarbonBlazorIconSize.Large : CarbonBlazorIconSize.Default)"></CarbonBlazorIcon>
     }
 </button>
 
 @code {
     [Parameter]
-    public CarbonBlazorIcon Icon { get; set; } = CarbonBlazorIcon.None;
+    public CarbonBlazorIconType IconType { get; set; } = CarbonBlazorIconType.None;
 
     [Parameter]
-    public CarbonBlazorIcon ToggledIcon { get; set; } = CarbonBlazorIcon.Cancel;
+    public CarbonBlazorIconType ToggledIconType { get; set; } = CarbonBlazorIconType.Cancel;
 
     [Parameter]
     public string Text { get; set; } = string.Empty;
@@ -54,7 +54,4 @@
 
         return CssClasses.Concatenate(baseClass, kindClass, displayClass, sizeClass, Class);
     }
-
-    private MarkupString GetIcon() => 
-        (MarkupString)CarbonBlazorIconMapper.ToSvg(IsToggled ? ToggledIcon : Icon, Size == CarbonBlazorButtonSize.LargeExpressive ? 20 : 16);
 }

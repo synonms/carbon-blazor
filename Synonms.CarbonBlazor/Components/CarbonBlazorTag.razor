@@ -1,15 +1,15 @@
 ﻿@if (_isVisible)
 {
-    <div class="cb-tag-wrapper @CarbonBlazorTagTypeMapper.ToClass(Type) @CarbonBlazorInputSizeMapper.ToClass(Size) @CarbonBlazorTagColourMapper.ToClass(Colour) @(Icon == CarbonBlazorIcon.None ? string.Empty : "decorated")">
-        @if (Icon != CarbonBlazorIcon.None)
+    <div class="cb-tag-wrapper @CarbonBlazorTagTypeMapper.ToClass(Type) @CarbonBlazorInputSizeMapper.ToClass(Size) @CarbonBlazorTagColourMapper.ToClass(Colour) @(IconType == CarbonBlazorIconType.None ? string.Empty : "decorated")">
+        @if (IconType != CarbonBlazorIconType.None)
         {
-            @((MarkupString)CarbonBlazorIconMapper.ToSvg(Icon))
+            <CarbonBlazorIcon Type="IconType"></CarbonBlazorIcon>
         }
         <span class="cb-tag-text">@Text</span>
         @if (Type == CarbonBlazorTagType.Dismissible)
         {
             <button class="cb-tag-close-button" type="button" onclick="@(() => Dismiss())">
-                @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.Cancel))
+                <CarbonBlazorIcon Type="CarbonBlazorIconType.Cancel"></CarbonBlazorIcon>
             </button>
         }
     </div>
@@ -23,7 +23,7 @@
     public string Text { get; set; } = string.Empty;
     
     [Parameter]
-    public CarbonBlazorIcon Icon { get; set; } = CarbonBlazorIcon.None;
+    public CarbonBlazorIconType IconType { get; set; } = CarbonBlazorIconType.None;
 
     [Parameter]
     public CarbonBlazorTagType Type { get; set; } = CarbonBlazorTagType.ReadOnly;

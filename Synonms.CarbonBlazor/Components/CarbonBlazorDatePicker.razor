@@ -20,14 +20,14 @@
             }
         </svg>
         <button class="cb-date-picker-button" type="button" onclick="@(() => ToggleCalendar())" disabled="@IsDisabled">
-            @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.Calendar))
+            <CarbonBlazorIcon Type="CarbonBlazorIconType.Calendar"></CarbonBlazorIcon>
         </button>
 
         <div class="cb-date-picker-calendar @CarbonBlazorLayerMapper.ToClass(Layer) @(_isExpanded ? "" : "collapsed")">
             <div class="cb-date-picker-calendar-header-wrapper">
-                <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.ChevronLeft" Size="CarbonBlazorButtonSize.Small" ClickedCallback="@OnPreviousMonthClicked"></CarbonBlazorButton>
+                <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.IconOnly" IconType="CarbonBlazorIconType.ChevronLeft" Size="CarbonBlazorButtonSize.Small" ClickedCallback="@OnPreviousMonthClicked"></CarbonBlazorButton>
                 @_firstDayOfDisplayedMonth.ToString("MMM yyyy")
-                <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.IconOnly" Icon="CarbonBlazorIcon.ChevronRight" Size="CarbonBlazorButtonSize.Small" ClickedCallback="@OnNextMonthClicked"></CarbonBlazorButton>
+                <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.IconOnly" IconType="CarbonBlazorIconType.ChevronRight" Size="CarbonBlazorButtonSize.Small" ClickedCallback="@OnNextMonthClicked"></CarbonBlazorButton>
             </div>
             <table>
                 <thead>

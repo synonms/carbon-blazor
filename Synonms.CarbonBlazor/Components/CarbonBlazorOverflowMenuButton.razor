@@ -10,7 +10,7 @@
             aria-expanded="@_isOpen"
             disabled="@IsDisabled"
             @onclick="Toggle">
-        @((MarkupString)CarbonBlazorIconMapper.ToSvg(TriggerIcon, 16))
+        <CarbonBlazorIcon Type="@TriggerIconType"></CarbonBlazorIcon>
     </button>
     <CascadingValue Name="CloseMenu" Value="_closeMenuAction">
         <CarbonBlazorMenu Size="@Size" IsOpen="@_isOpen">
@@ -30,7 +30,7 @@
     public bool IsDisabled { get; set; }
 
     [Parameter]
-    public CarbonBlazorIcon TriggerIcon { get; set; } = CarbonBlazorIcon.OverflowMenuVertical;
+    public CarbonBlazorIconType TriggerIconType { get; set; } = CarbonBlazorIconType.OverflowMenuVertical;
 
     [Parameter]
     [EditorRequired]

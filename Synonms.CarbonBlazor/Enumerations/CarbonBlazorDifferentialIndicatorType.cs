@@ -11,13 +11,13 @@ public enum CarbonBlazorDifferentialIndicatorType
 
 public static class CarbonBlazorDifferentialIndicatorTypeMapper
 {
-    public static CarbonBlazorIcon ToIcon(CarbonBlazorDifferentialIndicatorType type) => type switch
+    public static CarbonBlazorIconType ToIcon(CarbonBlazorDifferentialIndicatorType type) => type switch
     {
-        CarbonBlazorDifferentialIndicatorType.CaretUp => CarbonBlazorIcon.CaretUp,
-        CarbonBlazorDifferentialIndicatorType.CaretDown => CarbonBlazorIcon.CaretDown,
-        CarbonBlazorDifferentialIndicatorType.ArrowUp => CarbonBlazorIcon.ArrowUpRight,
-        CarbonBlazorDifferentialIndicatorType.ArrowDown => CarbonBlazorIcon.ArrowDownRight,
-        _ => CarbonBlazorIcon.HorizontalLineSolid
+        CarbonBlazorDifferentialIndicatorType.CaretUp => CarbonBlazorIconType.CaretUp,
+        CarbonBlazorDifferentialIndicatorType.CaretDown => CarbonBlazorIconType.CaretDown,
+        CarbonBlazorDifferentialIndicatorType.ArrowUp => CarbonBlazorIconType.ArrowUpRight,
+        CarbonBlazorDifferentialIndicatorType.ArrowDown => CarbonBlazorIconType.ArrowDownRight,
+        _ => CarbonBlazorIconType.HorizontalLineSolid
     };
     
     public static string ToClass(CarbonBlazorDifferentialIndicatorType type) => type switch

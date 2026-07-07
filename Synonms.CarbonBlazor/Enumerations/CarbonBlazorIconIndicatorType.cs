@@ -18,20 +18,20 @@ public enum CarbonBlazorIconIndicatorType
 
 public static class CarbonBlazorIconIndicatorTypeMapper
 {
-    public static CarbonBlazorIcon ToIcon(CarbonBlazorIconIndicatorType type) => type switch
+    public static CarbonBlazorIconType ToIcon(CarbonBlazorIconIndicatorType type) => type switch
     {
-        CarbonBlazorIconIndicatorType.Undefined => CarbonBlazorIcon.UndefinedFilled,
-        CarbonBlazorIconIndicatorType.Failed => CarbonBlazorIcon.ErrorFilled,
-        CarbonBlazorIconIndicatorType.CautionMajor => CarbonBlazorIcon.WarningAltInvertedFilled,
-        CarbonBlazorIconIndicatorType.CautionMinor => CarbonBlazorIcon.WarningAltFilled,
-        CarbonBlazorIconIndicatorType.Succeeded => CarbonBlazorIcon.CheckmarkFilled,
-        CarbonBlazorIconIndicatorType.Normal => CarbonBlazorIcon.CheckmarkOutline,
-        CarbonBlazorIconIndicatorType.InProgress => CarbonBlazorIcon.InProgress,
-        CarbonBlazorIconIndicatorType.Incomplete => CarbonBlazorIcon.Incomplete,
-        CarbonBlazorIconIndicatorType.NotStarted => CarbonBlazorIcon.CircleDash,
-        CarbonBlazorIconIndicatorType.Pending => CarbonBlazorIcon.PendingFilled,
-        CarbonBlazorIconIndicatorType.Informative => CarbonBlazorIcon.InformationSquareFilled,
-        _ => CarbonBlazorIcon.UnknownFilled
+        CarbonBlazorIconIndicatorType.Undefined => CarbonBlazorIconType.UndefinedFilled,
+        CarbonBlazorIconIndicatorType.Failed => CarbonBlazorIconType.ErrorFilled,
+        CarbonBlazorIconIndicatorType.CautionMajor => CarbonBlazorIconType.WarningAltInvertedFilled,
+        CarbonBlazorIconIndicatorType.CautionMinor => CarbonBlazorIconType.WarningAltFilled,
+        CarbonBlazorIconIndicatorType.Succeeded => CarbonBlazorIconType.CheckmarkFilled,
+        CarbonBlazorIconIndicatorType.Normal => CarbonBlazorIconType.CheckmarkOutline,
+        CarbonBlazorIconIndicatorType.InProgress => CarbonBlazorIconType.InProgress,
+        CarbonBlazorIconIndicatorType.Incomplete => CarbonBlazorIconType.Incomplete,
+        CarbonBlazorIconIndicatorType.NotStarted => CarbonBlazorIconType.CircleDash,
+        CarbonBlazorIconIndicatorType.Pending => CarbonBlazorIconType.PendingFilled,
+        CarbonBlazorIconIndicatorType.Informative => CarbonBlazorIconType.InformationSquareFilled,
+        _ => CarbonBlazorIconType.UnknownFilled
     };
     
     public static string ToClass(CarbonBlazorIconIndicatorType type) => type switch

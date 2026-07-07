@@ -14,7 +14,7 @@
                             <div class="cb-contained-list-item-content">
                                 @if (item.Icon is not null)
                                 {
-                                    @((MarkupString)CarbonBlazorIconMapper.ToSvg(item.Icon.Value))
+                                    <CarbonBlazorIcon Type="@(item.Icon.Value)"></CarbonBlazorIcon>
                                 }
                                 <div>@item.Text</div>
                             </div>

@@ -5,7 +5,7 @@
             foreach (ProgressStep step in Progress.Steps)
             {
                 <li class="cb-progress-step @step.Status.ToString().ToLower()">
-                    @((MarkupString)CarbonBlazorIconMapper.ToSvg(step.Icon))
+                    <CarbonBlazorIcon Type="@step.IconType"></CarbonBlazorIcon>
                     <div class="cb-progress-step-text">
                         <CarbonBlazorText Type="CarbonBlazorTextType.BodyCompact" Colour="CarbonBlazorTextColour.Primary">@step.Label</CarbonBlazorText>
                         @if (string.IsNullOrWhiteSpace(step.HelperText) is false)

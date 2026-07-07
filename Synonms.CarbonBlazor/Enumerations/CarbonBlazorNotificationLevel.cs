@@ -19,12 +19,12 @@ public static class CarbonBlazorNotificationLevelMapper
         _ => string.Empty
     };
     
-    public static CarbonBlazorIcon ToIcon(CarbonBlazorNotificationLevel level) => level switch
+    public static CarbonBlazorIconType ToIcon(CarbonBlazorNotificationLevel level) => level switch
     {
-        CarbonBlazorNotificationLevel.Information => CarbonBlazorIcon.InformationFilled,
-        CarbonBlazorNotificationLevel.Success => CarbonBlazorIcon.CheckmarkFilled,
-        CarbonBlazorNotificationLevel.Warning => CarbonBlazorIcon.WarningFilled,
-        CarbonBlazorNotificationLevel.Error => CarbonBlazorIcon.ErrorFilled,
-        _ => CarbonBlazorIcon.InformationFilled
+        CarbonBlazorNotificationLevel.Information => CarbonBlazorIconType.InformationFilled,
+        CarbonBlazorNotificationLevel.Success => CarbonBlazorIconType.CheckmarkFilled,
+        CarbonBlazorNotificationLevel.Warning => CarbonBlazorIconType.WarningFilled,
+        CarbonBlazorNotificationLevel.Error => CarbonBlazorIconType.ErrorFilled,
+        _ => CarbonBlazorIconType.InformationFilled
     };
 }

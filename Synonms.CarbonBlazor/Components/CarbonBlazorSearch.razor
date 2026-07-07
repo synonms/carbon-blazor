@@ -1,10 +1,10 @@
 ﻿<div class="@GetWrapperClass()">
     <button class="cb-search-button search" type="button" onclick="@(() => OnSearchClicked())" disabled="@IsDisabled">
-        @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.Search))
+        <CarbonBlazorIcon Type="CarbonBlazorIconType.Search"></CarbonBlazorIcon>
     </button>
     <input class="@GetInputClass()" type="text" value="@SearchText" @onchange="@(args => OnSearchTextChanged(args.Value?.ToString() ?? string.Empty))" placeholder="Search" disabled="@IsDisabled"/>
     <button class="cb-search-button cancel" type="button" onclick="@(() => OnClearClicked())" disabled="@IsDisabled">
-        @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.Cancel))
+        <CarbonBlazorIcon Type="CarbonBlazorIconType.Cancel"></CarbonBlazorIcon>
     </button>
 </div>
 

@@ -18,20 +18,20 @@ public enum CarbonBlazorShapeIndicatorType
 
 public static class CarbonBlazorShapeIndicatorTypeMapper
 {
-    public static CarbonBlazorIcon ToIcon(CarbonBlazorShapeIndicatorType type) => type switch
+    public static CarbonBlazorIconType ToIcon(CarbonBlazorShapeIndicatorType type) => type switch
     {
-        CarbonBlazorShapeIndicatorType.Undefined => CarbonBlazorIcon.DiamondFill,
-        CarbonBlazorShapeIndicatorType.Failed => CarbonBlazorIcon.Critical,
-        CarbonBlazorShapeIndicatorType.Critical => CarbonBlazorIcon.CriticalSeverity,
-        CarbonBlazorShapeIndicatorType.High => CarbonBlazorIcon.Caution,
-        CarbonBlazorShapeIndicatorType.Medium => CarbonBlazorIcon.DiamondFill,
-        CarbonBlazorShapeIndicatorType.Low => CarbonBlazorIcon.LowSeverity,
-        CarbonBlazorShapeIndicatorType.Cautious => CarbonBlazorIcon.Caution,
-        CarbonBlazorShapeIndicatorType.Stable => CarbonBlazorIcon.CircleFill,
-        CarbonBlazorShapeIndicatorType.Informative => CarbonBlazorIcon.SquareFill,
-        CarbonBlazorShapeIndicatorType.Incomplete => CarbonBlazorIcon.Incomplete,
-        CarbonBlazorShapeIndicatorType.Draft => CarbonBlazorIcon.CircleStroke,
-        _ => CarbonBlazorIcon.CircleStroke
+        CarbonBlazorShapeIndicatorType.Undefined => CarbonBlazorIconType.DiamondFill,
+        CarbonBlazorShapeIndicatorType.Failed => CarbonBlazorIconType.Critical,
+        CarbonBlazorShapeIndicatorType.Critical => CarbonBlazorIconType.CriticalSeverity,
+        CarbonBlazorShapeIndicatorType.High => CarbonBlazorIconType.Caution,
+        CarbonBlazorShapeIndicatorType.Medium => CarbonBlazorIconType.DiamondFill,
+        CarbonBlazorShapeIndicatorType.Low => CarbonBlazorIconType.LowSeverity,
+        CarbonBlazorShapeIndicatorType.Cautious => CarbonBlazorIconType.Caution,
+        CarbonBlazorShapeIndicatorType.Stable => CarbonBlazorIconType.CircleFill,
+        CarbonBlazorShapeIndicatorType.Informative => CarbonBlazorIconType.SquareFill,
+        CarbonBlazorShapeIndicatorType.Incomplete => CarbonBlazorIconType.Incomplete,
+        CarbonBlazorShapeIndicatorType.Draft => CarbonBlazorIconType.CircleStroke,
+        _ => CarbonBlazorIconType.CircleStroke
     };
     
     public static string ToClass(CarbonBlazorShapeIndicatorType type) => type switch

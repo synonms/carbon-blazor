@@ -11,7 +11,7 @@
             disabled="@IsDisabled"
             @onclick="Toggle">
         @Label
-        @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.ChevronDown, 16))
+        <CarbonBlazorIcon Type="CarbonBlazorIconType.ChevronDown"></CarbonBlazorIcon>
     </button>
     <CascadingValue Name="CloseMenu" Value="_closeMenuAction">
         <CarbonBlazorMenu Size="@Size" IsOpen="@_isOpen">

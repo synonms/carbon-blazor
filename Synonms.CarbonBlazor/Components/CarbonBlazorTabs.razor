@@ -6,7 +6,7 @@
                 <CarbonBlazorText Type="@(tabItem == TabItemList.SelectedTabItem ? CarbonBlazorTextType.HeadingCompact : CarbonBlazorTextType.BodyCompact)">@tabItem.Label</CarbonBlazorText>
                 @if (tabItem.Icon is not null)
                 {
-                    @((MarkupString)CarbonBlazorIconMapper.ToSvg(tabItem.Icon.Value))
+                    <CarbonBlazorIcon Type="@(tabItem.Icon.Value)"></CarbonBlazorIcon>
                 }
             </div>
         }

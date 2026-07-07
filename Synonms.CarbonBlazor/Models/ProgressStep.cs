@@ -17,11 +17,11 @@ public class ProgressStep
         HelperText = helperText;      
     }
 
-    public CarbonBlazorIcon Icon => Status switch
+    public CarbonBlazorIconType IconType => Status switch
     {
-        ProgressStatus.NotStarted => CarbonBlazorIcon.CircleDash,
-        ProgressStatus.Current => CarbonBlazorIcon.Incomplete,
-        ProgressStatus.Complete => CarbonBlazorIcon.CheckmarkOutline,
+        ProgressStatus.NotStarted => CarbonBlazorIconType.CircleDash,
+        ProgressStatus.Current => CarbonBlazorIconType.Incomplete,
+        ProgressStatus.Complete => CarbonBlazorIconType.CheckmarkOutline,
         _ => throw new ArgumentOutOfRangeException()
     };
 

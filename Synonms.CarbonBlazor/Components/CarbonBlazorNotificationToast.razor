@@ -2,14 +2,14 @@
 {
     <div class="@GetClass() @(_isVisible ? string.Empty : "collapsed")">
         <div class="cb-notification-toast-icon">
-            @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorNotificationLevelMapper.ToIcon(Notification.Level), 20))
+            <CarbonBlazorIcon Type="@(CarbonBlazorNotificationLevelMapper.ToIcon(Notification.Level))" Size="CarbonBlazorIconSize.Large"></CarbonBlazorIcon>
         </div>
         <div class="cb-notification-toast-content-wrapper">
             <CarbonBlazorText Type="CarbonBlazorTextType.HeadingCompact">@Notification.Title</CarbonBlazorText>
             <CarbonBlazorText Type="CarbonBlazorTextType.BodyCompact">@Notification.Message</CarbonBlazorText>
         </div>
         <button class="cb-notification-toast-close-button" type="button" onclick="@(() => Hide())">
-            @((MarkupString)CarbonBlazorIconMapper.ToSvg(CarbonBlazorIcon.Cancel, 20))
+            <CarbonBlazorIcon Type="CarbonBlazorIconType.Cancel" Size="CarbonBlazorIconSize.Large"></CarbonBlazorIcon>
         </button>
     </div>
 }

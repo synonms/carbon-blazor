@@ -1,7 +1,7 @@
 ﻿<div class="cb-shell @CarbonBlazorThemeMapper.ToCssClass(Theme)">
     <header class="@GetHeaderClass()">
         <CarbonBlazorStack FlexDirection="FlexDirection.Row" JustifyContent="JustifyContent.Start" AlignItems="AlignItems.Center" Gap="1rem">
-            <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.IconOnly" Size="CarbonBlazorButtonSize.LargeExpressive" Icon="CarbonBlazorIcon.Menu" ClickedCallback="@OnMenuClicked"></CarbonBlazorButton>
+            <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.IconOnly" Size="CarbonBlazorButtonSize.LargeExpressive" IconType="CarbonBlazorIconType.Menu" ClickedCallback="@OnMenuClicked"></CarbonBlazorButton>
             @if (string.IsNullOrWhiteSpace(ProductIconImagePath) is false)
             {
                 <img class="cb-header-product-icon" alt="@ProductName Logo" src="@ProductIconImagePath"/>
@@ -16,15 +16,15 @@
             }
             @if (UserPanel is not null)
             {
-                <CarbonBlazorHeaderButton @ref="@_userAvatarButton" Icon="CarbonBlazorIcon.UserAvatar" ClickedCallback="@OnUserAvatarClicked"></CarbonBlazorHeaderButton>
+                <CarbonBlazorHeaderButton @ref="@_userAvatarButton" IconType="CarbonBlazorIconType.UserAvatar" ClickedCallback="@OnUserAvatarClicked"></CarbonBlazorHeaderButton>
             }
             @if (IsThemeEnabled)
             {
-                <CarbonBlazorHeaderButton @ref="@_themeButton" Icon="CarbonBlazorIcon.ColourPalette" ClickedCallback="@OnThemeClicked"></CarbonBlazorHeaderButton>
+                <CarbonBlazorHeaderButton @ref="@_themeButton" IconType="CarbonBlazorIconType.ColourPalette" ClickedCallback="@OnThemeClicked"></CarbonBlazorHeaderButton>
             }
             @if (SwitcherPanel is not null)
             {
-                <CarbonBlazorHeaderButton @ref="@_switcherButton" Icon="CarbonBlazorIcon.Switcher" ClickedCallback="@OnSwitcherClicked"></CarbonBlazorHeaderButton>
+                <CarbonBlazorHeaderButton @ref="@_switcherButton" IconType="CarbonBlazorIconType.Switcher" ClickedCallback="@OnSwitcherClicked"></CarbonBlazorHeaderButton>
             }
         </CarbonBlazorStack>
 

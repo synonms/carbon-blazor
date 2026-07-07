@@ -4,7 +4,7 @@ namespace Synonms.CarbonBlazor.Models;
 
 public class TabItem
 {
-    public TabItem(string label, CarbonBlazorIcon? icon = null)
+    public TabItem(string label, CarbonBlazorIconType? icon = null)
     {
         Label = label;
         Icon = icon;
@@ -12,7 +12,7 @@ public class TabItem
 
     public string Label { get; }
     
-    public CarbonBlazorIcon? Icon { get; }
+    public CarbonBlazorIconType? Icon { get; }
     
-    public static TabItem Create(string label, CarbonBlazorIcon? icon = null) => new(label, icon);
+    public static TabItem Create(string label, CarbonBlazorIconType? icon = null) => new(label, icon);
 }

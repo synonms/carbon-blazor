@@ -2,7 +2,7 @@
     <a href="@NavigationItem.Href" onclick="@ClickedCallback">
         @if (NavigationItem.Icon is not null)
         {
-            @((MarkupString)CarbonBlazorIconMapper.ToSvg(NavigationItem.Icon.Value))
+            <CarbonBlazorIcon Type="@(NavigationItem.Icon.Value)"></CarbonBlazorIcon>
         }
         @NavigationItem.Text
     </a>

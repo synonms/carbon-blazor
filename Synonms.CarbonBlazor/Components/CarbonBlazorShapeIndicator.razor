@@ -1,5 +1,5 @@
 <div class="@GetClass()" style="@Style">
-    @GetIcon()
+    <CarbonBlazorIcon Type="CarbonBlazorShapeIndicatorTypeMapper.ToIcon(Type)" Size="@(Size == CarbonBlazorIndicatorSize.Large ? CarbonBlazorIconSize.Large : CarbonBlazorIconSize.Default)"></CarbonBlazorIcon>
     @if (!string.IsNullOrWhiteSpace(Label))
     {
         <CarbonBlazorText Type="CarbonBlazorTextType.BodyCompact" IsExpressive="@(Size == CarbonBlazorIndicatorSize.Large)">@Label</CarbonBlazorText>
@@ -28,12 +28,5 @@
         string colourClass = CarbonBlazorShapeIndicatorTypeMapper.ToClass(Type);
 
         return CssClasses.Concatenate(baseClass, colourClass, Class);
-    }
-
-    private MarkupString GetIcon()
-    {
-        CarbonBlazorIcon icon = CarbonBlazorShapeIndicatorTypeMapper.ToIcon(Type);
-        
-        return (MarkupString)CarbonBlazorIconMapper.ToSvg(icon, sizeInPixels: Size == CarbonBlazorIndicatorSize.Large ? 20 : 16, resizeViewBox: Type != CarbonBlazorShapeIndicatorType.Incomplete);
     }
 }
