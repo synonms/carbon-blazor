@@ -12,24 +12,22 @@ jobs:
       contents: read  
       id-token: write  # enable GitHub OIDC token issuance for this job
       
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 9.0.x
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Set VERSION variable from tag
         run: echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
 
       - name: Build
-        run: dotnet build --configuration Release /p:Version=$env:VERSION
+        run: dotnet build --configuration Release /p:Version=${VERSION}
         
       - name: Test
-        run: dotnet test --configuration Release /p:Version=$env:VERSION --no-build
+        run: dotnet test --configuration Release /p:Version=${VERSION} --no-build
           
       - name: Pack
-        run: dotnet pack --configuration Release /p:Version=$env:VERSION --no-build --output .
+        run: dotnet pack --configuration Release /p:Version=${VERSION} --no-build --output .
       
       # Get a short-lived NuGet API key
       - name: NuGet login (OIDC → temp API key)
