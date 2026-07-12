@@ -16,18 +16,31 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
 
-      - name: Set VERSION variable from tag
-        run: echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
+      - name: Restore dependencies
+        run: dotnet restore
 
       - name: Build
-        run: dotnet build --configuration Release /p:Version=${VERSION}
+        run: dotnet build --configuration Release --no-restore
         
       - name: Test
-        run: dotnet test --configuration Release /p:Version=${VERSION} --no-build
+        run: dotnet test --configuration Release --no-build
+
+      - name: Extract version from tag
+        id: version
+        run: |
+          # Strip the leading 'v' prefix: v1.2.3 -> 1.2.3
+          VERSION="${GITHUB_REF_NAME#v}"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Packaging version: $VERSION"
           
       - name: Pack
-        run: dotnet pack --configuration Release /p:Version=${VERSION} --no-build --output .
+        run: dotnet pack --configuration Release /p:PackageVersion=${steps.version.outputs.version} --output ./artifacts --no-build
       
       # Get a short-lived NuGet API key
       - name: NuGet login (OIDC → temp API key)
@@ -38,4 +51,4 @@ jobs:
       
       # Push the package(s)
       - name: NuGet push
-        run: dotnet nuget push Synonms.CarbonBlazor.$env:VERSION.nupkg --api-key "${{steps.login.outputs.NUGET_API_KEY}}" --source https://api.nuget.org/v3/index.json
+        run: dotnet nuget push .artifacts/*.nupkg --api-key "${{steps.login.outputs.NUGET_API_KEY}}" --source https://api.nuget.org/v3/index.json --skip-duplicate

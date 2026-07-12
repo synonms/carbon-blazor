@@ -7,6 +7,9 @@
         <IsPackable>true</IsPackable>
         <Title>Synonms Carbon Blazor</Title>
         <Authors>Synonms</Authors>
+        <!-- Fallback for local development builds -->
+        <!-- CI overrides this via -p:PackageVersion at pack time -->
+        <VersionPrefix>9.0.0</VersionPrefix>        
         <Description>CarbonBlazor is a simple, opinionated implementation of IBM's Carbon Design System for Blazor.</Description>
         <Copyright>2025 Synonms</Copyright>
         <RepositoryUrl>https://github.com/synonms/carbon-blazor</RepositoryUrl>
