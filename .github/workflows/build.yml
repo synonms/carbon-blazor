@@ -40,7 +40,7 @@ jobs:
           echo "Packaging version: $VERSION"
           
       - name: Pack
-        run: dotnet pack --configuration Release /p:PackageVersion=${steps.version.outputs.version} --output ./artifacts --no-build
+        run: dotnet pack --configuration Release /p:PackageVersion=${{steps.version.outputs.version}} --output ./artifacts --no-build
       
       # Get a short-lived NuGet API key
       - name: NuGet login (OIDC → temp API key)
