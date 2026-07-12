@@ -1,0 +1,41 @@
+name: BuildAndPack
+on:
+  push:
+    branches: [main]
+    tags: ['*']
+  pull_request:
+    
+jobs:
+  build-and-publish:
+    permissions:
+      contents: read  
+      id-token: write  # enable GitHub OIDC token issuance for this job
+      
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - name: dotnet pack
+        run: |
+          dotnet pack
+          dotnet pack -r win-x64
+      
+      # Get a short-lived NuGet API key
+      - name: NuGet login (OIDC → temp API key)
+        uses: NuGet/login@v1
+        id: login
+        with:
+          user: ${{secrets.NUGET_USER}}
+      
+      # Push the package(s)
+      - name: NuGet push
+        shell: pwsh
+        run: |
+          Get-ChildItem artifacts/package/release -Filter *.nupkg | ForEach-Object {
+            dotnet nuget push $_.FullName `
+              --api-key "${{steps.login.outputs.NUGET_API_KEY}}" `
+              --source https://api.nuget.org/v3/index.json
+          }
