@@ -23,13 +23,13 @@ jobs:
         run: echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
 
       - name: Build
-        run: dotnet build --configuration Release /p:AssemblyVersion=${VERSION} /p:NuGetVersion=${VERSION} /p:Version=${VERSION}
+        run: dotnet build --configuration Release /p:Version=$env:VERSION
         
       - name: Test
-        run: dotnet test --configuration Release /p:AssemblyVersion=${VERSION} /p:NuGetVersion=${VERSION} /p:Version=${VERSION} --no-build
+        run: dotnet test --configuration Release /p:Version=$env:VERSION --no-build
           
       - name: Pack
-        run: dotnet pack --configuration Release /p:AssemblyVersion=${VERSION} /p:NuGetVersion=${VERSION} /p:Version=${VERSION} --no-build --output .
+        run: dotnet pack --configuration Release /p:Version=$env:VERSION --no-build --output .
       
       # Get a short-lived NuGet API key
       - name: NuGet login (OIDC → temp API key)
@@ -40,4 +40,4 @@ jobs:
       
       # Push the package(s)
       - name: NuGet push
-        run: dotnet nuget push Synonms.CarbonBlazor.${VERSION}.nupkg --api-key "${{steps.login.outputs.NUGET_API_KEY}}" --source https://api.nuget.org/v3/index.json
+        run: dotnet nuget push Synonms.CarbonBlazor.$env:VERSION.nupkg --api-key "${{steps.login.outputs.NUGET_API_KEY}}" --source https://api.nuget.org/v3/index.json
