@@ -1,9 +1,8 @@
 name: BuildAndPack
 on:
   push:
-    branches: [main]
     tags:
-      - "v[0-9]+.[0-9]+.[0-9]+"
+      - "v*.*.*"
   pull_request:
     
 jobs:
