@@ -41,7 +41,7 @@
             {
                 <li class="cb-file-uploader-file">
                     <CarbonBlazorText Type="CarbonBlazorTextType.BodyCompact" WhiteSpace="WhiteSpace.Nowrap">@file.Name</CarbonBlazorText>
-                    <CarbonBlazorButton Type="CarbonBlazorButtonType.Button" Display="CarbonBlazorButtonDisplay.IconOnly" IconType="CarbonBlazorIconType.Cancel" 
+                    <CarbonBlazorButton Class="cb-file-uploader-remove" Type="CarbonBlazorButtonType.Button" Display="CarbonBlazorButtonDisplay.IconOnly" IconType="CarbonBlazorIconType.Cancel" 
                                         Size="CarbonBlazorButtonSize.Small" Kind="CarbonBlazorButtonKind.Ghost" IsDisabled="@IsDisabled" 
                                         ClickedCallback="@(() => RemoveFile(file))" />
                 </li>
