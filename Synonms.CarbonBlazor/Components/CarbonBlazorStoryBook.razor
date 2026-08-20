@@ -737,7 +737,7 @@ if (isSuperExciting)
         public string SomeRadioButtonValue { get; set; } = string.Empty;
         public DateOnly? SomeDateValue { get; set; } = DateOnly.FromDateTime(DateTime.Today);
         public TimeOnly? SomeTimeValue { get; set; } = TimeOnly.FromDateTime(DateTime.Now);
-        public DateTime? SomeDateTimeValue { get; set; } = DateTime.Now;
+        public DateTime SomeDateTimeValue { get; set; } = DateTime.Now;
         public IEnumerable<string> SomeDropDownValues { get; set; } = [];
         public IEnumerable<string> SomeCheckedValues { get; set; } = [];
     }

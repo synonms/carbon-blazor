@@ -1,4 +1,6 @@
-﻿<CarbonBlazorFieldSet IsDoubleColumn="@IsDoubleColumn" IsReadOnly="@IsReadOnly" IsDisabled="@IsDisabled">
+﻿@typeparam TValue
+
+<CarbonBlazorFieldSet IsDoubleColumn="@IsDoubleColumn" IsReadOnly="@IsReadOnly" IsDisabled="@IsDisabled">
     @if (string.IsNullOrWhiteSpace(Label) is false)
     {
         <label for="@Id" class="cb-date-picker-label">@Label</label>
@@ -45,13 +47,13 @@
                     @foreach (DateOnly sunday in _sundaysToDisplay)
                     {
                         <tr>
-                            <td class="@(Value == sunday ? "selected" : string.Empty)" @onclick="@(() => SelectDate(sunday))">@sunday.Day</td>
-                            <td class="@(Value == sunday.AddDays(1) ? "selected" : string.Empty)" @onclick="@(() => SelectDate(sunday.AddDays(1)))">@sunday.AddDays(1).Day</td>
-                            <td class="@(Value == sunday.AddDays(2) ? "selected" : string.Empty)" @onclick="@(() => SelectDate(sunday.AddDays(2)))">@sunday.AddDays(2).Day</td>
-                            <td class="@(Value == sunday.AddDays(3) ? "selected" : string.Empty)" @onclick="@(() => SelectDate(sunday.AddDays(3)))">@sunday.AddDays(3).Day</td>
-                            <td class="@(Value == sunday.AddDays(4) ? "selected" : string.Empty)" @onclick="@(() => SelectDate(sunday.AddDays(4)))">@sunday.AddDays(4).Day</td>
-                            <td class="@(Value == sunday.AddDays(5) ? "selected" : string.Empty)" @onclick="@(() => SelectDate(sunday.AddDays(5)))">@sunday.AddDays(5).Day</td>
-                            <td class="@(Value == sunday.AddDays(6) ? "selected" : string.Empty)" @onclick="@(() => SelectDate(sunday.AddDays(6)))">@sunday.AddDays(6).Day</td>
+                            <td class="@(IsSelectedDate(sunday) ? "selected" : string.Empty)" @onclick="@(() => SelectDate(sunday))">@sunday.Day</td>
+                            <td class="@(IsSelectedDate(sunday.AddDays(1)) ? "selected" : string.Empty)" @onclick="@(() => SelectDate(sunday.AddDays(1)))">@sunday.AddDays(1).Day</td>
+                            <td class="@(IsSelectedDate(sunday.AddDays(2)) ? "selected" : string.Empty)" @onclick="@(() => SelectDate(sunday.AddDays(2)))">@sunday.AddDays(2).Day</td>
+                            <td class="@(IsSelectedDate(sunday.AddDays(3)) ? "selected" : string.Empty)" @onclick="@(() => SelectDate(sunday.AddDays(3)))">@sunday.AddDays(3).Day</td>
+                            <td class="@(IsSelectedDate(sunday.AddDays(4)) ? "selected" : string.Empty)" @onclick="@(() => SelectDate(sunday.AddDays(4)))">@sunday.AddDays(4).Day</td>
+                            <td class="@(IsSelectedDate(sunday.AddDays(5)) ? "selected" : string.Empty)" @onclick="@(() => SelectDate(sunday.AddDays(5)))">@sunday.AddDays(5).Day</td>
+                            <td class="@(IsSelectedDate(sunday.AddDays(6)) ? "selected" : string.Empty)" @onclick="@(() => SelectDate(sunday.AddDays(6)))">@sunday.AddDays(6).Day</td>
                         </tr>
                     }
                 </tbody>
@@ -86,10 +88,10 @@
     
     [Parameter]
     [EditorRequired]
-    public DateOnly? Value { get; set; }
+    public TValue Value { get; set; } = default!;
     
     [Parameter]
-    public EventCallback<DateOnly?> ValueChanged { get; set; }
+    public EventCallback<TValue> ValueChanged { get; set; }
 
     [Parameter]
     public string? Id { get; set; }
@@ -126,7 +128,7 @@
     {
         base.OnParametersSet();
         
-        _valueAsString = Value?.ToString("dd/MM/yyyy") ?? string.Empty;
+        _valueAsString = GetDateValue()?.ToString("dd/MM/yyyy") ?? string.Empty;
     }
 
     private async Task OnValueChanged(ChangeEventArgs changeEventArgs)
@@ -135,17 +137,22 @@
         
         if (DateOnly.TryParse(newValueAsString, out DateOnly newValueAsDateOnly))
         {
-            Value = newValueAsDateOnly;
-
-            await ValueUpdated();
+            Value = ConvertToValue(newValueAsDateOnly);
+        }
+        else if (string.IsNullOrWhiteSpace(newValueAsString) && IsNullableValue())
+        {
+            Value = default!;
         }
         else
         {
             // Force renderer to detect value change and rebind input (so it clears invalid value in browser DOM during ValueUpdated()) 
             _valueAsString = "invalid";
             await Task.Delay(1);
-            
-            Value = null;
+
+            if (IsNullableValue())
+            {
+                Value = default!;
+            }
         }
 
         await ValueUpdated();
@@ -153,7 +160,7 @@
 
     private async Task ValueUpdated()
     {
-        _valueAsString = Value?.ToString("dd/MM/yyyy") ?? string.Empty;
+        _valueAsString = GetDateValue()?.ToString("dd/MM/yyyy") ?? string.Empty;
 
         await ValueChanged.InvokeAsync(Value);
 
@@ -230,9 +237,81 @@
     {
         _isExpanded = false;
 
-        Value = date;
+        Value = ConvertToValue(date);
 
         await ValueUpdated();
+    }
+
+    private bool IsSelectedDate(DateOnly date)
+    {
+        return GetDateValue() == date;
+    }
+
+    private DateOnly? GetDateValue()
+    {
+        object? value = Value;
+
+        if (value is null)
+        {
+            return null;
+        }
+
+        Type valueType = GetSupportedValueType();
+
+        if (valueType == typeof(DateOnly))
+        {
+            return (DateOnly)value;
+        }
+
+        return DateOnly.FromDateTime((DateTime)value);
+    }
+
+    private TValue ConvertToValue(DateOnly? date)
+    {
+        if (date is null)
+        {
+            return default!;
+        }
+
+        Type valueType = GetSupportedValueType();
+
+        if (valueType == typeof(DateOnly))
+        {
+            return (TValue)(object)date.Value;
+        }
+
+        DateTime currentDateTime = GetCurrentDateTimeValue();
+        TimeOnly currentTime = currentDateTime == default
+            ? TimeOnly.MinValue
+            : TimeOnly.FromDateTime(currentDateTime);
+
+        return (TValue)(object)date.Value.ToDateTime(currentTime);
+    }
+
+    private DateTime GetCurrentDateTimeValue()
+    {
+        object? value = Value;
+
+        return value is DateTime dateTime
+            ? dateTime
+            : default;
+    }
+
+    private bool IsNullableValue()
+    {
+        return Nullable.GetUnderlyingType(typeof(TValue)) is not null;
+    }
+
+    private static Type GetSupportedValueType()
+    {
+        Type valueType = Nullable.GetUnderlyingType(typeof(TValue)) ?? typeof(TValue);
+
+        if (valueType != typeof(DateOnly) && valueType != typeof(DateTime))
+        {
+            throw new InvalidOperationException($"{nameof(CarbonBlazorDatePicker<TValue>)} only supports DateOnly, DateOnly?, DateTime and DateTime? values.");
+        }
+
+        return valueType;
     }
 
     private string GetClass()

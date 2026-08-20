@@ -1,4 +1,6 @@
-﻿<CarbonBlazorFieldSet IsDoubleColumn="@IsDoubleColumn" IsReadOnly="@IsReadOnly" IsDisabled="@IsDisabled">
+﻿@typeparam TValue
+
+<CarbonBlazorFieldSet IsDoubleColumn="@IsDoubleColumn" IsReadOnly="@IsReadOnly" IsDisabled="@IsDisabled">
     @if (string.IsNullOrWhiteSpace(Label) is false)
     {
         <label for="@Id" class="cb-date-time-picker-label">@Label</label>
@@ -8,8 +10,8 @@
         @{
             string dateId = Id + "_Date";
             string timeId = Id + "_Time";
-            <CarbonBlazorDatePicker Id="@dateId" Size="@Size" Layer="@Layer" IsDisabled="@IsDisabled" IsReadOnly="@IsReadOnly" IsDoubleColumn="true" Value="@_date" ValueChanged="@OnDateChanged" FieldIdentifier="@FieldIdentifier"></CarbonBlazorDatePicker>
-            <CarbonBlazorTimePicker Id="@timeId" Size="@Size" Layer="@Layer" IsDisabled="@IsDisabled" IsReadOnly="@IsReadOnly" IsDoubleColumn="true" Value="@_time" ValueChanged="@OnTimeChanged" FieldIdentifier="@FieldIdentifier"></CarbonBlazorTimePicker>
+            <CarbonBlazorDatePicker TValue="DateOnly?" Id="@dateId" Size="@Size" Layer="@Layer" IsDisabled="@IsDisabled" IsReadOnly="@IsReadOnly" IsDoubleColumn="true" Value="@_date" ValueChanged="@OnDateChanged" FieldIdentifier="@FieldIdentifier"></CarbonBlazorDatePicker>
+            <CarbonBlazorTimePicker TValue="TimeOnly?" Id="@timeId" Size="@Size" Layer="@Layer" IsDisabled="@IsDisabled" IsReadOnly="@IsReadOnly" IsDoubleColumn="true" Value="@_time" ValueChanged="@OnTimeChanged" FieldIdentifier="@FieldIdentifier"></CarbonBlazorTimePicker>
         }
     </div>
 
@@ -37,10 +39,10 @@
     
     [Parameter]
     [EditorRequired]
-    public DateTime? Value { get; set; }
+    public TValue Value { get; set; } = default!;
     
     [Parameter]
-    public EventCallback<DateTime?> ValueChanged { get; set; }
+    public EventCallback<TValue> ValueChanged { get; set; }
 
     [Parameter]
     public string? Id { get; set; }
@@ -70,8 +72,12 @@
     {
         base.OnParametersSet();
         
-        _date = Value is null || DateOnly.FromDateTime(Value.Value) == DateOnly.MinValue ? null : DateOnly.FromDateTime(Value.Value);
-        _time = Value is null ? null : TimeOnly.FromDateTime(Value.Value);
+        DateTime? dateTimeValue = GetDateTimeValue();
+
+        _date = dateTimeValue is null || DateOnly.FromDateTime(dateTimeValue.Value) == DateOnly.MinValue
+            ? null
+            : DateOnly.FromDateTime(dateTimeValue.Value);
+        _time = dateTimeValue is null ? null : TimeOnly.FromDateTime(dateTimeValue.Value);
     }
 
     private async Task OnDateChanged(DateOnly? date)
@@ -90,31 +96,81 @@
     
     private async Task ValueUpdated()
     {
+        DateTime? updatedValue;
+
         if (_date is not null)
         {
             if (_time is not null)
             {
-                Value = _date.Value.ToDateTime(_time.Value);
+                updatedValue = _date.Value.ToDateTime(_time.Value);
             }
             else
             {
-                Value = _date.Value.ToDateTime(TimeOnly.MinValue);
+                updatedValue = _date.Value.ToDateTime(TimeOnly.MinValue);
             }
         }
         else
         {
             if (_time is not null)
             {
-                Value = DateOnly.MinValue.ToDateTime(_time.Value);
+                updatedValue = DateOnly.MinValue.ToDateTime(_time.Value);
             }
             else
             {
-                Value = null;
+                updatedValue = null;
             }
         }
+
+        Value = ConvertToValue(updatedValue);
 
         await ValueChanged.InvokeAsync(Value);
 
         EditContext?.NotifyFieldChanged(FieldIdentifier);
+    }
+
+    private DateTime? GetDateTimeValue()
+    {
+        EnsureSupportedValueType();
+
+        object? value = Value;
+
+        if (value is null)
+        {
+            return null;
+        }
+
+        return (DateTime)value;
+    }
+
+    private TValue ConvertToValue(DateTime? value)
+    {
+        EnsureSupportedValueType();
+
+        if (value is null)
+        {
+            if (IsNullableValue())
+            {
+                return default!;
+            }
+
+            return (TValue)(object)default(DateTime);
+        }
+
+        return (TValue)(object)value.Value;
+    }
+
+    private static void EnsureSupportedValueType()
+    {
+        Type valueType = Nullable.GetUnderlyingType(typeof(TValue)) ?? typeof(TValue);
+
+        if (valueType != typeof(DateTime))
+        {
+            throw new InvalidOperationException($"{nameof(CarbonBlazorDateTimePicker<TValue>)} only supports DateTime and DateTime? values.");
+        }
+    }
+
+    private static bool IsNullableValue()
+    {
+        return Nullable.GetUnderlyingType(typeof(TValue)) is not null;
     }
 }

@@ -12,23 +12,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Agents", "Agents", "{D3D88013-FEB4-40E3-8A99-780716EFB835}"
 	ProjectSection(SolutionItems) = preProject
 		AGENTS.md = AGENTS.md
-		.agents\component-developer.agent.md = .agents\component-developer.agent.md
-		.agents\readme-specialist.agent.md = .agents\readme-specialist.agent.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Synonms.CarbonBlazor.Tests.Unit", "Synonms.CarbonBlazor.Tests.Unit\Synonms.CarbonBlazor.Tests.Unit.csproj", "{2290E8CD-AFFB-418B-9272-D52EA4E39F2E}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Skills", "Skills", "{8B905EDD-A956-4A68-9D1C-704D43B12C1E}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CreateComponent", "CreateComponent", "{269CB157-FE48-44A3-A24C-EB5C058F4254}"
-	ProjectSection(SolutionItems) = preProject
-		.agents\skills\create-component\SKILL.md = .agents\skills\create-component\SKILL.md
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PackageLibrary", "PackageLibrary", "{C9566BF8-3455-40B3-9121-B8B38FE3C124}"
-	ProjectSection(SolutionItems) = preProject
-		.agents\skills\package-library\SKILL.md = .agents\skills\package-library\SKILL.md
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,10 +34,5 @@ Global
 		{2290E8CD-AFFB-418B-9272-D52EA4E39F2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2290E8CD-AFFB-418B-9272-D52EA4E39F2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2290E8CD-AFFB-418B-9272-D52EA4E39F2E}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{8B905EDD-A956-4A68-9D1C-704D43B12C1E} = {D3D88013-FEB4-40E3-8A99-780716EFB835}
-		{269CB157-FE48-44A3-A24C-EB5C058F4254} = {8B905EDD-A956-4A68-9D1C-704D43B12C1E}
-		{C9566BF8-3455-40B3-9121-B8B38FE3C124} = {8B905EDD-A956-4A68-9D1C-704D43B12C1E}
 	EndGlobalSection
 EndGlobal

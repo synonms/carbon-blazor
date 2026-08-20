@@ -1,4 +1,6 @@
-﻿<CarbonBlazorFieldSet IsDoubleColumn="@IsDoubleColumn" IsReadOnly="@IsReadOnly" IsDisabled="@IsDisabled">
+﻿@typeparam TValue
+
+<CarbonBlazorFieldSet IsDoubleColumn="@IsDoubleColumn" IsReadOnly="@IsReadOnly" IsDisabled="@IsDisabled">
     @if (string.IsNullOrWhiteSpace(Label) is false)
     {
         <label for="@Id" class="cb-time-picker-label">@Label</label>
@@ -46,10 +48,10 @@
     
     [Parameter]
     [EditorRequired]
-    public TimeOnly? Value { get; set; }
+    public TValue Value { get; set; } = default!;
     
     [Parameter]
-    public EventCallback<TimeOnly?> ValueChanged { get; set; }
+    public EventCallback<TValue> ValueChanged { get; set; }
 
     [Parameter]
     public string? Id { get; set; }
@@ -79,7 +81,7 @@
     {
         base.OnParametersSet();
         
-        _timeValueAsString = Value?.ToString("HH:mm") ?? string.Empty;
+        _timeValueAsString = GetTimeValue()?.ToString("HH:mm") ?? string.Empty;
     }
 
     private async Task OnValueChanged(ChangeEventArgs changeEventArgs)
@@ -88,15 +90,22 @@
         
         if (TimeOnly.TryParse(newValueAsString, out TimeOnly newValueAsTimeOnly))
         {
-            Value = newValueAsTimeOnly;
+            Value = ConvertToValue(newValueAsTimeOnly);
+        }
+        else if (string.IsNullOrWhiteSpace(newValueAsString) && IsNullableValue())
+        {
+            Value = default!;
         }
         else
         {
             // Force renderer to detect value change and rebind input (so it clears invalid value in browser DOM during ValueUpdated()) 
             _timeValueAsString = "invalid";
             await Task.Delay(1);
-            
-            Value = null;
+
+            if (IsNullableValue())
+            {
+                Value = default!;
+            }
         }
 
         await ValueUpdated();
@@ -104,7 +113,7 @@
 
     private async Task ValueUpdated()
     {
-        _timeValueAsString = Value?.ToString("HH:mm") ?? string.Empty;
+        _timeValueAsString = GetTimeValue()?.ToString("HH:mm") ?? string.Empty;
 
         await ValueChanged.InvokeAsync(Value);
 
@@ -126,5 +135,72 @@
             };
 
         return CssClasses.Concatenate(baseClass, layerClass, validationClass);
+    }
+
+    private TimeOnly? GetTimeValue()
+    {
+        object? value = Value;
+
+        if (value is null)
+        {
+            return null;
+        }
+
+        Type valueType = GetSupportedValueType();
+
+        if (valueType == typeof(TimeOnly))
+        {
+            return (TimeOnly)value;
+        }
+
+        return TimeOnly.FromDateTime((DateTime)value);
+    }
+
+    private TValue ConvertToValue(TimeOnly? time)
+    {
+        if (time is null)
+        {
+            return default!;
+        }
+
+        Type valueType = GetSupportedValueType();
+
+        if (valueType == typeof(TimeOnly))
+        {
+            return (TValue)(object)time.Value;
+        }
+
+        DateTime currentDateTime = GetCurrentDateTimeValue();
+        DateOnly currentDate = currentDateTime == default
+            ? DateOnly.MinValue
+            : DateOnly.FromDateTime(currentDateTime);
+
+        return (TValue)(object)currentDate.ToDateTime(time.Value);
+    }
+
+    private DateTime GetCurrentDateTimeValue()
+    {
+        object? value = Value;
+
+        return value is DateTime dateTime
+            ? dateTime
+            : default;
+    }
+
+    private bool IsNullableValue()
+    {
+        return Nullable.GetUnderlyingType(typeof(TValue)) is not null;
+    }
+
+    private static Type GetSupportedValueType()
+    {
+        Type valueType = Nullable.GetUnderlyingType(typeof(TValue)) ?? typeof(TValue);
+
+        if (valueType != typeof(TimeOnly) && valueType != typeof(DateTime))
+        {
+            throw new InvalidOperationException($"{nameof(CarbonBlazorTimePicker<TValue>)} only supports TimeOnly, TimeOnly?, DateTime and DateTime? values.");
+        }
+
+        return valueType;
     }
 }
