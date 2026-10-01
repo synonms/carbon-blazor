@@ -1,0 +1,79 @@
+.cb-shell-layout {
+    background: var(--cb-background);
+    color: var(--cb-text-primary);
+    display: grid;
+    grid-template-areas:
+        "header header"
+        "sidebar main";
+    grid-template-columns: 16rem minmax(0, 1fr);
+    grid-template-rows: 3rem minmax(0, 1fr);
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+
+.cb-shell-layout.header-only {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+        "header"
+        "main";
+}
+
+.cb-shell-layout.sidebar-collapsed.has-left-panel {
+    grid-template-columns: 0 minmax(0, 1fr);
+}
+
+.cb-shell-main {
+    background: var(--cb-background);
+    grid-area: main;
+    min-height: 0;
+    min-width: 0;
+    overflow: auto;
+    padding: 2rem;
+}
+
+.cb-shell-main:focus {
+    outline: none;
+}
+
+.cb-shell-skip-link {
+    background: var(--cb-background);
+    color: var(--cb-text-primary);
+    left: 0.5rem;
+    padding: 0.75rem 1rem;
+    position: absolute;
+    top: -5rem;
+    z-index: 2000;
+}
+
+.cb-shell-skip-link:focus {
+    outline: 2px solid var(--cb-focus);
+    top: 0.5rem;
+}
+
+.cb-shell-layout ::deep .cb-shell-header {
+    grid-area: header;
+}
+
+.cb-shell-layout ::deep .cb-shell-left-panel {
+    grid-area: sidebar;
+}
+
+@media (max-width: 768px) {
+    .cb-shell-layout {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas:
+            "header"
+            "main";
+    }
+
+    .cb-shell-main {
+        padding: 1rem;
+    }
+
+    .cb-shell-layout.sidebar-collapsed.has-left-panel {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}

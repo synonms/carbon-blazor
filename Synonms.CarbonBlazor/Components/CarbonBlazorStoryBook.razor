@@ -1,4 +1,22 @@
 ﻿<CarbonBlazorStack FlexDirection="FlexDirection.Column" Gap="1rem">
+    <CarbonBlazorPane Title="UI shell pieces">
+        <CarbonBlazorShellHeader ProductName="Standalone header" HomeHref="/">
+            <UtilityContent>
+                <CarbonBlazorShellRightPanel Label="Help" IconType="CarbonBlazorIconType.InformationFilled">
+                    <p>Help and system-level actions</p>
+                </CarbonBlazorShellRightPanel>
+            </UtilityContent>
+            <AccountPanel>
+                <CarbonBlazorHeaderActionLink NavigationItem="@NavigationItem.Create("Account settings", "/")" />
+            </AccountPanel>
+        </CarbonBlazorShellHeader>
+        <div style="height: 12rem">
+            <CarbonBlazorShellLeftPanel>
+                <CarbonBlazorSidebarLink NavigationItem="@NavigationItem.Create(CarbonBlazorIconType.Dashboard, "Dashboard", "/")" />
+                <CarbonBlazorSidebarSubMenu Text="Resources" SubMenuItems="@_shellDemoItems" />
+            </CarbonBlazorShellLeftPanel>
+        </div>
+    </CarbonBlazorPane>
     <CarbonBlazorPane Title="Accordion">
         <CarbonBlazorAccordion>
             <Items>
@@ -714,6 +732,12 @@ if (isSuperExciting)
 </CarbonBlazorStack>
 
 @code {
+    private readonly List<NavigationItem> _shellDemoItems =
+    [
+        NavigationItem.Create("Users", "/"),
+        NavigationItem.Create("Projects", "/")
+    ];
+
     public class StoryBookModel
     {
         public StoryBookModel()

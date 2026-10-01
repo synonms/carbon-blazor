@@ -1,0 +1,57 @@
+.cb-shell-panel-control {
+    display: contents;
+}
+
+.cb-shell-utility-button {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    color: var(--cb-icon-primary);
+    cursor: pointer;
+    display: inline-flex;
+    fill: var(--cb-icon-primary);
+    flex: 0 0 var(--cb-shell-header-control-size, 3rem);
+    height: var(--cb-shell-header-control-size, 3rem);
+    justify-content: center;
+    padding: 0;
+    position: relative;
+    z-index: 1002;
+}
+
+.cb-shell-utility-button:hover {
+    background: var(--cb-background-hover);
+}
+
+.cb-shell-utility-button:focus-visible {
+    outline: 2px solid var(--cb-focus);
+    outline-offset: -2px;
+    z-index: 2;
+}
+
+.cb-shell-panel-backdrop {
+    background: transparent;
+    border: 0;
+    inset: 3rem 0 0;
+    position: fixed;
+    z-index: 1000;
+}
+
+.cb-shell-right-panel {
+    background: var(--cb-layer);
+    border-left: 1px solid var(--cb-border-subtle);
+    box-shadow: -2px 2px 6px #0003;
+    color: var(--cb-text-primary);
+    inset-block: 3rem 0;
+    max-height: calc(100vh - 3rem);
+    max-height: calc(100dvh - 3rem);
+    overflow: auto;
+    padding: 1rem;
+    position: fixed;
+    right: 0;
+    width: min(20rem, 100vw);
+    z-index: 1001;
+}
+
+.cb-shell-right-panel[hidden] {
+    display: none;
+}

@@ -33,20 +33,21 @@ Setup Carbon Blazor as follows:
 ```htmlinblazor
 @inherits LayoutComponentBase
 
-<CarbonBlazorShell ProductName="My Product" ProductIconImagePath="images\my-logo.svg">
-    <UserPanel>
-        <CarbonBlazorHeaderActionLink NavigationItem="@NavigationItem.Create("Login", "/authentication/login")" />
-    </UserPanel>
-    <SwitcherPanel>
-        <CarbonBlazorHeaderActionLink NavigationItem="@NavigationItem.Create("My Product", "https://localhost:5001")" />
-        <CarbonBlazorHeaderActionLink NavigationItem="@NavigationItem.Create("My Other Product", "https://localhost:5002")" />
-    </SwitcherPanel>
-    <SideNav>
-        <CarbonBlazorSidebarLink NavigationItem="@NavigationItem.Create(CarbonBlazorIcon.Dashboard, "Dashboard", "/")" />
-        <CarbonBlazorSidebarLink NavigationItem="@NavigationItem.Create(CarbonBlazorIcon.Login, "Login", "/authentication/login")" />
-    </SideNav>
-    
-    <Body>@Body</Body>
+<CarbonBlazorShell>
+    <HeaderContent>
+        <CarbonBlazorShellHeader ProductName="My Product" HomeHref="/" LogoPath="images/my-logo.svg">
+            <AccountPanel>
+                <CarbonBlazorHeaderActionLink NavigationItem="@NavigationItem.Create("Login", "/authentication/login")" />
+            </AccountPanel>
+        </CarbonBlazorShellHeader>
+    </HeaderContent>
+    <LeftPanelContent>
+        <CarbonBlazorShellLeftPanel>
+            <CarbonBlazorSidebarLink NavigationItem="@NavigationItem.Create(CarbonBlazorIconType.Dashboard, "Dashboard", "/")" />
+            <CarbonBlazorSidebarLink NavigationItem="@NavigationItem.Create(CarbonBlazorIconType.Login, "Login", "/authentication/login")" />
+        </CarbonBlazorShellLeftPanel>
+    </LeftPanelContent>
+    <ChildContent>@Body</ChildContent>
 </CarbonBlazorShell>
 ```
 
@@ -521,45 +522,44 @@ Select allows users to choose one option from a list of values.
 
 ### Shell
 
-The Shell provides the top level layout for your app.  It features a Header bar, sidebar for navigation and main content area.
+`CarbonBlazorShell` provides a themed, scrollable main area, a skip-to-main link, and toast notifications. Its header and navigation are optional. The header, left panel and right panel can also be used independently. For a simple product without secondary navigation, omit `LeftPanelContent`:
 
 ```htmlinblazor
-<CarbonBlazorShell ProductName="My Product" ProductIconImagePath="images\my-logo.svg">
-    <UserPanel>
-        <CarbonBlazorHeaderActionLink NavigationItem="@NavigationItem.Create("Login", "/authentication/login")" />
-    </UserPanel>
-    <SwitcherPanel>
-        <CarbonBlazorHeaderActionLink NavigationItem="@NavigationItem.Create("My Product", "https://localhost:5001")" />
-        <CarbonBlazorHeaderActionLink NavigationItem="@NavigationItem.Create("My Other Product", "https://localhost:5002")" />
-    </SwitcherPanel>
-    <SideNav>
-        <CarbonBlazorSidebarLink NavigationItem="@NavigationItem.Create(CarbonBlazorIcon.Dashboard, "Dashboard", "/")" />
-        <CarbonBlazorSidebarLink NavigationItem="@NavigationItem.Create(CarbonBlazorIcon.Login, "Login", "/authentication/login")" />
-    </SideNav>
-
-    <Body>@Body</Body>
+<CarbonBlazorShell>
+    <HeaderContent>
+        <CarbonBlazorShellHeader ProductName="My Product" HomeHref="/" />
+    </HeaderContent>
+    <ChildContent>@Body</ChildContent>
 </CarbonBlazorShell>
 ```
 
+Use the left panel for more than five secondary destinations or frequent switching between them. Links and one level of submenus may be mixed. On narrow screens it becomes a closed-by-default overlay; product-level `HeaderNavigation` links appear above secondary links. The header menu button is only shown when a left panel exists. For a full layout, see the `MainLayout.razor` example in **Usage** above.
+
+The optional `AccountPanel`, `HelpPanel`, `NotificationsPanel` and `SwitcherPanel` fragments on `CarbonBlazorShellHeader` create system-level **right panels**, not secondary product navigation. Only one can open at once; they float over content and close on item selection, Escape, outside click or a second click on the icon. Use the switcher only for changing products, offerings or systems; it is always the rightmost utility icon. Search appears leftmost when `@bind-SearchText` is supplied; account is second from right when a switcher is present. `UtilityContent` allows additional utilities before help and account. Header navigation uses `IEnumerable<NavigationItem>` through `HeaderNavigation`.
+
+Theme selection is opt-in with `EnableThemeSwitcher="true"` on the header; bind the shell theme with `@bind-Theme`, or use `Theme` and `ThemeChanged`. `ThemeOverride` on the header and left panel override their local palette. You can render an independent `<CarbonBlazorShellRightPanel Label="Help" IconType="CarbonBlazorIconType.InformationFilled">...</CarbonBlazorShellRightPanel>` in a header utility area; standalone panels manage their own open state.
+
+**Migration:** The old `ProductName`, `ProductIconImagePath`, `SideNav`, `Body`, `UserPanel`, `SwitcherPanel`, `HeaderThemeOverride`, `SidebarThemeOverride`, `IsThemeEnabled`, `SearchTextChangedCallback`, and `ThemeChangedCallback` shell parameters have moved to the corresponding header/left-panel fragments or been replaced by `ChildContent`, `EnableThemeSwitcher`, `SearchTextChanged`, and `ThemeChanged`. Wrap main layout content in `<ChildContent>`, provide `<HeaderContent>` and optionally `<LeftPanelContent>`, and use `CarbonBlazorIconType` instead of `CarbonBlazorIcon` in navigation examples.
+
 #### SidebarLink
 
-Navigation links for use in the SideNav component of the Shell.
+Navigation links for use in `CarbonBlazorShellLeftPanel`. The current page is highlighted automatically, and selecting a link closes the mobile navigation overlay.
 
 ```htmlinblazor
-<SideNav>
-    <CarbonBlazorSidebarLink NavigationItem="@NavigationItem.Create(CarbonBlazorIcon.Dashboard, "Dashboard", "/")" />
-    <CarbonBlazorSidebarLink NavigationItem="@NavigationItem.Create(CarbonBlazorIcon.Login, "Login", "/authentication/login")" />
-</SideNav>
+<CarbonBlazorShellLeftPanel>
+    <CarbonBlazorSidebarLink NavigationItem="@NavigationItem.Create(CarbonBlazorIconType.Dashboard, "Dashboard", "/")" />
+    <CarbonBlazorSidebarLink NavigationItem="@NavigationItem.Create(CarbonBlazorIconType.Login, "Login", "/authentication/login")" />
+</CarbonBlazorShellLeftPanel>
 ```
 
 #### SidebarSubMenu
 
-Grouped set of navigation links for use in the SideNav component of the Shell.
+Grouped set of navigation links for use in `CarbonBlazorShellLeftPanel`. Only one level of submenu is supported; use tabs within the page for deeper hierarchy.
 
 ```htmlinblazor
-<SideNav>
-    <CarbonBlazorSidebarSubMenu Icon="CarbonBlazorIcon.Apps" Text="Resources" SubMenuItems="@_resourcesItems"></CarbonBlazorSidebarSubMenu>
-</SideNav>
+<CarbonBlazorShellLeftPanel>
+    <CarbonBlazorSidebarSubMenu Icon="CarbonBlazorIconType.Apps" Text="Resources" SubMenuItems="@_resourcesItems"></CarbonBlazorSidebarSubMenu>
+</CarbonBlazorShellLeftPanel>
 ```
 ```csharp
 @code {

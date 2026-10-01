@@ -1,0 +1,316 @@
+@using Microsoft.AspNetCore.Components.Routing
+@implements IDisposable
+
+<CascadingValue Value="@PanelCoordinator">
+<header class="cb-shell-header @(Coordinator?.HasLeftPanel == true ? string.Empty : "header-only") @CarbonBlazorThemeMapper.ToCssClass(ThemeOverride ?? CurrentTheme)"
+        @onclick="CloseRightPanels" @onclick:stopPropagation="true">
+    @if (Coordinator?.HasLeftPanel == true || ShowMenuButton)
+    {
+        @if (Coordinator?.HasLeftPanel == true)
+        {
+            <button class="cb-shell-menu-button desktop-menu-button" type="button" aria-label="@MenuLabel"
+                    aria-expanded="@GetMenuExpanded()" aria-controls="@(string.IsNullOrWhiteSpace(MenuControls) ? null : MenuControls)"
+                    @onclick="OnDesktopMenuClicked">
+                <CarbonBlazorIcon Type="CarbonBlazorIconType.Menu"></CarbonBlazorIcon>
+            </button>
+            <button @ref="_mobileMenuButton" class="cb-shell-menu-button mobile-menu-button" type="button" aria-label="@MenuLabel"
+                    aria-expanded="@GetMobileMenuExpanded()" aria-controls="@(string.IsNullOrWhiteSpace(MenuControls) ? null : MenuControls)"
+                    @onclick="OnMobileMenuClicked">
+                <CarbonBlazorIcon Type="CarbonBlazorIconType.Menu"></CarbonBlazorIcon>
+            </button>
+        }
+        else
+        {
+            <button class="cb-shell-menu-button" type="button" aria-label="@MenuLabel"
+                    aria-expanded="false" aria-controls="@(string.IsNullOrWhiteSpace(MenuControls) ? null : MenuControls)"
+                    @onclick="OnStandaloneMenuClicked">
+                <CarbonBlazorIcon Type="CarbonBlazorIconType.Menu"></CarbonBlazorIcon>
+            </button>
+        }
+    }
+    <a class="cb-shell-product" href="@HomeHref" aria-label="@ProductName">
+        @if (!string.IsNullOrWhiteSpace(LogoPath))
+        {
+            <img src="@LogoPath" alt="" />
+        }
+        <span>@ProductName</span>
+    </a>
+    @if (NavigationItems.Count > 0)
+    {
+        <nav class="cb-shell-product-navigation" aria-label="@ProductNavigationLabel">
+            <ul>
+                @foreach (NavigationItem item in NavigationItems)
+                {
+                    <li><NavLink href="@item.Href" Match="NavLinkMatch.All" @onclick="OnProductNavigationSelected">@item.Text</NavLink></li>
+                }
+            </ul>
+        </nav>
+    }
+    <div class="cb-shell-utilities">
+        @if (SearchTextChanged.HasDelegate)
+        {
+            <label class="cb-shell-search">
+                <span class="cb-visually-hidden">@SearchLabel</span>
+                <CarbonBlazorIcon Type="CarbonBlazorIconType.Search"></CarbonBlazorIcon>
+                <input type="search" aria-label="@SearchLabel" placeholder="@SearchPlaceholder"
+                       value="@SearchText" @oninput="OnSearchInput" />
+            </label>
+        }
+        @UtilityContent
+        @if (HelpPanel is not null)
+        {
+            <CarbonBlazorShellRightPanel Label="@HelpLabel" IconType="CarbonBlazorIconType.InformationFilled"
+                                         ChildContent="@HelpPanel"></CarbonBlazorShellRightPanel>
+        }
+        @if (NotificationsPanel is not null)
+        {
+            <CarbonBlazorShellRightPanel Label="@NotificationsLabel" IconType="CarbonBlazorIconType.Warning"
+                                         ChildContent="@NotificationsPanel"></CarbonBlazorShellRightPanel>
+        }
+        @if (EnableThemeSwitcher)
+        {
+            <CarbonBlazorShellRightPanel Label="@ThemeLabel" IconType="CarbonBlazorIconType.ColourPalette">
+                <ul class="cb-shell-theme-options">
+                    @foreach (CarbonBlazorTheme theme in Enum.GetValues<CarbonBlazorTheme>())
+                    {
+                        <li>
+                            <button type="button" aria-pressed="@((theme == CurrentTheme).ToString().ToLowerInvariant())"
+                                    @onclick="() => ChangeThemeAsync(theme)">@GetThemeName(theme)</button>
+                        </li>
+                    }
+                </ul>
+            </CarbonBlazorShellRightPanel>
+        }
+        @if (AccountPanel is not null)
+        {
+            <CarbonBlazorShellRightPanel Label="@AccountLabel" IconType="CarbonBlazorIconType.UserAvatar"
+                                         ChildContent="@AccountPanel"></CarbonBlazorShellRightPanel>
+        }
+        @if (SwitcherPanel is not null)
+        {
+            <CarbonBlazorShellRightPanel Label="@SwitcherLabel" IconType="CarbonBlazorIconType.Switcher" ChildContent="@SwitcherPanel"></CarbonBlazorShellRightPanel>
+        }
+    </div>
+</header>
+</CascadingValue>
+
+@code {
+    private readonly CarbonBlazorShellCoordinator _standaloneCoordinator = new();
+    private ElementReference _mobileMenuButton;
+
+    [CascadingParameter]
+    private CarbonBlazorShellCoordinator? Coordinator { get; set; }
+
+    [Parameter, EditorRequired]
+    public string ProductName { get; set; } = string.Empty;
+
+    [Parameter]
+    public string HomeHref { get; set; } = "/";
+
+    [Parameter]
+    public string? LogoPath { get; set; }
+
+    [Parameter]
+    public CarbonBlazorTheme? ThemeOverride { get; set; }
+
+    [Parameter]
+    public IEnumerable<NavigationItem> HeaderNavigation { get; set; } = [];
+
+    [Parameter]
+    public RenderFragment? HelpPanel { get; set; }
+
+    [Parameter]
+    public RenderFragment? UtilityContent { get; set; }
+
+    [Parameter]
+    public RenderFragment? NotificationsPanel { get; set; }
+
+    [Parameter]
+    public RenderFragment? AccountPanel { get; set; }
+
+    [Parameter]
+    public RenderFragment? SwitcherPanel { get; set; }
+
+    [Parameter]
+    public string? SearchText { get; set; } = string.Empty;
+
+    [Parameter]
+    public EventCallback<string?> SearchTextChanged { get; set; }
+
+    [Parameter]
+    public string SearchLabel { get; set; } = "Search";
+
+    [Parameter]
+    public string SearchPlaceholder { get; set; } = "Search";
+
+    [Parameter]
+    public bool EnableThemeSwitcher { get; set; }
+
+    [Parameter]
+    public CarbonBlazorTheme Theme { get; set; } = CarbonBlazorTheme.White;
+
+    [Parameter]
+    public EventCallback<CarbonBlazorTheme> ThemeChanged { get; set; }
+
+    [Parameter]
+    public bool ShowMenuButton { get; set; }
+
+    [Parameter]
+    public EventCallback MenuClickedCallback { get; set; }
+
+    [Parameter]
+    public string MenuLabel { get; set; } = "Toggle navigation menu";
+
+    [Parameter]
+    public string ProductNavigationLabel { get; set; } = "Product navigation";
+
+    [Parameter]
+    public string ThemeLabel { get; set; } = "Choose theme";
+
+    [Parameter]
+    public string HelpLabel { get; set; } = "Help";
+
+    [Parameter]
+    public string NotificationsLabel { get; set; } = "Notifications";
+
+    [Parameter]
+    public string AccountLabel { get; set; } = "Account";
+
+    [Parameter]
+    public string SwitcherLabel { get; set; } = "Application switcher";
+
+    private IReadOnlyList<NavigationItem> NavigationItems => HeaderNavigation.ToArray();
+
+    private CarbonBlazorShellCoordinator PanelCoordinator => Coordinator ?? _standaloneCoordinator;
+
+    private CarbonBlazorTheme CurrentTheme => Coordinator?.Theme ?? Theme;
+
+    private string MenuControls => Coordinator?.HasLeftPanel == true ? Coordinator.NavigationId : MenuControlsId;
+
+    [Parameter]
+    public string MenuControlsId { get; set; } = string.Empty;
+
+    protected override void OnParametersSet()
+    {
+        if (Coordinator is not null)
+        {
+            IReadOnlyList<NavigationItem> navigationItems = NavigationItems;
+            bool navigationChanged = !Coordinator.HeaderNavigation.SequenceEqual(navigationItems,
+                NavigationItemComparer.Instance);
+            Coordinator.HeaderNavigation = navigationItems;
+            if (navigationChanged)
+            {
+                Coordinator.NotifyNavigationChanged();
+            }
+        }
+        else
+        {
+            _standaloneCoordinator.Theme = Theme;
+            _standaloneCoordinator.ThemeChanged = ThemeChanged;
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        if (Coordinator is not null)
+        {
+            Coordinator.NavigationChanged += OnNavigationChanged;
+            Coordinator.ThemeUpdated += OnNavigationChanged;
+            Coordinator.RestoreNavigationFocus = RestoreMobileMenuFocus;
+        }
+    }
+
+    private string GetMenuExpanded() => (Coordinator?.IsNavigationExpanded ?? false).ToString().ToLowerInvariant();
+
+    private string GetMobileMenuExpanded() => (Coordinator?.IsMobileNavigationOpen ?? false).ToString().ToLowerInvariant();
+
+    private async Task OnDesktopMenuClicked()
+    {
+        if (Coordinator?.ToggleNavigation is not null)
+        {
+            await Coordinator.ToggleNavigation.Invoke();
+        }
+        else
+        {
+            await OnStandaloneMenuClicked();
+        }
+    }
+
+    private async Task OnMobileMenuClicked()
+    {
+        if (Coordinator?.ToggleMobileNavigation is not null)
+        {
+            await Coordinator.ToggleMobileNavigation.Invoke();
+        }
+    }
+
+    private Task OnStandaloneMenuClicked() => MenuClickedCallback.InvokeAsync();
+
+    private void OnNavigationChanged() => _ = InvokeAsync(StateHasChanged);
+
+    private async Task CloseRightPanels()
+    {
+        await PanelCoordinator.CloseRightPanels();
+    }
+
+    private Task RestoreMobileMenuFocus() => _mobileMenuButton.FocusAsync().AsTask();
+
+    private async Task OnSearchInput(ChangeEventArgs args)
+    {
+        SearchText = args.Value?.ToString() ?? string.Empty;
+        await SearchTextChanged.InvokeAsync(SearchText);
+    }
+
+    private async Task ChangeThemeAsync(CarbonBlazorTheme theme)
+    {
+        if (Coordinator is not null)
+        {
+            Coordinator.Theme = theme;
+            await Coordinator.ThemeChanged.InvokeAsync(theme);
+            await Coordinator.CloseRightPanels();
+            return;
+        }
+
+        Theme = theme;
+        _standaloneCoordinator.Theme = theme;
+        await ThemeChanged.InvokeAsync(theme);
+        await _standaloneCoordinator.CloseRightPanels();
+    }
+
+    private async Task OnProductNavigationSelected()
+    {
+        if (Coordinator?.CloseMobileNavigation is not null)
+        {
+            await Coordinator.CloseMobileNavigation.Invoke();
+        }
+    }
+
+    private static string GetThemeName(CarbonBlazorTheme theme) => theme switch
+    {
+        CarbonBlazorTheme.White => "White",
+        CarbonBlazorTheme.Gray10 => "Gray 10",
+        CarbonBlazorTheme.Gray90 => "Gray 90",
+        CarbonBlazorTheme.Gray100 => "Gray 100",
+        _ => theme.ToString()
+    };
+
+    public void Dispose()
+    {
+        if (Coordinator is not null)
+        {
+            Coordinator.NavigationChanged -= OnNavigationChanged;
+            Coordinator.ThemeUpdated -= OnNavigationChanged;
+            Coordinator.RestoreNavigationFocus = null;
+        }
+    }
+
+    private sealed class NavigationItemComparer : IEqualityComparer<NavigationItem>
+    {
+        public static NavigationItemComparer Instance { get; } = new();
+
+        public bool Equals(NavigationItem? left, NavigationItem? right) =>
+            left?.Text == right?.Text && left?.Href == right?.Href && left?.Icon == right?.Icon;
+
+        public int GetHashCode(NavigationItem item) => HashCode.Combine(item.Text, item.Href, item.Icon);
+    }
+}

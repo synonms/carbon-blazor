@@ -1,14 +1,27 @@
-﻿<nav class="cb-header-action-panel @(IsExpanded ? "" : "collapsed")">
-    <ul>
-        @ChildContent
-    </ul>
-</nav>
+@if (IsExpanded)
+{
+    <section id="@PanelId" class="cb-header-action-panel" role="region" aria-label="@Label">
+        <ul>
+            @ChildContent
+        </ul>
+    </section>
+}
 
 @code {
+    private static int _instanceCount;
+    private readonly string _generatedPanelId = $"cb-header-action-panel-{Interlocked.Increment(ref _instanceCount)}";
 
-    [Parameter]
-    [EditorRequired]
+    [Parameter, EditorRequired]
     public RenderFragment ChildContent { get; set; } = null!;
 
+    [Parameter]
     public bool IsExpanded { get; set; }
+
+    [Parameter]
+    public string Label { get; set; } = "Header action panel";
+
+    [Parameter]
+    public string? Id { get; set; }
+
+    private string PanelId => string.IsNullOrWhiteSpace(Id) ? _generatedPanelId : Id;
 }

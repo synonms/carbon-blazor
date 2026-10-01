@@ -1,5 +1,6 @@
 <div class="cb-header-button">
     <CarbonBlazorButton @ref="_button" Kind="CarbonBlazorButtonKind.Ghost" Size="CarbonBlazorButtonSize.LargeExpressive" Display="CarbonBlazorButtonDisplay.IconOnly" 
+                        Id="@Id" AriaLabel="@AriaLabel" AriaExpanded="@AriaExpanded" AriaControls="@AriaControls"
                         IconType="@IconType" ClickedCallback="@ClickedCallback"></CarbonBlazorButton>
     
     @if (_isBadgeShown)
@@ -17,6 +18,18 @@
     
     [Parameter]
     public EventCallback ClickedCallback { get; set; } = EventCallback.Empty;
+
+    [Parameter]
+    public string? Id { get; set; }
+
+    [Parameter]
+    public string? AriaLabel { get; set; }
+
+    [Parameter]
+    public string? AriaExpanded { get; set; }
+
+    [Parameter]
+    public string? AriaControls { get; set; }
     
     public bool IsToggled
     {

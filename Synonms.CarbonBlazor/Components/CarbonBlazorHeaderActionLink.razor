@@ -1,12 +1,24 @@
 ﻿<li class="cb-header-action-link">
-    <a href="@NavigationItem.Href" onclick="@ClickedCallback">@NavigationItem.Text</a>
+    <a href="@NavigationItem.Href" @onclick="OnClicked">@NavigationItem.Text</a>
 </li>
 
 @code {
+    [CascadingParameter]
+    private Func<Task>? ClosePanel { get; set; }
+
     [Parameter]
     [EditorRequired]
     public NavigationItem NavigationItem { get; set; } = null!;
     
     [Parameter]
     public EventCallback ClickedCallback { get; set; } = EventCallback.Empty;
+
+    private async Task OnClicked()
+    {
+        await ClickedCallback.InvokeAsync();
+        if (ClosePanel is not null)
+        {
+            await ClosePanel.Invoke();
+        }
+    }
 }

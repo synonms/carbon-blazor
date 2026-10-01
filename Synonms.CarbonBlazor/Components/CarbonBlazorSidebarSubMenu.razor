@@ -1,44 +1,46 @@
-﻿<ul class="cb-sidebar-submenu @(_isExpanded ? string.Empty : "collapsed")">
-    <li class="cb-sidebar-submenu" onclick="@(() => Toggle())">
+@using Microsoft.AspNetCore.Components.Routing
+
+<li class="cb-sidebar-submenu">
+    <button type="button" class="cb-sidebar-submenu-toggle" aria-expanded="@_isExpanded.ToString().ToLowerInvariant()"
+            aria-controls="@_submenuId" @onclick="Toggle">
         @if (Icon is not null)
         {
             <CarbonBlazorIcon Type="@(Icon.Value)"></CarbonBlazorIcon>
         }
-        <span style="flex: 1">@Text</span>
-        @if (_isExpanded)
+        <span>@Text</span>
+        <CarbonBlazorIcon Type="@(_isExpanded ? CarbonBlazorIconType.ChevronUp : CarbonBlazorIconType.ChevronDown)"></CarbonBlazorIcon>
+    </button>
+    <ul id="@_submenuId" class="cb-sidebar-submenu-items" hidden="@(!_isExpanded)">
+        @foreach (NavigationItem item in SubMenuItems)
         {
-            <CarbonBlazorIcon Type="CarbonBlazorIconType.ChevronUp"></CarbonBlazorIcon>
+            <li class="cb-sidebar-submenu-item">
+                <NavLink href="@item.Href" Match="NavLinkMatch.All" @onclick="CloseNavigationAction">@item.Text</NavLink>
+            </li>
         }
-        else
-        {
-            <CarbonBlazorIcon Type="CarbonBlazorIconType.ChevronDown"></CarbonBlazorIcon>
-        }
-    </li>
-    
-    @foreach (NavigationItem item in SubMenuItems)
-    {
-        <li class="cb-sidebar-submenu-item">
-            <a href="@item.Href">@item.Text</a>
-        </li>
-    }
-</ul>
+    </ul>
+</li>
 
 @code {
+    private static int _instanceCount;
+    private readonly string _submenuId = $"cb-sidebar-submenu-{Interlocked.Increment(ref _instanceCount)}";
     private bool _isExpanded;
-    
-    [Parameter]
-    public CarbonBlazorIconType? Icon { get; set; }
-    
-    [Parameter]
-    [EditorRequired]
-    public string Text { get; set; } = string.Empty;
+
+    [CascadingParameter]
+    private Func<Task>? CloseNavigation { get; set; }
 
     [Parameter]
-    [EditorRequired]
+    public CarbonBlazorIconType? Icon { get; set; }
+
+    [Parameter, EditorRequired]
+    public string Text { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
     public IEnumerable<NavigationItem> SubMenuItems { get; set; } = [];
 
     private void Toggle()
     {
         _isExpanded = !_isExpanded;
     }
+
+    private Task CloseNavigationAction() => CloseNavigation?.Invoke() ?? Task.CompletedTask;
 }

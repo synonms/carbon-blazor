@@ -1,258 +1,92 @@
-﻿<div class="cb-shell @CarbonBlazorThemeMapper.ToCssClass(Theme)">
-    <header class="@GetHeaderClass()">
-        <CarbonBlazorStack FlexDirection="FlexDirection.Row" JustifyContent="JustifyContent.Start" AlignItems="AlignItems.Center" Gap="1rem">
-            <CarbonBlazorButton Kind="CarbonBlazorButtonKind.Ghost" Display="CarbonBlazorButtonDisplay.IconOnly" Size="CarbonBlazorButtonSize.LargeExpressive" IconType="CarbonBlazorIconType.Menu" ClickedCallback="@OnMenuClicked"></CarbonBlazorButton>
-            @if (string.IsNullOrWhiteSpace(ProductIconImagePath) is false)
-            {
-                <img class="cb-header-product-icon" alt="@ProductName Logo" src="@ProductIconImagePath"/>
-            }
-            <span class="cb-header-product-name">@ProductName</span>
-        </CarbonBlazorStack>
+@implements IDisposable
 
-        <CarbonBlazorStack FlexDirection="FlexDirection.Row" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center">
-            @if (SearchTextChangedCallback.HasDelegate)
-            {
-                <CarbonBlazorSearch Size="CarbonBlazorInputSize.Large" SearchTextChangedCallback="@SearchTextChangedCallback"></CarbonBlazorSearch>
-            }
-            @if (UserPanel is not null)
-            {
-                <CarbonBlazorHeaderButton @ref="@_userAvatarButton" IconType="CarbonBlazorIconType.UserAvatar" ClickedCallback="@OnUserAvatarClicked"></CarbonBlazorHeaderButton>
-            }
-            @if (IsThemeEnabled)
-            {
-                <CarbonBlazorHeaderButton @ref="@_themeButton" IconType="CarbonBlazorIconType.ColourPalette" ClickedCallback="@OnThemeClicked"></CarbonBlazorHeaderButton>
-            }
-            @if (SwitcherPanel is not null)
-            {
-                <CarbonBlazorHeaderButton @ref="@_switcherButton" IconType="CarbonBlazorIconType.Switcher" ClickedCallback="@OnSwitcherClicked"></CarbonBlazorHeaderButton>
-            }
-        </CarbonBlazorStack>
-
-        @if (UserPanel is not null)
-        {
-            <CarbonBlazorHeaderActionPanel @ref="@_userPanel">
-                @UserPanel
-            </CarbonBlazorHeaderActionPanel>
-        }
-
-        <CarbonBlazorHeaderActionPanel @ref="@_themePanel">
-            <CarbonBlazorHeaderActionLink NavigationItem="@(NavigationItem.Create("White", ""))" ClickedCallback="@(() => ChangeTheme(CarbonBlazorTheme.White))"></CarbonBlazorHeaderActionLink>
-            <CarbonBlazorHeaderActionLink NavigationItem="@(NavigationItem.Create("Grey 10", ""))" ClickedCallback="@(() => ChangeTheme(CarbonBlazorTheme.Gray10))"></CarbonBlazorHeaderActionLink>
-            <CarbonBlazorHeaderActionLink NavigationItem="@(NavigationItem.Create("Grey 90", ""))" ClickedCallback="@(() => ChangeTheme(CarbonBlazorTheme.Gray90))"></CarbonBlazorHeaderActionLink>
-            <CarbonBlazorHeaderActionLink NavigationItem="@(NavigationItem.Create("Grey 100", ""))" ClickedCallback="@(() => ChangeTheme(CarbonBlazorTheme.Gray100))"></CarbonBlazorHeaderActionLink>
-        </CarbonBlazorHeaderActionPanel>
-
-        @if (SwitcherPanel is not null)
-        {
-            <CarbonBlazorHeaderActionPanel @ref="@_switcherPanel">
-                @SwitcherPanel
-            </CarbonBlazorHeaderActionPanel>
-        }
-    </header>
-
-    <CarbonBlazorSidebar @ref="@_sidebar" ThemeOverride="@SidebarThemeOverride">
-        @SideNav
-    </CarbonBlazorSidebar>
-    <main class="cb-main">
-        @Body
-    </main>
+<div class="cb-shell-layout @CarbonBlazorThemeMapper.ToCssClass(Theme) @(LeftPanelContent is null ? "header-only" : "has-left-panel") @(!_coordinator.IsNavigationExpanded ? "sidebar-collapsed" : string.Empty)"
+     @onclick="DismissOverlays"
+     @onkeydown="OnKeyDown">
+    <a class="cb-shell-skip-link" href="#@_mainId">Skip to main content</a>
+    <CascadingValue Value="@_coordinator">
+        @HeaderContent
+        @LeftPanelContent
+        <main id="@_mainId" class="cb-shell-main" tabindex="-1">
+            @ChildContent
+        </main>
+    </CascadingValue>
     <CarbonBlazorNotificationToastQueue></CarbonBlazorNotificationToastQueue>
 </div>
 
 @code {
-    private CarbonBlazorSidebar _sidebar = null!;
-    private CarbonBlazorHeaderButton _switcherButton = null!;
-    private CarbonBlazorHeaderButton _themeButton = null!;
-    private CarbonBlazorHeaderButton _userAvatarButton = null!;
-    private CarbonBlazorHeaderActionPanel _switcherPanel = null!;
-    private CarbonBlazorHeaderActionPanel _themePanel = null!;
-    private CarbonBlazorHeaderActionPanel _userPanel = null!;
+    private static int _instanceCount;
+    private readonly string _mainId = $"cb-shell-main-{Interlocked.Increment(ref _instanceCount)}";
+    private readonly CarbonBlazorShellCoordinator _coordinator = new();
+
+    [Parameter]
+    public RenderFragment? HeaderContent { get; set; }
+
+    [Parameter]
+    public RenderFragment? LeftPanelContent { get; set; }
 
     [Parameter]
     [EditorRequired]
-    public RenderFragment SideNav { get; set; } = null!;
-
-    [Parameter]
-    [EditorRequired]
-    public RenderFragment Body { get; set; } = null!;
-
-
-    #region Header
-    
-    [Parameter]
-    public EventCallback MenuClickedCallback { get; set; } = EventCallback.Empty;
-
-    [Parameter]
-    [EditorRequired]
-    public string ProductName { get; set; } = string.Empty;
-    
-    [Parameter]
-    public string ProductIconImagePath { get; set; } = string.Empty;
-
-    private async Task OnMenuClicked()
-    {
-        _sidebar.ToggleVisibility();
-
-        if (MenuClickedCallback.HasDelegate)
-        {
-            await MenuClickedCallback.InvokeAsync();
-        }
-    }
-    
-    private void CloseAllPanels()
-    {
-        CloseSwitcherPanel();
-        CloseThemePanel();
-        CloseUserPanel();
-    }
-
-    private string GetHeaderClass()
-    {
-        string baseClass = CssClasses.Prefix + "header";
-        string themeClass = HeaderThemeOverride is null ? string.Empty : CarbonBlazorThemeMapper.ToCssClass(HeaderThemeOverride.Value);
-
-        return CssClasses.Concatenate(baseClass, themeClass);
-    }
-    
-    #endregion
-    
-    
-    #region UserProfile
-
-    [Parameter]
-    public RenderFragment? UserPanel { get; set; }
-
-    private void OnUserAvatarClicked()
-    {
-        if (_userPanel.IsExpanded)
-        {
-            CloseUserPanel();
-        }
-        else
-        {
-            OpenUserPanel();
-        }
-        
-        StateHasChanged();
-    }
-
-    private void OpenUserPanel()
-    {
-        CloseAllPanels();
-        
-        _userPanel.IsExpanded = true;
-        _userAvatarButton.IsToggled = true;
-    }
-
-    private void CloseUserPanel()
-    {
-        _userPanel.IsExpanded = false;
-        _userAvatarButton.IsToggled = false;
-    }
-
-    #endregion
-    
-    
-    #region Switcher
-    
-    [Parameter]
-    public RenderFragment? SwitcherPanel { get; set; }
-    
-    private void OnSwitcherClicked()
-    {
-        if (_switcherPanel.IsExpanded)
-        {
-            CloseSwitcherPanel();
-        }
-        else
-        {
-            OpenSwitcherPanel();
-        }
-        
-        StateHasChanged();
-    }
-
-    private void CloseSwitcherPanel()
-    {
-        _switcherPanel.IsExpanded = false;
-        _switcherButton.IsToggled = false;
-    }
-
-    private void OpenSwitcherPanel()
-    {
-        CloseAllPanels();
-        
-        _switcherPanel.IsExpanded = true;
-        _switcherButton.IsToggled = true;
-    }
-
-    #endregion
-    
-    
-    #region Search
-    
-    [Parameter]
-    public EventCallback<string> SearchTextChangedCallback { get; set; }
-
-    #endregion
-    
-    
-    #region Theme
+    public RenderFragment ChildContent { get; set; } = null!;
 
     [Parameter]
     public CarbonBlazorTheme Theme { get; set; } = CarbonBlazorTheme.White;
 
     [Parameter]
-    public CarbonBlazorTheme? HeaderThemeOverride { get; set; }
+    public EventCallback<CarbonBlazorTheme> ThemeChanged { get; set; }
 
-    [Parameter]
-    public CarbonBlazorTheme? SidebarThemeOverride { get; set; }
-
-    [Parameter] 
-    public bool IsThemeEnabled { get; set; } = true;
-
-    [Parameter] 
-    public EventCallback<CarbonBlazorTheme> ThemeChangedCallback { get; set; } = EventCallback<CarbonBlazorTheme>.Empty;
-    
-    private async Task ChangeTheme(CarbonBlazorTheme theme)
+    protected override void OnParametersSet()
     {
-        CloseThemePanel();
-
-        Theme = theme;
-
-        if (ThemeChangedCallback.HasDelegate)
+        bool themeChanged = _coordinator.Theme != Theme;
+        _coordinator.NavigationId = $"cb-shell-left-panel-{_mainId}";
+        _coordinator.Theme = Theme;
+        _coordinator.ThemeChanged = ThemeChanged;
+        _coordinator.HasLeftPanel = LeftPanelContent is not null;
+        if (themeChanged)
         {
-            await ThemeChangedCallback.InvokeAsync();
+            _coordinator.NotifyThemeUpdated();
         }
     }
 
-    private void OnThemeClicked()
+    protected override void OnInitialized()
     {
-        if (_themePanel.IsExpanded)
+        _coordinator.NavigationChanged += OnNavigationChanged;
+        _coordinator.ThemeUpdated += OnThemeUpdated;
+    }
+
+    private void OnNavigationChanged() => _ = InvokeAsync(StateHasChanged);
+
+    private void OnThemeUpdated() => _ = InvokeAsync(StateHasChanged);
+
+    private async Task DismissOverlays()
+    {
+        await _coordinator.CloseRightPanels();
+        if (_coordinator.CloseMobileNavigation is not null)
         {
-            CloseThemePanel();
+            await _coordinator.CloseMobileNavigation.Invoke();
         }
-        else
+    }
+
+    private async Task OnKeyDown(KeyboardEventArgs args)
+    {
+        if (args.Key == "Escape")
         {
-            OpenThemePanel();
+            bool restoreNavigationFocus = _coordinator.IsMobileNavigationOpen;
+            await _coordinator.CloseRightPanels();
+            if (_coordinator.CloseMobileNavigation is not null)
+            {
+                await _coordinator.CloseMobileNavigation.Invoke();
+            }
+            if (restoreNavigationFocus && _coordinator.RestoreNavigationFocus is not null)
+            {
+                await _coordinator.RestoreNavigationFocus.Invoke();
+            }
         }
-        
-        StateHasChanged();
     }
 
-    private void OpenThemePanel()
+    public void Dispose()
     {
-        CloseAllPanels();
-        
-        _themePanel.IsExpanded = true;
-        _themeButton.IsToggled = true;
+        _coordinator.NavigationChanged -= OnNavigationChanged;
+        _coordinator.ThemeUpdated -= OnThemeUpdated;
     }
-
-    private void CloseThemePanel()
-    {
-        _themePanel.IsExpanded = false;
-        _themeButton.IsToggled = false;
-    }
-
-    #endregion
 }

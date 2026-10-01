@@ -1,0 +1,184 @@
+@using Microsoft.AspNetCore.Components.Routing
+@implements IDisposable
+
+<button class="cb-shell-navigation-backdrop @(_mobileOpen ? "open" : string.Empty)" type="button"
+        tabindex="-1" aria-label="Close navigation menu" @onclick="CloseMobileNavigation"></button>
+<nav id="@PanelId"
+     class="cb-shell-left-panel @(_desktopExpanded ? "expanded" : "collapsed") @(_mobileOpen ? "mobile-open" : string.Empty) @(ThemeOverride is null ? string.Empty : CarbonBlazorThemeMapper.ToCssClass(ThemeOverride.Value))"
+     aria-label="@Label" @onkeydown="OnKeyDown">
+    @if (Coordinator?.HeaderNavigation.Count > 0)
+    {
+        <ul class="cb-shell-mobile-product-navigation" aria-label="@ProductNavigationLabel">
+            @foreach (NavigationItem item in Coordinator.HeaderNavigation)
+            {
+                <li><NavLink href="@item.Href" Match="NavLinkMatch.All" @onclick="OnNavigationSelected">@item.Text</NavLink></li>
+            }
+        </ul>
+    }
+    <CascadingValue Value="@((Func<Task>)CloseMobileNavigation)">
+        <ul class="cb-shell-secondary-navigation">
+            @ChildContent
+        </ul>
+    </CascadingValue>
+</nav>
+
+@code {
+    [CascadingParameter]
+    private CarbonBlazorShellCoordinator? Coordinator { get; set; }
+
+    [Parameter, EditorRequired]
+    public RenderFragment ChildContent { get; set; } = null!;
+
+    [Parameter]
+    public string Label { get; set; } = "Secondary navigation";
+
+    [Parameter]
+    public string ProductNavigationLabel { get; set; } = "Product navigation";
+
+    [Parameter]
+    public string Id { get; set; } = string.Empty;
+
+    [Parameter]
+    public bool IsExpanded { get; set; } = true;
+
+    [Parameter]
+    public EventCallback<bool> IsExpandedChanged { get; set; }
+
+    [Parameter]
+    public bool IsMobileOpen { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> IsMobileOpenChanged { get; set; }
+
+    [Parameter]
+    public CarbonBlazorTheme? ThemeOverride { get; set; }
+
+    private bool _desktopExpanded = true;
+    private bool _mobileOpen;
+    private bool _hasInitializedParameters;
+    private string PanelId
+    {
+        get
+        {
+            if (!string.IsNullOrWhiteSpace(Id))
+            {
+                return Id;
+            }
+
+            return string.IsNullOrWhiteSpace(Coordinator?.NavigationId)
+                ? _generatedPanelId
+                : Coordinator.NavigationId;
+        }
+    }
+    private static int _instanceCount;
+    private readonly string _generatedPanelId = $"cb-shell-left-panel-{Interlocked.Increment(ref _instanceCount)}";
+
+    protected override void OnInitialized()
+    {
+        if (Coordinator is not null)
+        {
+            Coordinator.ToggleNavigation = ToggleVisibility;
+            Coordinator.ToggleMobileNavigation = ToggleMobileNavigation;
+            Coordinator.CloseMobileNavigation = CloseMobileNavigation;
+            Coordinator.IsNavigationExpanded = _desktopExpanded;
+            Coordinator.NavigationChanged += OnNavigationChanged;
+        }
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (!_hasInitializedParameters || IsExpandedChanged.HasDelegate)
+        {
+            _desktopExpanded = IsExpanded;
+        }
+        if (IsMobileOpenChanged.HasDelegate)
+        {
+            _mobileOpen = IsMobileOpen;
+        }
+        _hasInitializedParameters = true;
+        if (Coordinator is not null)
+        {
+            bool navigationChanged = Coordinator.NavigationId != PanelId
+                                     || Coordinator.IsNavigationExpanded != _desktopExpanded
+                                     || Coordinator.IsMobileNavigationOpen != _mobileOpen;
+            Coordinator.NavigationId = PanelId;
+            Coordinator.IsNavigationExpanded = _desktopExpanded;
+            Coordinator.IsMobileNavigationOpen = _mobileOpen;
+            if (navigationChanged)
+            {
+                Coordinator.NotifyNavigationChanged();
+            }
+        }
+    }
+
+    private async Task ToggleVisibility()
+    {
+        _desktopExpanded = !_desktopExpanded;
+        if (Coordinator is not null)
+        {
+            Coordinator.IsNavigationExpanded = _desktopExpanded;
+            Coordinator.NotifyNavigationChanged();
+        }
+        IsExpanded = _desktopExpanded;
+        await IsExpandedChanged.InvokeAsync(_desktopExpanded);
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task ToggleMobileNavigation()
+    {
+        _mobileOpen = !_mobileOpen;
+        IsMobileOpen = _mobileOpen;
+        await IsMobileOpenChanged.InvokeAsync(_mobileOpen);
+        if (Coordinator is not null)
+        {
+            Coordinator.IsMobileNavigationOpen = _mobileOpen;
+            Coordinator.NotifyNavigationChanged();
+        }
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task CloseMobileNavigation()
+    {
+        if (!_mobileOpen)
+        {
+            return;
+        }
+
+        _mobileOpen = false;
+        IsMobileOpen = false;
+        await IsMobileOpenChanged.InvokeAsync(false);
+        if (Coordinator is not null)
+        {
+            Coordinator.IsMobileNavigationOpen = false;
+            Coordinator.NotifyNavigationChanged();
+        }
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private Task OnNavigationSelected() => CloseMobileNavigation();
+
+    private async Task OnKeyDown(KeyboardEventArgs args)
+    {
+        if (args.Key == "Escape" && _mobileOpen)
+        {
+            await CloseMobileNavigation();
+            if (Coordinator?.RestoreNavigationFocus is not null)
+            {
+                await Coordinator.RestoreNavigationFocus.Invoke();
+            }
+        }
+    }
+
+    public void Dispose()
+    {
+        if (Coordinator is not null)
+        {
+            Coordinator.ToggleNavigation = null;
+            Coordinator.ToggleMobileNavigation = null;
+            Coordinator.CloseMobileNavigation = null;
+            Coordinator.NavigationChanged -= OnNavigationChanged;
+        }
+    }
+
+    private void OnNavigationChanged() => _ = InvokeAsync(StateHasChanged);
+}

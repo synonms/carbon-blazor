@@ -1,29 +1,17 @@
-﻿<nav class="@GetSidebarClass()">
-    <ul>
-        @ChildContent
-    </ul>
-</nav>
+<CarbonBlazorShellLeftPanel IsExpanded="@IsExpanded" IsExpandedChanged="@IsExpandedChanged" ThemeOverride="@ThemeOverride">
+    @ChildContent
+</CarbonBlazorShellLeftPanel>
 
 @code {
-    private bool _isExpanded = true;
-    
     [Parameter]
     public RenderFragment ChildContent { get; set; } = null!;
-    
+
     [Parameter]
     public CarbonBlazorTheme? ThemeOverride { get; set; }
 
-    public void ToggleVisibility()
-    {
-        _isExpanded = !_isExpanded;
-    }
+    [Parameter]
+    public bool IsExpanded { get; set; } = true;
 
-    private string GetSidebarClass()
-    {
-        string baseClass = CssClasses.Prefix + "sidebar";
-        string expandedClass = _isExpanded ? string.Empty : "collapsed";
-        string themeClass = ThemeOverride is null ? string.Empty : CarbonBlazorThemeMapper.ToCssClass(ThemeOverride.Value);
-
-        return CssClasses.Concatenate(baseClass, expandedClass, themeClass);
-    }
+    [Parameter]
+    public EventCallback<bool> IsExpandedChanged { get; set; }
 }

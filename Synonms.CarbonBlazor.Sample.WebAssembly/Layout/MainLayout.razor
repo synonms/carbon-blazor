@@ -2,24 +2,26 @@
 
 <PageTitle>Synonms CarbonBlazor</PageTitle>
 
-<CarbonBlazorShell ProductName="CarbonBlazor" HeaderThemeOverride="CarbonBlazorTheme.Gray100" SidebarThemeOverride="CarbonBlazorTheme.White">
-    <UserPanel>
-        <CarbonBlazorHeaderActionLink NavigationItem="@NavigationItem.Create("Login", "/")"></CarbonBlazorHeaderActionLink>
-    </UserPanel>
-    <SwitcherPanel>
-        <CarbonBlazorHeaderActionLink NavigationItem="@NavigationItem.Create("App 1", "/")"></CarbonBlazorHeaderActionLink>
-        <CarbonBlazorHeaderActionLink NavigationItem="@NavigationItem.Create("App 2", "/")"></CarbonBlazorHeaderActionLink>
-    </SwitcherPanel>
-    <SideNav>
-        <CarbonBlazorSidebarLink NavigationItem="@NavigationItem.Create(CarbonBlazorIconType.Dashboard, "Dashboard", "/")" />
-        <CarbonBlazorSidebarLink NavigationItem="@NavigationItem.Create(CarbonBlazorIconType.Apps, "Storybook", "/storybook")" />
-        <CarbonBlazorSidebarSubMenu Text="Menu Group" SubMenuItems="@_subMenuItems" />
-    </SideNav>
-    
-    <Body>@Body</Body>
+<CarbonBlazorShell @bind-Theme="_theme">
+    <HeaderContent>
+        <CarbonBlazorShellHeader ProductName="CarbonBlazor" HomeHref="/" ThemeOverride="CarbonBlazorTheme.Gray100" EnableThemeSwitcher="true">
+            <AccountPanel>
+                <CarbonBlazorHeaderActionLink NavigationItem="@NavigationItem.Create("Login", "/")" />
+            </AccountPanel>
+        </CarbonBlazorShellHeader>
+    </HeaderContent>
+    <LeftPanelContent>
+        <CarbonBlazorShellLeftPanel ThemeOverride="CarbonBlazorTheme.White">
+            <CarbonBlazorSidebarLink NavigationItem="@NavigationItem.Create(CarbonBlazorIconType.Dashboard, "Dashboard", "/")" />
+            <CarbonBlazorSidebarLink NavigationItem="@NavigationItem.Create(CarbonBlazorIconType.Apps, "Storybook", "/storybook")" />
+            <CarbonBlazorSidebarSubMenu Text="Menu Group" SubMenuItems="@_subMenuItems" />
+        </CarbonBlazorShellLeftPanel>
+    </LeftPanelContent>
+    <ChildContent>@Body</ChildContent>
 </CarbonBlazorShell>
 
 @code {
+    private CarbonBlazorTheme _theme = CarbonBlazorTheme.White;
 
     private readonly List<NavigationItem> _subMenuItems =
     [

@@ -1,0 +1,114 @@
+@implements IDisposable
+
+<div class="cb-shell-panel-control" @onclick:stopPropagation="true" @onkeydown="OnKeyDown">
+    <button @ref="_trigger" class="cb-shell-utility-button" type="button" aria-label="@Label"
+            aria-expanded="@IsOpen.ToString().ToLowerInvariant()" aria-controls="@_panelId"
+            @onclick="Toggle">
+        <CarbonBlazorIcon Type="@IconType"></CarbonBlazorIcon>
+    </button>
+    @if (IsOpen)
+    {
+        <button class="cb-shell-panel-backdrop" type="button" tabindex="-1" aria-hidden="true"
+                aria-label="Close @Label panel" @onclick="Close"></button>
+    }
+    <section id="@_panelId" class="cb-shell-right-panel" role="region" aria-label="@Label"
+             hidden="@(!IsOpen)" @onclick:stopPropagation="true">
+        <CascadingValue Value="@((Func<Task>)Close)">
+            @ChildContent
+        </CascadingValue>
+    </section>
+</div>
+
+@code {
+    private static int _instanceCount;
+    private readonly string _panelId = $"cb-shell-panel-{Interlocked.Increment(ref _instanceCount)}";
+    private ElementReference _trigger;
+    private bool _isExpanded;
+    private bool _wasOpen;
+
+    [CascadingParameter]
+    private CarbonBlazorShellCoordinator? Coordinator { get; set; }
+
+    [Parameter, EditorRequired]
+    public string Label { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired]
+    public CarbonBlazorIconType IconType { get; set; }
+
+    [Parameter, EditorRequired]
+    public RenderFragment ChildContent { get; set; } = null!;
+
+    private bool IsOpen => Coordinator?.IsRightPanelOpen(_panelId) ?? _isExpanded;
+    protected override void OnInitialized()
+    {
+        if (Coordinator is not null)
+        {
+            Coordinator.RightPanelChanged += OnRightPanelChanged;
+        }
+    }
+
+    private async Task Toggle()
+    {
+        if (Coordinator is not null)
+        {
+            await Coordinator.ToggleRightPanel(_panelId);
+            if (Coordinator.IsRightPanelOpen(_panelId) && Coordinator.CloseMobileNavigation is not null)
+            {
+                await Coordinator.CloseMobileNavigation.Invoke();
+            }
+        }
+        else
+        {
+            _isExpanded = !_isExpanded;
+            _wasOpen = _isExpanded;
+        }
+    }
+
+    private async Task Close()
+    {
+        if (Coordinator is not null)
+        {
+            await Coordinator.CloseRightPanels();
+        }
+        else
+        {
+            _isExpanded = false;
+        }
+
+        if (_wasOpen)
+        {
+            await _trigger.FocusAsync();
+        }
+    }
+
+    private async Task OnRightPanelChanged(string? activePanelId)
+    {
+        bool wasOpen = _wasOpen;
+        _isExpanded = activePanelId == _panelId;
+        _wasOpen = _isExpanded;
+        await InvokeAsync(StateHasChanged);
+
+        if (wasOpen && !_isExpanded && activePanelId is null)
+        {
+            await _trigger.FocusAsync();
+        }
+    }
+
+    private Task OnKeyDown(KeyboardEventArgs args)
+    {
+        if (args.Key == "Escape")
+        {
+            return Close();
+        }
+
+        return Task.CompletedTask;
+    }
+
+    public void Dispose()
+    {
+        if (Coordinator is not null)
+        {
+            Coordinator.RightPanelChanged -= OnRightPanelChanged;
+        }
+    }
+}

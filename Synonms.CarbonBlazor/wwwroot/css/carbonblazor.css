@@ -1426,34 +1426,6 @@ input[type=number] {
     -moz-appearance: textfield;
 }
 
-/* Can't use CSS isolation for the shell as Theme variables won't cascade */
-.cb-shell {
-    width: 100vw;
-    height: 100vh;
-    display: grid;
-    grid-template-rows: 3rem auto;
-    grid-template-columns: min-content auto;
-    grid-template-areas: 
-        "header header"
-        "sidebar main";
-    flex-direction: column;
-    gap: 0;
-    overflow-x: auto;
-}
-.cb-main {
-    grid-area: main;
-    width: 100%;
-    min-height: 100%;
-    overflow-y: scroll;
-    background-color: var(--cb-background);
-    padding: 4rem;
-}
-@media (max-width: 768px) {
-    .cb-main {
-        padding: 1rem;
-    }
-}
-
 .cb-header {
     align-items: center;
     background-color: var(--cb-background);

@@ -1,18 +1,31 @@
-﻿<li class="cb-sidebar-link">
-    <a href="@NavigationItem.Href" onclick="@ClickedCallback">
+@using Microsoft.AspNetCore.Components.Routing
+
+<li class="cb-sidebar-link">
+    <NavLink href="@NavigationItem.Href" Match="NavLinkMatch.All" @onclick="OnClicked">
         @if (NavigationItem.Icon is not null)
         {
             <CarbonBlazorIcon Type="@(NavigationItem.Icon.Value)"></CarbonBlazorIcon>
         }
-        @NavigationItem.Text
-    </a>
+        <span>@NavigationItem.Text</span>
+    </NavLink>
 </li>
 
 @code {
-    [Parameter]
-    [EditorRequired]
+    [CascadingParameter]
+    private Func<Task>? CloseNavigation { get; set; }
+
+    [Parameter, EditorRequired]
     public NavigationItem NavigationItem { get; set; } = null!;
-    
+
     [Parameter]
     public EventCallback ClickedCallback { get; set; } = EventCallback.Empty;
+
+    private async Task OnClicked()
+    {
+        if (CloseNavigation is not null)
+        {
+            await CloseNavigation.Invoke();
+        }
+        await ClickedCallback.InvokeAsync();
+    }
 }

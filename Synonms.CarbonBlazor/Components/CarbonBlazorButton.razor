@@ -1,4 +1,5 @@
-﻿<button class="@GetClass()" style="@Style" type="@Type.ToString().ToLower()" onclick="@ClickedCallback" disabled="@IsDisabled">
+<button id="@Id" aria-label="@AriaLabel" aria-expanded="@AriaExpanded" aria-controls="@AriaControls"
+        class="@GetClass()" style="@Style" type="@Type.ToString().ToLower()" onclick="@ClickedCallback" disabled="@IsDisabled">
     @if (Display is CarbonBlazorButtonDisplay.TextOnly or CarbonBlazorButtonDisplay.TextAndIcon)
     {
         @Text
@@ -42,6 +43,18 @@
 
     [Parameter]
     public string Style { get; set; } = string.Empty;
+
+    [Parameter]
+    public string? Id { get; set; }
+
+    [Parameter]
+    public string? AriaLabel { get; set; }
+
+    [Parameter]
+    public string? AriaExpanded { get; set; }
+
+    [Parameter]
+    public string? AriaControls { get; set; }
 
     public bool IsToggled { get; set; }
     
