@@ -1,4 +1,7 @@
-﻿<CarbonBlazorFieldSet IsDoubleColumn="@IsDoubleColumn" IsReadOnly="@IsReadOnly" IsDisabled="@IsDisabled">
+﻿@using System.Globalization
+@typeparam TValue
+
+<CarbonBlazorFieldSet IsDoubleColumn="@IsDoubleColumn" IsReadOnly="@IsReadOnly" IsDisabled="@IsDisabled">
     @if (string.IsNullOrWhiteSpace(Label) is false)
     {
         <label for="@Id" class="cb-number-input-label">@Label</label>
@@ -10,7 +13,7 @@
             @if (_validationMessage?.ValidationState == ValidationOutcome.ValidationState.Error)
             {
                 <path d="M8,1C4.2,1,1,4.2,1,8s3.2,7,7,7s7-3.1,7-7S11.9,1,8,1z M7.5,4h1v5h-1C7.5,9,7.5,4,7.5,4z M8,12.2 c-0.4,0-0.8-0.4-0.8-0.8s0.3-0.8,0.8-0.8c0.4,0,0.8,0.4,0.8,0.8S8.4,12.2,8,12.2z"></path>
-                <path d="M7.5,4h1v5h-1C7.5,9,7.5,4,7.5,4z M8,12.2c-0.4,0-0.8-0.4-0.8-0.8s0.3-0.8,0.8-0.8 c0.4,0,0.8,0.4,0.8,0.8S8.4,12.2,8,12.2z" data-icon-path="inner-path" opacity="0"></path>
+                <path d="M7.5,4h1v5h-1C7.5,9,7.5,4,7.5,4z M8,12.2c-0.4,0-0.8-0.4-0.8-0.8s0.3-0.8,0.8-0.8c0.4,0,0.8,0.4,0.8,0.8S8.4,12.2,8,12.2z" data-icon-path="inner-path" opacity="0"></path>
             }
             else
             {
@@ -37,7 +40,7 @@
 
 @code {
     private CarbonBlazorValidationMessage? _validationMessage;
-    private string _valueAsString = "0";
+    private string _valueAsString = string.Empty;
 
     [CascadingParameter]
     public EditContext? EditContext { get; set; }
@@ -51,10 +54,10 @@
     
     [Parameter]
     [EditorRequired]
-    public int Value { get; set; }
+    public TValue Value { get; set; } = default!;
     
     [Parameter]
-    public EventCallback<int> ValueChanged { get; set; }
+    public EventCallback<TValue> ValueChanged { get; set; }
 
     [Parameter]
     public string? Id { get; set; }
@@ -72,13 +75,13 @@
     public string? HelperText { get; set; }
     
     [Parameter]
-    public int Min { get; set; }
+    public decimal Min { get; set; }
 
     [Parameter]
-    public int Max { get; set; } = int.MaxValue;
+    public decimal Max { get; set; } = decimal.MaxValue;
 
     [Parameter]
-    public int Step { get; set; } = 1;
+    public decimal Step { get; set; } = 1m;
 
     [Parameter]
     public bool IsDisabled { get; set; }
@@ -92,25 +95,32 @@
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
-        
-        _valueAsString = Value.ToString();
+
+        _ = GetIntegerBounds();
+        _valueAsString = Convert.ToString(Value, CultureInfo.InvariantCulture) ?? string.Empty;
     }
 
     private async Task OnValueChanged(ChangeEventArgs changeEventArgs)
     {
         string newValueAsString = changeEventArgs.Value?.ToString() ?? string.Empty;
 
-        if (int.TryParse(newValueAsString, out int newValueAsInt))
+        if (newValueAsString.Length == 0 && IsNullableValue())
         {
-            Value = newValueAsInt;
+            Value = default!;
+            await ValueUpdated();
+            return;
+        }
 
+        if (BindConverter.TryConvertTo(newValueAsString, CultureInfo.InvariantCulture, out TValue? convertedValue))
+        {
+            Value = convertedValue!;
             await ValueUpdated();
         }
     }
 
     private async Task ValueUpdated()
     {
-        _valueAsString = Value.ToString();
+        _valueAsString = Convert.ToString(Value, CultureInfo.InvariantCulture) ?? string.Empty;
         
         await ValueChanged.InvokeAsync(Value);
             
@@ -119,20 +129,76 @@
 
     private async Task Decrement()
     {
-        if ((Value - Step) >= Min)
+        decimal value = GetDecimalValue();
+        (decimal typeMin, decimal typeMax) = GetIntegerBounds();
+        decimal min = Math.Max(Min, typeMin);
+        decimal max = Math.Min(Max, typeMax);
+
+        if (Step >= 0 && value >= min && Step <= value - min)
         {
-            Value -= Step;
-            await ValueUpdated();
+            decimal newValue = value - Step;
+
+            if (newValue <= max && newValue == decimal.Truncate(newValue))
+            {
+                await SetValue(newValue);
+            }
         }
     }
     
     private async Task Increment()
     {
-        if ((Value + Step) <= Max)
+        decimal value = GetDecimalValue();
+        (decimal typeMin, decimal typeMax) = GetIntegerBounds();
+        decimal min = Math.Max(Min, typeMin);
+        decimal max = Math.Min(Max, typeMax);
+
+        if (Step >= 0 && value <= max && Step <= max - value)
         {
-            Value += Step;
-            await ValueUpdated();
+            decimal newValue = value + Step;
+
+            if (newValue >= min && newValue == decimal.Truncate(newValue))
+            {
+                await SetValue(newValue);
+            }
         }
+    }
+
+    private async Task SetValue(decimal value)
+    {
+        Type integerType = Nullable.GetUnderlyingType(typeof(TValue)) ?? typeof(TValue);
+        object convertedValue = Convert.ChangeType(value, integerType, CultureInfo.InvariantCulture);
+        Value = (TValue)convertedValue;
+
+        await ValueUpdated();
+    }
+
+    private decimal GetDecimalValue()
+    {
+        object? value = Value;
+
+        return value is null
+            ? 0m
+            : Convert.ToDecimal(value, CultureInfo.InvariantCulture);
+    }
+
+    private static (decimal Min, decimal Max) GetIntegerBounds()
+    {
+        Type integerType = Nullable.GetUnderlyingType(typeof(TValue)) ?? typeof(TValue);
+
+        return integerType == typeof(byte) ? (byte.MinValue, byte.MaxValue)
+            : integerType == typeof(sbyte) ? (sbyte.MinValue, sbyte.MaxValue)
+            : integerType == typeof(short) ? (short.MinValue, short.MaxValue)
+            : integerType == typeof(ushort) ? (ushort.MinValue, ushort.MaxValue)
+            : integerType == typeof(int) ? (int.MinValue, int.MaxValue)
+            : integerType == typeof(uint) ? (uint.MinValue, uint.MaxValue)
+            : integerType == typeof(long) ? (long.MinValue, long.MaxValue)
+            : integerType == typeof(ulong) ? (ulong.MinValue, ulong.MaxValue)
+            : throw new InvalidOperationException($"{nameof(CarbonBlazorIntegerInput<TValue>)} only supports byte, sbyte, short, ushort, int, uint, long, ulong and their nullable variants.");
+    }
+
+    private static bool IsNullableValue()
+    {
+        return Nullable.GetUnderlyingType(typeof(TValue)) is not null;
     }
 
     private string GetClass()

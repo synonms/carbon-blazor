@@ -1,18 +1,19 @@
-﻿@using System.Globalization
+@using System.Globalization
+@typeparam TValue
 
 <CarbonBlazorFieldSet IsDoubleColumn="@IsDoubleColumn" IsReadOnly="@IsReadOnly" IsDisabled="@IsDisabled">
     @if (string.IsNullOrWhiteSpace(Label) is false)
     {
-        <label for="@Id" class="cb-decimal-input-label">@Label</label>
+        <label for="@Id" class="cb-floating-input-label">@Label</label>
     }
 
-    <div class="cb-decimal-input-wrapper @CarbonBlazorInputSizeMapper.ToClass(Size)">
-        <input class="@GetClass()" id="@Id" name="@Id" type="number" value="@_valueAsString" @oninput="@OnValueChanged" pattern="[0-9]*.[0-9]*" readonly="@IsReadOnly" disabled="@IsDisabled">
-        <svg focusable="false" preserveAspectRatio="xMidYMid meet" class="cb-decimal-input-icon" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <div class="cb-floating-input-wrapper @CarbonBlazorInputSizeMapper.ToClass(Size)">
+        <input class="@GetClass()" id="@Id" name="@Id" type="number" value="@_valueAsString" @oninput="@OnValueChanged" readonly="@IsReadOnly" disabled="@IsDisabled">
+        <svg focusable="false" preserveAspectRatio="xMidYMid meet" class="cb-floating-input-icon" width="16" height="16" viewBox="0 0 32 32" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
             @if (_validationMessage?.ValidationState == ValidationOutcome.ValidationState.Error)
             {
                 <path d="M8,1C4.2,1,1,4.2,1,8s3.2,7,7,7s7-3.1,7-7S11.9,1,8,1z M7.5,4h1v5h-1C7.5,9,7.5,4,7.5,4z M8,12.2 c-0.4,0-0.8-0.4-0.8-0.8s0.3-0.8,0.8-0.8c0.4,0,0.8,0.4,0.8,0.8S8.4,12.2,8,12.2z"></path>
-                <path d="M7.5,4h1v5h-1C7.5,9,7.5,4,7.5,4z M8,12.2c-0.4,0-0.8-0.4-0.8-0.8s0.3-0.8,0.8-0.8 c0.4,0,0.8,0.4,0.8,0.8S8.4,12.2,8,12.2z" data-icon-path="inner-path" opacity="0"></path>
+                <path d="M7.5,4h1v5h-1C7.5,9,7.5,4,7.5,4z M8,12.2c-0.4,0-0.8-0.4-0.8-0.8s0.3-0.8,0.8-0.8c0.4,0,0.8,0.4,0.8,0.8S8.4,12.2,8,12.2z" data-icon-path="inner-path" opacity="0"></path>
             }
             else
             {
@@ -21,25 +22,19 @@
                 <path d="M29,30H3a1,1,0,0,1-.8872-1.4614l13-25a1,1,0,0,1,1.7744,0l13,25A1,1,0,0,1,29,30ZM4.6507,28H27.3493l.002-.0033L16.002,6.1714h-.004L4.6487,27.9967Z"/>
             }
         </svg>
-        <button class="cb-decimal-input-button decrement" type="button" onclick="@(() => Decrement())" disabled="@IsDisabled">
-            <CarbonBlazorIcon Type="CarbonBlazorIconType.Subtract"></CarbonBlazorIcon>
-        </button>
-        <button class="cb-decimal-input-button increment" type="button" onclick="@(() => Increment())" disabled="@IsDisabled">
-            <CarbonBlazorIcon Type="CarbonBlazorIconType.Add"></CarbonBlazorIcon>
-        </button>
     </div>
 
     <CarbonBlazorValidationMessage @ref="@_validationMessage" FieldIdentifier="@FieldIdentifier"></CarbonBlazorValidationMessage>
 
     @if (string.IsNullOrWhiteSpace(HelperText) is false)
     {
-        <div id="@Id-helper-text" class="cb-decimal-input-helper">@HelperText</div>
+        <div id="@Id-helper-text" class="cb-floating-input-helper">@HelperText</div>
     }
 </CarbonBlazorFieldSet>
 
 @code {
     private CarbonBlazorValidationMessage? _validationMessage;
-    private string _valueAsString = "0";
+    private string _valueAsString = string.Empty;
 
     [CascadingParameter]
     public EditContext? EditContext { get; set; }
@@ -53,10 +48,10 @@
     
     [Parameter]
     [EditorRequired]
-    public decimal Value { get; set; }
+    public TValue Value { get; set; } = default!;
     
     [Parameter]
-    public EventCallback<decimal> ValueChanged { get; set; }
+    public EventCallback<TValue> ValueChanged { get; set; }
 
     [Parameter]
     public string? Id { get; set; }
@@ -72,15 +67,6 @@
 
     [Parameter]
     public string? HelperText { get; set; }
-    
-    [Parameter]
-    public decimal Min { get; set; }
-
-    [Parameter]
-    public decimal Max { get; set; } = decimal.MaxValue;
-
-    [Parameter]
-    public decimal Step { get; set; } = 1.0m;
 
     [Parameter]
     public bool IsDisabled { get; set; }
@@ -94,52 +80,55 @@
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
-        
-        _valueAsString = Value.ToString(CultureInfo.InvariantCulture);
+
+        _ = GetFloatingPointType();
+        _valueAsString = Convert.ToString(Value, CultureInfo.InvariantCulture) ?? string.Empty;
     }
-    
+
     private async Task OnValueChanged(ChangeEventArgs changeEventArgs)
     {
         string newValueAsString = changeEventArgs.Value?.ToString() ?? string.Empty;
 
-        if (decimal.TryParse(newValueAsString, out decimal newValueAsDecimal))
+        if (newValueAsString.Length == 0 && IsNullableValue())
         {
-            Value = newValueAsDecimal;
+            Value = default!;
+            await ValueUpdated();
+            return;
+        }
 
+        if (BindConverter.TryConvertTo(newValueAsString, CultureInfo.InvariantCulture, out TValue? convertedValue))
+        {
+            Value = convertedValue!;
             await ValueUpdated();
         }
     }
 
     private async Task ValueUpdated()
     {
-        _valueAsString = Value.ToString(CultureInfo.InvariantCulture);
+        _valueAsString = Convert.ToString(Value, CultureInfo.InvariantCulture) ?? string.Empty;
         
         await ValueChanged.InvokeAsync(Value);
             
         EditContext?.NotifyFieldChanged(FieldIdentifier);
     }
 
-    private async Task Decrement()
+    private static Type GetFloatingPointType()
     {
-        if ((Value - Step) >= Min)
-        {
-            Value -= Step;
-            await ValueUpdated();
-        }
+        Type valueType = Nullable.GetUnderlyingType(typeof(TValue)) ?? typeof(TValue);
+
+        return valueType == typeof(float) || valueType == typeof(double) || valueType == typeof(decimal)
+            ? valueType
+            : throw new InvalidOperationException($"{nameof(CarbonBlazorFloatingInput<TValue>)} only supports float, double, decimal and their nullable variants.");
     }
-    
-    private async Task Increment()
+
+    private static bool IsNullableValue()
     {
-        if ((Value + Step) <= Max)
-        {
-            Value += Step;
-            await ValueUpdated();
-        }
+        return Nullable.GetUnderlyingType(typeof(TValue)) is not null;
     }
 
     private string GetClass()
     {
-        const string baseClass = CssClasses.Prefix + "decimal-input";
+        const string baseClass = CssClasses.Prefix + "floating-input";
         string layerClass = CarbonBlazorLayerMapper.ToClass(Layer);
         string validationClass = _validationMessage is null 
             ? string.Empty 

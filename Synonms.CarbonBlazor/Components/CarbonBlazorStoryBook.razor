@@ -190,7 +190,7 @@ if (isSuperExciting)
         <CarbonBlazorForm TModel="StoryBookModel" Model="@_model" ValidationFunc="@ValidateForm" ValidSubmitCallback="@(_ => _formNotification.Notify("Thingy Saved", "The thingy has been saved successfully.", CarbonBlazorNotificationStyle.LowContrast, CarbonBlazorNotificationLevel.Success))">
             <CarbonBlazorTextInput Id="SomeTextInput" Label="Text input label" HelperText="Optional help text" FieldIdentifier="@FieldIdentifier.Create(() => _model.SomeTextInputValue)" @bind-Value="@_model.SomeTextInputValue"></CarbonBlazorTextInput>
             <CarbonBlazorCheckBox Id="SomeCheckBox" Label="Checkbox label" @bind-Value="@_model.SomeBoolInputValue" FieldIdentifier="@FieldIdentifier.Create(() => _model.SomeBoolInputValue)"></CarbonBlazorCheckBox>
-            <CarbonBlazorNumberInput Id="SomeNumberInput" Label="Number input label" @bind-Value="@_model.SomeIntInputValue" FieldIdentifier="@FieldIdentifier.Create(() => _model.SomeIntInputValue)" Min="0" Max="100" Step="5"></CarbonBlazorNumberInput>
+            <CarbonBlazorIntegerInput Id="SomeNumberInput" Label="Integer input label" @bind-Value="@_model.SomeIntInputValue" FieldIdentifier="@FieldIdentifier.Create(() => _model.SomeIntInputValue)" Min="0" Max="100" Step="5"></CarbonBlazorIntegerInput>
             <CarbonBlazorCheckBoxGroup Label="Checkbox group" @bind-Values="@_model.SomeCheckedValues" FieldIdentifier="@FieldIdentifier.Create(() => _model.SomeCheckedValues)" Items="@( [CheckBoxItem.Create("Aardvark"), CheckBoxItem.Create("Chimp"), CheckBoxItem.Create("Giraffe"), CheckBoxItem.Create("Hippo")])"></CarbonBlazorCheckBoxGroup>
             <CarbonBlazorRadioButton Label="Radio Button" @bind-Value="@_model.SomeRadioButtonValue" FieldIdentifier="@FieldIdentifier.Create(() => _model.SomeRadioButtonValue)" Items="@( [RadioButtonItem.Create("Lemon"), RadioButtonItem.Create("Lime")])"></CarbonBlazorRadioButton>
             <CarbonBlazorSelect Id="SomeSelect" Label="Select label" @bind-Value="@_model.SomeSelectValue" FieldIdentifier="@FieldIdentifier.Create(() => _model.SomeSelectValue)" Items="@( [SelectItem<string>.Create("One"), SelectItem<string>.Create("Two"), SelectItem<string>.Create("Three"), SelectItem<string>.Create("Four")])"/>
@@ -445,8 +445,12 @@ if (isSuperExciting)
         </CarbonBlazorButtonSet>
     </CarbonBlazorPane>
 
-    <CarbonBlazorPane Title="Number Input">
-        <CarbonBlazorNumberInput Id="numberInput" Label="Number input" @bind-Value="@_numberInputValue" FieldIdentifier="@FieldIdentifier.Create(() => _numberInputValue)" Min="0" Max="100" Step="5"></CarbonBlazorNumberInput>
+    <CarbonBlazorPane Title="Integer Input">
+        <CarbonBlazorIntegerInput Id="integerInput" Label="Integer input" @bind-Value="@_numberInputValue" FieldIdentifier="@FieldIdentifier.Create(() => _numberInputValue)" Min="0" Max="100" Step="5"></CarbonBlazorIntegerInput>
+    </CarbonBlazorPane>
+
+    <CarbonBlazorPane Title="Floating Input">
+        <CarbonBlazorFloatingInput Id="floatingInput" Label="Floating input" @bind-Value="@_floatingInputValue" FieldIdentifier="@FieldIdentifier.Create(() => _floatingInputValue)"></CarbonBlazorFloatingInput>
     </CarbonBlazorPane>
 
     <CarbonBlazorPane Title="Pagination">
@@ -780,6 +784,7 @@ if (isSuperExciting)
     private string _radioButtonValue = string.Empty;
     private string _selectValue = string.Empty;
     private string _textInputValue = string.Empty;
+    private double _floatingInputValue = 1.5d;
     private CarbonBlazorModal _modal = null!;
 
     private CarbonBlazorDataTable<StoryBookModel> _dataTable = null!;

@@ -240,7 +240,7 @@ A form is a group of related input controls that allows users to provide data or
 ```htmlinblazor
 <CarbonBlazorForm TModel="StoryBookModel" Model="@_model" >
     <CarbonBlazorTextInput Id="SomeTextInput" Label="Text input label" HelperText="Optional help text" @bind-Value="@_model.SomeTextInputValue" ValidationFor="@(() => _model.SomeTextInputValue)"></CarbonBlazorTextInput>
-    <CarbonBlazorNumberInput Id="SomeNumberInput" Label="Number input label" @bind-Value="@_model.SomeIntInputValue" ValidationFor="@(() => _model.SomeIntInputValue)" Min="0" Max="100" Step="5"></CarbonBlazorNumberInput>
+    <CarbonBlazorIntegerInput Id="SomeNumberInput" Label="Integer input label" @bind-Value="@_model.SomeIntInputValue" FieldIdentifier="@(FieldIdentifier.Create(() => _model.SomeIntInputValue))" Min="0" Max="100" Step="5"></CarbonBlazorIntegerInput>
     <CarbonBlazorCheckBox Id="SomeCheckBox" Label="Checkbox label" @bind-Value="@_model.SomeBoolInputValue" ValidationFor="@(() => _model.SomeBoolInputValue)"></CarbonBlazorCheckBox>
     <CarbonBlazorDropDown TValue="string" Id="SomeDropDown" Label="Dropdown label" @bind-Value="@_model.SomeDropDownValue" ValidationFor="@(() => _model.SomeDropDownValue)" FromString="@(x => x)" Options="@_dropDownOptions" />
 </CarbonBlazorForm>
@@ -459,12 +459,20 @@ Note that toast notifications are also available, which support multiple notific
 }
 ```
 
-### NumberInput
+### IntegerInput
 
-Number input lets users enter a numeric value and incrementally increase or decrease the value with a two-segment control.
+Integer input lets users enter a whole-number value and incrementally increase or decrease the value with a two-segment control. It supports `byte`, `sbyte`, `short`, `ushort`, `int`, `uint`, `long`, and `ulong`, including nullable variants.
 
 ```htmlinblazor
-<CarbonBlazorNumberInput Id="SomeNumberInput" Label="Number input label" @bind-Value="@_model.SomeIntInputValue" FieldIdentifier="@(FieldIdentifier.Create(() => _model.SomeIntInputValue))" Min="0" Max="100" Step="5"></CarbonBlazorNumberInput>
+<CarbonBlazorIntegerInput Id="SomeNumberInput" Label="Integer input label" @bind-Value="@_model.SomeIntInputValue" FieldIdentifier="@(FieldIdentifier.Create(() => _model.SomeIntInputValue))" Min="0" Max="100" Step="5"></CarbonBlazorIntegerInput>
+```
+
+### FloatingInput
+
+Floating input lets users enter a floating-point value. It supports `float`, `double`, and `decimal`, including nullable variants.
+
+```htmlinblazor
+<CarbonBlazorFloatingInput Id="SomeFloatingInput" Label="Floating input label" @bind-Value="@_model.SomeDoubleInputValue" FieldIdentifier="@(FieldIdentifier.Create(() => _model.SomeDoubleInputValue))"></CarbonBlazorFloatingInput>
 ```
 
 ### OverflowMenuButton
